@@ -1308,3 +1308,524 @@ button {
   }
 
 }
+
+/* =========================================================
+   AJUSTES DE LEITURA E PROPORÇÃO
+   ========================================================= */
+
+.caretea-dashboard {
+  font-size: 15px;
+}
+
+.sidebar-item {
+  min-height: 47px;
+  font-size: 14px;
+}
+
+.sidebar-icon {
+  width: 27px;
+  height: 27px;
+  font-size: 23px;
+}
+
+.sidebar-badge {
+  width: 23px;
+  height: 23px;
+  font-size: 12px;
+}
+
+.sidebar-help-card {
+  padding: 20px 18px 18px;
+}
+
+.sidebar-help-card strong {
+  font-size: 14px;
+}
+
+.sidebar-help-card p {
+  min-height: auto;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.sidebar-help-card button {
+  height: 43px;
+  font-size: 13px;
+}
+
+.dashboard-topbar h1 {
+  font-size: clamp(30px, 2.4vw, 39px);
+}
+
+.dashboard-topbar p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.profile-copy strong {
+  font-size: 14px;
+}
+
+.profile-copy small {
+  font-size: 11.5px;
+}
+
+.quick-actions button {
+  height: 47px;
+  padding: 0 19px;
+  font-size: 13px;
+}
+
+.stat-card {
+  min-height: 162px;
+  padding: 22px 20px 19px;
+}
+
+.stat-copy strong {
+  font-size: 27px;
+}
+
+.stat-copy span {
+  font-size: 14px;
+}
+
+.stat-copy small {
+  font-size: 12px;
+}
+
+.stat-card > button {
+  font-size: 12px;
+}
+
+.panel-header h2 {
+  font-size: 18px;
+}
+
+.panel-header button {
+  font-size: 12.5px;
+}
+
+.organized-day-panel {
+  padding: 20px;
+}
+
+.timeline-row {
+  min-height: 65px;
+  grid-template-columns: 96px 50px minmax(0, 1fr) auto;
+}
+
+.timeline-time {
+  font-size: 13px;
+}
+
+.timeline-copy strong {
+  font-size: 14px;
+}
+
+.timeline-copy small {
+  font-size: 12px;
+}
+
+.status-pill {
+  min-width: 110px;
+  height: 34px;
+  font-size: 12px;
+}
+
+.status-pill b {
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+}
+
+.adherence-panel,
+.streak-panel,
+.assistant-panel {
+  min-height: 305px;
+  padding: 20px;
+}
+
+.adherence-summary strong {
+  font-size: 13.5px;
+}
+
+.adherence-summary p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.bar-column small {
+  font-size: 10.5px;
+}
+
+.bar-column b {
+  font-size: 10.5px;
+}
+
+.streak-number p {
+  font-size: 13px;
+}
+
+.streak-caption {
+  font-size: 12px;
+}
+
+.streak-days small {
+  font-size: 10.5px;
+}
+
+.assistant-greeting strong {
+  font-size: 13.5px;
+}
+
+.assistant-greeting p {
+  font-size: 11.5px;
+}
+
+.assistant-card > button {
+  min-height: 35px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
+.assistant-card input {
+  height: 42px;
+  font-size: 12px;
+}
+
+.calendar-panel,
+.mood-panel,
+.quick-info-panel {
+  padding: 20px;
+}
+
+.calendar-toolbar strong {
+  font-size: 14px;
+}
+
+.calendar-week span {
+  font-size: 11px;
+}
+
+.calendar-week button {
+  width: 34px;
+  height: 34px;
+  font-size: 12px;
+}
+
+.agenda-list article {
+  min-height: 62px;
+}
+
+.agenda-list time {
+  font-size: 12px;
+}
+
+.agenda-list strong {
+  font-size: 12.5px;
+}
+
+.agenda-list small {
+  font-size: 11px;
+}
+
+.mood-options {
+  gap: 9px;
+}
+
+.mood-face {
+  width: 53px;
+  height: 53px;
+  font-size: 31px;
+}
+
+.mood-options small {
+  min-height: 30px;
+  font-size: 10.5px;
+}
+
+.quick-info-list article {
+  min-height: 70px;
+  grid-template-columns: 36px minmax(0, 1fr) auto 18px;
+  gap: 11px;
+}
+
+.quick-info-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 21px;
+}
+
+.quick-info-list strong {
+  font-size: 12px;
+}
+
+.quick-info-list small {
+  font-size: 10.5px;
+  line-height: 1.4;
+}
+
+.quick-info-list article > span:nth-last-child(2) {
+  font-size: 10.5px;
+}
+
+.quick-info-list b {
+  font-size: 13px;
+}
+
+.view-all-button {
+  font-size: 12px;
+}
+
+@media (max-width: 1280px) {
+  .dashboard-layout {
+    grid-template-columns: minmax(0, 1.65fr) minmax(330px, 1fr);
+  }
+
+  .stats-grid {
+    gap: 15px;
+  }
+
+  .bottom-grid {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 980px) {
+  .sidebar-item {
+    min-height: 46px;
+  }
+
+  .dashboard-topbar h1 {
+    font-size: 31px;
+  }
+
+  .dashboard-right {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-topbar h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-topbar p {
+    font-size: 14px;
+  }
+
+  .quick-actions button {
+    font-size: 12.5px;
+  }
+
+  .panel-header h2 {
+    font-size: 17px;
+  }
+
+  .timeline-row {
+    grid-template-columns: 78px 45px minmax(0, 1fr);
+  }
+
+  .timeline-time {
+    font-size: 12px;
+  }
+
+  .timeline-copy strong {
+    font-size: 13px;
+  }
+
+  .timeline-copy small {
+    font-size: 11px;
+  }
+
+  .mood-face {
+    width: 49px;
+    height: 49px;
+    font-size: 28px;
+  }
+}
+
+/* =========================================================
+   AJUSTES DE LEITURA — IA ASSISTENTE PARA BAIXO
+   ========================================================= */
+
+/* IA Assistente */
+.assistant-panel .panel-header h2 {
+  font-size: 21px;
+}
+
+.assistant-panel .panel-header button {
+  font-size: 13.5px;
+}
+
+.assistant-greeting strong {
+  font-size: 16px;
+}
+
+.assistant-greeting p {
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.assistant-card > button {
+  min-height: 42px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.assistant-card input {
+  height: 46px;
+  font-size: 13.5px;
+}
+
+/* Calendário / agenda */
+.calendar-panel .panel-header h2 {
+  font-size: 21px;
+}
+
+.calendar-panel .panel-header button {
+  font-size: 13.5px;
+}
+
+.calendar-toolbar strong {
+  font-size: 16px;
+}
+
+.calendar-week span {
+  font-size: 12.5px;
+}
+
+.calendar-week button {
+  width: 38px;
+  height: 38px;
+  font-size: 13.5px;
+}
+
+.agenda-list article {
+  min-height: 72px;
+}
+
+.agenda-list time {
+  font-size: 13.5px;
+}
+
+.agenda-list strong {
+  font-size: 14.5px;
+}
+
+.agenda-list small {
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+/* Humor */
+.mood-panel .panel-header h2 {
+  font-size: 21px;
+}
+
+.mood-panel .panel-header button {
+  font-size: 13.5px;
+}
+
+.mood-options {
+  gap: 12px;
+}
+
+.mood-face {
+  width: 60px;
+  height: 60px;
+  font-size: 35px;
+}
+
+.mood-options small {
+  min-height: 34px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* Informações rápidas */
+.quick-info-panel .panel-header h2 {
+  font-size: 21px;
+}
+
+.quick-info-panel .panel-header button {
+  font-size: 13.5px;
+}
+
+.quick-info-list article {
+  min-height: 82px;
+  grid-template-columns: 42px minmax(0, 1fr) auto 20px;
+  gap: 13px;
+}
+
+.quick-info-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+}
+
+.quick-info-list strong {
+  font-size: 14px;
+}
+
+.quick-info-list small {
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.quick-info-list article > span:nth-last-child(2) {
+  font-size: 12px;
+}
+
+.quick-info-list b {
+  font-size: 14.5px;
+}
+
+.view-all-button {
+  font-size: 13.5px;
+}
+
+/* Mantém boa proporção em telas menores */
+@media (max-width: 700px) {
+  .assistant-panel .panel-header h2,
+  .calendar-panel .panel-header h2,
+  .mood-panel .panel-header h2,
+  .quick-info-panel .panel-header h2 {
+    font-size: 19px;
+  }
+
+  .assistant-greeting strong {
+    font-size: 15px;
+  }
+
+  .assistant-greeting p,
+  .assistant-card input,
+  .agenda-list time,
+  .agenda-list small,
+  .quick-info-list small {
+    font-size: 12.5px;
+  }
+
+  .assistant-card > button {
+    font-size: 12.5px;
+  }
+
+  .agenda-list strong,
+  .quick-info-list strong {
+    font-size: 13.5px;
+  }
+
+  .mood-face {
+    width: 56px;
+    height: 56px;
+    font-size: 32px;
+  }
+
+  .mood-options small {
+    font-size: 11.5px;
+  }
+}

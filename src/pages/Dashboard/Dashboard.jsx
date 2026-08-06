@@ -8,13 +8,10 @@ const menuItems = [
   ["medicamentos", "◊", "Medicamentos"],
   ["consultas", "♧", "Consultas"],
   ["exames", "△", "Exames"],
-  ["terapias", "♡", "Terapias"],
   ["assistente", "◉", "IA Assistente"],
   ["notificacoes", "♢", "Notificações"],
   ["documentos", "▤", "Documentos"],
   ["relatorios", "▥", "Relatórios"],
-  ["perfil", "♙", "Perfil"],
-  ["responsaveis", "♧", "Responsáveis"],
   ["configuracoes", "⚙", "Configurações"],
 ];
 
@@ -22,14 +19,12 @@ const stats = [
   { icon: "◊", value: "3", title: "Medicamentos", subtitle: "Hoje", tone: "purple" },
   { icon: "▣", value: "1", title: "Consulta", subtitle: "Hoje", tone: "blue" },
   { icon: "△", value: "1", title: "Exame", subtitle: "Próximo", tone: "green" },
-  { icon: "♡", value: "1", title: "Terapia", subtitle: "Esta semana", tone: "orange" },
 ];
 
 const schedule = [
   { time: "08:00", icon: "◊", title: "Risperidona 1mg", subtitle: "1 comprimido", status: "Tomado", tone: "green", dot: "purple" },
   { time: "12:00", icon: "◇", title: "Metilfenidato 10mg", subtitle: "1 comprimido", status: "Pendente", tone: "orange", dot: "yellow" },
   { time: "15:00", icon: "♧", title: "Consulta - Neurologista", subtitle: "Clínica Neuro", status: "Em 2h", tone: "blue", dot: "blue" },
-  { time: "18:30", icon: "♡", title: "Terapia - Fonoaudiologia", subtitle: "Sessão online", status: "Em 5h 30min", tone: "purple", dot: "pink" },
 ];
 
 const moods = [
@@ -186,7 +181,6 @@ function Dashboard({ userName = "Sandy", onNavigate, onLogout }) {
                 {[
                   ["08:00","Risperidona 1mg","1 comprimido","green","✓"],
                   ["15:00","Consulta - Neurologista","Clínica Neuro","purple","›"],
-                  ["18:30","Terapia - Fonoaudiologia","Sessão online","orange","›"],
                 ].map(([time,title,subtitle,tone,action]) => (
                   <article key={`${time}-${title}`}><time>{time}</time><span className={`agenda-line agenda-line-${tone}`} /><div><strong>{title}</strong><small>{subtitle}</small></div><b className={`agenda-action agenda-action-${tone}`}>{action}</b></article>
                 ))}
@@ -210,7 +204,6 @@ function Dashboard({ userName = "Sandy", onNavigate, onLogout }) {
                 {[
                   ["▣","Próxima consulta","20/05/2025 - Terça, 15:00","Neurologista","purple"],
                   ["△","Próximo exame","22/05/2025 - 07:30","Exame de Sangue","blue"],
-                  ["♡","Próxima terapia","13/05/2025 - 18:30","Fonoaudiologia","pink"],
                 ].map(([icon,title,detail,tag,tone]) => (
                   <article key={title}><span className={`quick-info-icon quick-info-${tone}`}>{icon}</span><div><strong>{title}</strong><small>{detail}</small></div><span>{tag}</span><b>♙</b></article>
                 ))}
