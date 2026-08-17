@@ -1,0 +1,8 @@
+.form-group {
+    gap: 12px;
+}
+
+.erro-reset {
+    text-align: center;
+    color: var(--red);
+}

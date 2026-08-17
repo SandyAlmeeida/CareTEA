@@ -2,6 +2,8 @@ import { useState } from "react";
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Cadastro.css";
+import { Link } from "react-router-dom";
+import Footer from "../../components/Footer/Footer";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -71,7 +73,7 @@ function EyeIcon({ closed = false }) {
   );
 }
 
-function Cadastro({ onSubmit, onGoogleRegister, onBackToLogin }) {
+function Cadastro({ onSubmit, onGoogleRegister }) {
   const [formData, setFormData] = useState({
     accountType: "responsavel",
     fullName: "",
@@ -474,11 +476,10 @@ function Cadastro({ onSubmit, onGoogleRegister, onBackToLogin }) {
                   aria-label="Tipo de conta"
                 >
                   <button
-                    className={`cadastro-account-card ${
-                      formData.accountType === "responsavel"
-                        ? "cadastro-account-card-active"
-                        : ""
-                    }`}
+                    className={`cadastro-account-card ${formData.accountType === "responsavel"
+                      ? "cadastro-account-card-active"
+                      : ""
+                      }`}
                     type="button"
                     aria-pressed={formData.accountType === "responsavel"}
                     onClick={() => selectAccountType("responsavel")}
@@ -492,11 +493,10 @@ function Cadastro({ onSubmit, onGoogleRegister, onBackToLogin }) {
                   </button>
 
                   <button
-                    className={`cadastro-account-card ${
-                      formData.accountType === "autista"
-                        ? "cadastro-account-card-active"
-                        : ""
-                    }`}
+                    className={`cadastro-account-card ${formData.accountType === "autista"
+                      ? "cadastro-account-card-active"
+                      : ""
+                      }`}
                     type="button"
                     aria-pressed={formData.accountType === "autista"}
                     onClick={() => selectAccountType("autista")}
@@ -511,11 +511,10 @@ function Cadastro({ onSubmit, onGoogleRegister, onBackToLogin }) {
                 </div>
 
                 <div
-                  className={`cadastro-account-guidance ${
-                    formData.accountType === "autista"
-                      ? "cadastro-account-guidance-autista"
-                      : ""
-                  }`}
+                  className={`cadastro-account-guidance ${formData.accountType === "autista"
+                    ? "cadastro-account-guidance-autista"
+                    : ""
+                    }`}
                 >
                   <strong>
                     {formData.accountType === "responsavel"
@@ -788,20 +787,19 @@ function Cadastro({ onSubmit, onGoogleRegister, onBackToLogin }) {
 
                 <div className="cadastro-login-link">
                   <span>Já possui uma conta?</span>
-                  <button type="button" onClick={onBackToLogin}>
-                    Entre
-                  </button>
+                  <Link to="/login" replace>
+                    <button type="button">Entre</button>
+                  </Link>
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m9 6 6 6-6 6" />
                   </svg>
                 </div>
 
                 <p
-                  className={`cadastro-form-message ${
-                    message.type === "success"
-                      ? "cadastro-form-message-success"
-                      : ""
-                  }`}
+                  className={`cadastro-form-message ${message.type === "success"
+                    ? "cadastro-form-message-success"
+                    : ""
+                    }`}
                   aria-live="polite"
                 >
                   {message.text}
@@ -811,25 +809,7 @@ function Cadastro({ onSubmit, onGoogleRegister, onBackToLogin }) {
           </section>
         </section>
 
-        <div className="cadastro-puzzle-strip" aria-hidden="true">
-          {puzzleColors.map((color, index) => (
-            <span className={color} key={`${color}-${index}`} />
-          ))}
-        </div>
-
-        <footer className="cadastro-page-footer">
-          <span className="cadastro-security">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6l-7-3Z" />
-              <path d="m9 12 2 2 4-4" />
-            </svg>
-            Seus dados estão protegidos conosco.
-          </span>
-
-          <span className="cadastro-footer-divider" />
-          <a href="#politica-de-privacidade">Política de Privacidade</a>
-          <a href="#termos-de-uso">Termos de Uso</a>
-        </footer>
+        <Footer />
       </main>
     </div>
   );
