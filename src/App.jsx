@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import Login from "./pages/Login/Login.jsx";
 import Cadastro from "./pages/Cadastro/Cadastro.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Relatorios from "./pages/Relatorios/Relatorios.jsx";
+import Agenda from "./pages/Agenda/Agenda.jsx";
 
 function App() {
   const [pagina, setPagina] = useState("login");
@@ -19,13 +19,17 @@ function App() {
   }
 
   function handleNavigate(nextPage) {
-    if (["login", "cadastro", "dashboard", "relatorios"].includes(nextPage)) {
+    if (["login", "cadastro", "dashboard", "relatorios", "agenda"].includes(nextPage)) {
       setPagina(nextPage);
     }
   }
 
   if (pagina === "dashboard") {
     return <Dashboard onNavigate={handleNavigate} onLogout={() => setPagina("login")} />;
+  }
+
+  if (pagina === "agenda") {
+    return <Agenda onNavigate={handleNavigate} onLogout={() => setPagina("login")} />;
   }
 
   if (pagina === "relatorios") {
