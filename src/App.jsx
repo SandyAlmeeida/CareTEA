@@ -1,54 +1,32 @@
+import { Routes, Route } from "react-router-dom";
 
-import { useState } from "react";
+import Home from "./pages/Home/Home.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Cadastro from "./pages/Cadastro/Cadastro.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import Agenda from "./pages/Agenda/Agenda.jsx";
 import Relatorios from "./pages/Relatorios/Relatorios.jsx";
+import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
+import CriarNovaSenha from "./pages/EsqueciSenha/CriarNovaSenha.jsx";
 
 function App() {
-  const [pagina, setPagina] = useState("login");
-
-  async function handleLogin(credentials) {
-    console.log("Dados do login:", credentials);
-    setPagina("dashboard");
-  }
-
-  async function handleCadastro(data) {
-    console.log("Dados do cadastro:", data);
-    setPagina("login");
-  }
-
-  function handleNavigate(nextPage) {
-    if (["login", "cadastro", "dashboard", "relatorios"].includes(nextPage)) {
-      setPagina(nextPage);
-    }
-  }
-
-  if (pagina === "dashboard") {
-    return <Dashboard onNavigate={handleNavigate} onLogout={() => setPagina("login")} />;
-  }
-
-  if (pagina === "relatorios") {
-    return <Relatorios onNavigate={handleNavigate} onLogout={() => setPagina("login")} />;
-  }
-
-  if (pagina === "cadastro") {
-    return (
-      <Cadastro
-        onSubmit={handleCadastro}
-        onGoogleRegister={() => console.log("Cadastro com Google")}
-        onBackToLogin={() => setPagina("login")}
-      />
-    );
-  }
-
   return (
-    <Login
-      onLogin={handleLogin}
-      onForgotPassword={() => console.log("Recuperar senha")}
-      onGoogleLogin={() => console.log("Login com Google")}
-      onRegister={() => setPagina("cadastro")}
-    />
+    <Routes>
+      <Route path="/" element={<Home />} />
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
+
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/agenda" element={<Agenda />} />
+      <Route path="/relatorios" element={<Relatorios />} />
+
+      <Route path="/reset-password" element={<EsqueciSenha />} />
+      <Route
+        path="/create-new-password"
+        element={<CriarNovaSenha />}
+      />
+    </Routes>
   );
 }
 

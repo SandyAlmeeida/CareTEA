@@ -2,6 +2,9 @@ import { useRef, useState } from "react";
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Login.css";
+import { Link } from "react-router-dom";
+import Footer from "../../components/Footer/Footer";
+import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -317,18 +320,9 @@ function Login({
                     <span>Lembrar de mim</span>
                   </label>
 
-                  <button
-                    className="text-button"
-                    type="button"
-                    onClick={() =>
-                      handleAuxiliaryAction(
-                        onForgotPassword,
-                        "Aqui você poderá abrir a recuperação de senha.",
-                      )
-                    }
-                  >
-                    Esqueci minha senha
-                  </button>
+                  <Link to="/reset-password">
+                    <button className="text-button" type="button">Esqueci minha senha</button>
+                  </Link>
                 </div>
 
                 <button
@@ -382,17 +376,9 @@ function Login({
 
                 <div className="register">
                   <span>Ainda não possui uma conta?</span>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleAuxiliaryAction(
-                        onRegister,
-                        "Aqui você poderá redirecionar para a tela de cadastro.",
-                      )
-                    }
-                  >
-                    Cadastre-se
-                  </button>
+                  <Link to="/cadastro" replace>
+                    <button type="button">Cadastre-se</button>
+                </Link>
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m9 6 6 6-6 6" />
                   </svg>
@@ -409,44 +395,7 @@ function Login({
           </section>
         </section>
 
-        <div className="puzzle-strip" aria-hidden="true">
-          {[
-            "blue",
-            "purple",
-            "yellow",
-            "green",
-            "blue",
-            "red",
-            "purple",
-            "green",
-            "yellow",
-            "blue",
-            "green",
-            "red",
-            "purple",
-            "blue",
-            "green",
-            "yellow",
-            "blue",
-            "red",
-          ].map((color, index) => (
-            <span className={color} key={`${color}-${index}`} />
-          ))}
-        </div>
-
-        <footer className="page-footer">
-          <span className="security">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6l-7-3Z" />
-              <path d="m9 12 2 2 4-4" />
-            </svg>
-            Seus dados estão protegidos conosco.
-          </span>
-
-          <span className="footer-divider" />
-          <a href="#politica-de-privacidade">Política de Privacidade</a>
-          <a href="#termos-de-uso">Termos de Uso</a>
-        </footer>
+        <Footer />
       </main>
     </div>
   );
