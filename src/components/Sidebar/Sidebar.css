@@ -1,0 +1,182 @@
+.sidebar {
+  --sidebar-purple: #6846e8;
+  --sidebar-purple-dark: #5135cf;
+  --sidebar-muted: #707897;
+  --sidebar-border: #e8eaf3;
+
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 244px;
+  height: 100vh;
+
+  padding: 28px 20px 20px;
+
+  overflow-y: auto;
+
+  border-right: 1px solid #eceef6;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  box-sizing: border-box;
+}
+
+.sidebar-logo {
+  display: block;
+
+  width: 164px;
+  max-width: 100%;
+  height: auto;
+
+  margin: 0 8px 23px;
+
+  mix-blend-mode: multiply;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-item {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 43px;
+
+  gap: 13px;
+
+  padding: 0 13px;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #222c4b;
+
+  text-align: left;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.18s;
+}
+
+.sidebar-item:hover {
+  background: #f4f2ff;
+  color: var(--sidebar-purple-dark);
+}
+
+.sidebar-item-active,
+.sidebar-item-active:hover {
+  background: linear-gradient(100deg, #7048eb, #7750ef);
+
+  color: #ffffff;
+
+  box-shadow: 0 8px 16px rgba(104, 70, 232, 0.18);
+}
+
+.sidebar-icon {
+  display: grid;
+
+  width: 25px;
+  height: 25px;
+
+  place-items: center;
+
+  font-size: 22px;
+}
+
+.sidebar-badge {
+  display: grid;
+
+  width: 22px;
+  height: 22px;
+
+  margin-left: auto;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: var(--sidebar-purple);
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sidebar-item-active .sidebar-badge {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.sidebar-help-card {
+  margin-top: auto;
+
+  padding: 18px 16px 16px;
+
+  border: 1px solid var(--sidebar-border);
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: 0 8px 20px rgba(21, 30, 62, 0.05);
+}
+
+.help-illustration {
+  float: left;
+
+  margin: 2px 12px 8px 0;
+
+  font-size: 43px;
+}
+
+.sidebar-help-card strong {
+  display: block;
+
+  margin-top: 5px;
+
+  font-size: 12px;
+}
+
+.sidebar-help-card p {
+  min-height: 62px;
+
+  margin: 7px 0 13px;
+
+  color: var(--sidebar-muted);
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sidebar-help-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 40px;
+
+  border: 1px solid var(--sidebar-purple);
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: var(--sidebar-purple);
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  box-sizing: border-box;
+}

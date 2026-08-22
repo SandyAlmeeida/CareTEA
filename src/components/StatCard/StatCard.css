@@ -1,0 +1,181 @@
+.app-stat-card {
+  position: relative;
+
+  min-width: 0;
+  min-height: 128px;
+
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  overflow: hidden;
+
+  border: 1px solid #e7e9f2;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px
+    rgba(31, 38, 75, 0.05);
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.app-stat-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: -45px;
+  right: -35px;
+
+  width: 95px;
+  height: 95px;
+
+  border-radius: 50%;
+
+  opacity: 0.13;
+}
+
+.app-stat-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 13px 30px
+    rgba(31, 38, 75, 0.09);
+}
+
+.app-stat-card-icon {
+  position: relative;
+  z-index: 1;
+
+  width: 52px;
+  height: 52px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 15px;
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.app-stat-card-content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.app-stat-card-value {
+  color: #17213f;
+
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.app-stat-card-label {
+  margin-top: 5px;
+
+  color: #3e4765;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-stat-card-description {
+  margin-top: 4px;
+
+  color: #8a92a9;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.app-stat-card-purple .app-stat-card-icon {
+  background: #eee9ff;
+  color: #7049e8;
+}
+
+.app-stat-card-purple::after {
+  background: #7049e8;
+}
+
+.app-stat-card-blue .app-stat-card-icon {
+  background: #e6f2ff;
+  color: #3888e8;
+}
+
+.app-stat-card-blue::after {
+  background: #3888e8;
+}
+
+.app-stat-card-green .app-stat-card-icon {
+  background: #e4f8ee;
+  color: #22b676;
+}
+
+.app-stat-card-green::after {
+  background: #22b676;
+}
+
+.app-stat-card-yellow .app-stat-card-icon {
+  background: #fff3d4;
+  color: #d49a13;
+}
+
+.app-stat-card-yellow::after {
+  background: #e5aa22;
+}
+
+.app-stat-card-pink .app-stat-card-icon {
+  background: #ffe9f7;
+  color: #d65daa;
+}
+
+.app-stat-card-pink::after {
+  background: #d65daa;
+}
+
+.app-stat-card-red .app-stat-card-icon {
+  background: #ffeaec;
+  color: #e85d67;
+}
+
+.app-stat-card-red::after {
+  background: #e85d67;
+}
+
+@media (max-width: 700px) {
+  .app-stat-card {
+    min-height: 110px;
+
+    padding: 16px;
+  }
+
+  .app-stat-card-icon {
+    width: 45px;
+    height: 45px;
+
+    font-size: 21px;
+  }
+
+  .app-stat-card-value {
+    font-size: 24px;
+  }
+}
