@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 
@@ -14,6 +14,10 @@ function Login({
   onGoogleLogin,
   onRegister,
 }) {
+
+/*ADICIONEI NAVIGATE*/
+  const navigate = useNavigate();
+
   const passwordInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -85,6 +89,11 @@ function Login({
         text: "Login validado. Agora conecte o formulário ao backend.",
         type: "success",
       });
+
+/*ADICIONEI UMA ROTA PARA O DASHBOARD NO BOTÃO DE LOGIN PARA VISUALIZAÇÃO DAS PÁGINAS*/
+      navigate("/dashboard");
+
+
     } catch (error) {
       console.error(error);
       setMessage({

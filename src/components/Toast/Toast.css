@@ -1,0 +1,71 @@
+.app-toast {
+  --toast-green: #1f9d63;
+  --toast-orange: #d27b00;
+  --toast-text: #28314e;
+
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  width: min(380px, calc(100vw - 44px));
+  min-height: 60px;
+
+  padding: 13px 17px;
+
+  border: 1px solid #e4e7ef;
+  border-radius: 12px;
+
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(22, 30, 58, .15);
+
+  color: var(--toast-text);
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+
+  animation: app-toast-in .22s ease-out;
+}
+
+.app-toast-icon {
+  display: grid;
+
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: var(--toast-green);
+  background: #e9f8f2;
+}
+
+.app-toast-info .app-toast-icon,
+.app-toast-warning .app-toast-icon {
+  color: var(--toast-orange);
+  background: #fff2d9;
+}
+
+.app-toast-whatsapp .app-toast-icon {
+  color: var(--toast-green);
+  background: #e9f8f2;
+}
+
+@keyframes app-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
