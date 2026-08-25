@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
-
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
-import Topbar from "../../components/Topbar/Topbar.jsx";
-import StatCard from "../../components/StatCard/StatCard.jsx";
+import Topbar from "../../../components/Topbar/Topbar.jsx";
+import StatCard from "../../../components/StatCard/StatCard.jsx";
 
 import "./Dashboard.css";
 
@@ -102,7 +100,6 @@ function Dashboard({
 
   return (
     <div className="caretea-dashboard">
-      <Sidebar />
 
       <main className="dashboard-main">
         <Topbar

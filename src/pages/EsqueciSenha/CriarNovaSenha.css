@@ -1,5 +1,12 @@
 .form-group {
-    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.new-password-label {
+    margin: 0;
+    padding: 0;
 }
 
 .erro-reset {

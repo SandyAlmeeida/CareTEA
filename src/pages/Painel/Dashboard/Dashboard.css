@@ -25,131 +25,14 @@ button {
 }
 
 .caretea-dashboard {
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:244px minmax(0,1fr);
   background:var(--bg);
   color:var(--text)
-}
-
-.dashboard-sidebar {
-  position:sticky;
-  top:0;
-  display:flex;
-  height:100vh;
-  flex-direction:column;
-  padding:28px 20px 20px;
-  overflow-y:auto;
-  border-right:1px solid #eceef6;
-  background:rgba(255,255,255,.97)
-}
-
-.sidebar-logo {
-  display:block;
-  width:164px;
-  max-width:100%;
-  height:auto;
-  margin:0 8px 23px;
-  mix-blend-mode:multiply
-}
-
-.sidebar-nav {
-  display:flex;
-  flex-direction:column;
-  gap:4px
-}
-
-.sidebar-item {
-  position:relative;
-  display:flex;
-  width:100%;
-  min-height:43px;
-  align-items:center;
-  gap:13px;
-  padding:0 13px;
-  border-radius:10px;
-  background:transparent;
-  color:#222c4b;
-  text-align:left;
-  cursor:pointer;
-  transition:.18s
-}
-
-.sidebar-item:hover {
-  background:#f4f2ff;
-  color:var(--purple-dark)
-}
-
-.sidebar-item-active,.sidebar-item-active:hover {
-  background:linear-gradient(100deg,#7048eb,#7750ef);
-  color:#fff;
-  box-shadow:0 8px 16px rgba(104,70,232,.18)
-}
-
-.sidebar-icon {
-  display:grid;
-  width:25px;
-  height:25px;
-  place-items:center;
-  font-size:22px
-}
-
-.sidebar-badge {
-  display:grid;
-  width:22px;
-  height:22px;
-  margin-left:auto;
-  place-items:center;
-  border-radius:50%;
-  background:var(--purple);
-  color:#fff;
-  font-size:11px;
-  font-weight:700
-}
-
-.sidebar-item-active .sidebar-badge {
-  background:rgba(255,255,255,.24)
-}
-
-.sidebar-help-card {
-  margin-top:auto;
-  padding:18px 16px 16px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  background:#fff;
-  box-shadow:0 8px 20px rgba(21,30,62,.05)
 }
 
 .help-illustration {
   float:left;
   margin:2px 12px 8px 0;
   font-size:43px
-}
-
-.sidebar-help-card strong {
-  display:block;
-  margin-top:5px;
-  font-size:12px
-}
-
-.sidebar-help-card p {
-  min-height:62px;
-  margin:7px 0 13px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5
-}
-
-.sidebar-help-card button {
-  width:100%;
-  height:40px;
-  border:1px solid var(--purple);
-  border-radius:9px;
-  background:#fff;
-  color:var(--purple);
-  font-size:12px;
-  font-weight:600;
-  cursor:pointer
 }
 
 .dashboard-main {
@@ -1180,11 +1063,6 @@ button {
     grid-template-columns:215px minmax(0,1fr)
   }
 
-  .dashboard-sidebar {
-    padding-right:14px;
-    padding-left:14px
-  }
-
   .dashboard-main {
     padding-right:20px;
     padding-left:20px
@@ -1212,38 +1090,6 @@ button {
 @media(max-width:980px) {
   .caretea-dashboard {
     display:block
-  }
-
-  .dashboard-sidebar {
-    position:relative;
-    width:100%;
-    height:auto;
-    padding:16px;
-    overflow:visible;
-    border-right:0
-  }
-
-  .sidebar-logo {
-    width:150px;
-    margin-bottom:12px
-  }
-
-  .sidebar-nav {
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr))
-  }
-
-  .sidebar-item {
-    justify-content:center;
-    padding:0 8px
-  }
-
-  .sidebar-item span:nth-child(2) {
-    display:none
-  }
-
-  .sidebar-help-card {
-    display:none
   }
 
   .dashboard-layout {
@@ -1303,10 +1149,6 @@ button {
     margin:0 0 8px
   }
 
-  .sidebar-nav {
-    grid-template-columns:repeat(3,1fr)
-  }
-
 }
 
 /* =========================================================
@@ -1315,42 +1157,6 @@ button {
 
 .caretea-dashboard {
   font-size: 15px;
-}
-
-.sidebar-item {
-  min-height: 47px;
-  font-size: 14px;
-}
-
-.sidebar-icon {
-  width: 27px;
-  height: 27px;
-  font-size: 23px;
-}
-
-.sidebar-badge {
-  width: 23px;
-  height: 23px;
-  font-size: 12px;
-}
-
-.sidebar-help-card {
-  padding: 20px 18px 18px;
-}
-
-.sidebar-help-card strong {
-  font-size: 14px;
-}
-
-.sidebar-help-card p {
-  min-height: auto;
-  font-size: 12.5px;
-  line-height: 1.55;
-}
-
-.sidebar-help-card button {
-  height: 43px;
-  font-size: 13px;
 }
 
 .dashboard-topbar h1 {
@@ -1593,9 +1399,6 @@ button {
 }
 
 @media (max-width: 980px) {
-  .sidebar-item {
-    min-height: 46px;
-  }
 
   .dashboard-topbar h1 {
     font-size: 31px;

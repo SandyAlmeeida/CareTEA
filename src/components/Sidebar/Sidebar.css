@@ -139,25 +139,6 @@
   font-size: 43px;
 }
 
-.sidebar-help-card strong {
-  display: block;
-
-  margin-top: 5px;
-
-  font-size: 12px;
-}
-
-.sidebar-help-card p {
-  min-height: 62px;
-
-  margin: 7px 0 13px;
-
-  color: var(--sidebar-muted);
-
-  font-size: 11px;
-  line-height: 1.5;
-}
-
 .sidebar-help-button {
   display: flex;
   align-items: center;

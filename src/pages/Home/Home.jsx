@@ -54,7 +54,6 @@ const levels = [
 function Home() {
   return (
     <div className="caretea-home">
-      <Header />
 
       <main>
         <section className="ct-hero" id="inicio">
@@ -70,23 +69,11 @@ function Home() {
           <div className="ct-container ct-hero-grid">
             <div className="ct-hero-copy">
               <div className="ct-kicker">
-                <span />
-                CUIDADO • ACOLHIMENTO • AUTONOMIA
-              </div>
+                <span />CUIDADO • ACOLHIMENTO • AUTONOMIA</div>
 
-              <h1>
-                Cuidar da rotina
-                <br />
-                pode ser
-                <strong> mais leve.</strong>
-              </h1>
+              <h1>Cuidar da rotina pode ser<strong> mais leve.</strong></h1>
 
-              <p>
-                O CareTEA foi pensado para acolher pessoas autistas e
-                seus responsáveis, ajudando a organizar compromissos,
-                medicamentos, documentos e informações importantes com
-                mais calma, clareza e segurança.
-              </p>
+              <p>O CareTEA foi pensado para acolher pessoas autistas e seus responsáveis, ajudando a organizar compromissos, medicamentos, documentos e informações importantes com mais calma, clareza e segurança.</p>
 
               <div className="ct-hero-actions">
                 <Link to="/cadastro" className="ct-primary-button">
@@ -94,7 +81,7 @@ function Home() {
                   <span>↗</span>
                 </Link>
 
-                <a href="#funcionalidades" className="ct-ghost-button">
+                <a href="/#funcionalidades" className="ct-ghost-button">
                   Conhecer a plataforma
                 </a>
               </div>

@@ -1,0 +1,113 @@
+.presentation {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding-left: clamp(42px, 7vw, 92px);
+    padding-right: clamp(25px, 4vw, 62px);
+}
+
+.brand-logo {
+    display: block;
+    width: clamp(310px, 31vw, 450px);
+    max-width: 100%;
+    height: auto;
+    mix-blend-mode: multiply;
+}
+
+.presentation-text {
+    margin-top: clamp(22px, 2.3vw, 34px);
+}
+
+.presentation h1 {
+    margin: 0;
+    color: var(--navy);
+    font-size: clamp(29px, 2.3vw, 38px);
+    line-height: 1.22;
+    letter-spacing: -.9px;
+}
+
+.presentation h1 span {
+    color: var(--blue);
+}
+
+.description {
+    max-width: 490px;
+    margin: 23px 0 0;
+    color: #26375f;
+    font-size: clamp(14px, 1.05vw, 17px);
+    line-height: 1.55;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(78px, 1fr));
+    gap: clamp(10px, 1.5vw, 22px);
+    width: min(100%, 490px);
+    margin-top: 26px;
+}
+
+.feature {
+    min-width: 0;
+    text-align: center;
+}
+
+.feature-icon {
+    display: grid;
+    width: 53px;
+    height: 53px;
+    margin: 0 auto 9px;
+    place-items: center;
+    border-radius: 17px;
+}
+
+.feature-icon svg {
+    width: 29px;
+    height: 29px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.feature-blue {
+    color: #1674ea;
+    background: #ebf4ff;
+}
+
+.feature-green {
+    color: #08b876;
+    background: #e8f8f1;
+}
+
+.feature-yellow {
+    color: #ffb400;
+    background: #fff7df;
+}
+
+.feature-red {
+    color: #ff4f4e;
+    background: #fff0f0;
+}
+
+.feature p {
+    margin: 0;
+    color: var(--navy);
+    font-size: clamp(11px, .82vw, 13px);
+    line-height: 1.4;
+}
+
+.illustration-wrap {
+    position: relative;
+    width: min(100%, 635px);
+    margin-top: auto;
+    transform: translate(-35px, 10px);
+}
+
+.illustration-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    mix-blend-mode: multiply;
+}

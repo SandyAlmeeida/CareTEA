@@ -1,0 +1,10 @@
+.painel {
+    display: grid;
+    grid-template-columns: 244px minmax(0, 1fr);
+    min-height: 100vh;
+    background: #f6f7fc;
+}
+
+.dashboard-content {
+    min-width: 0;
+}

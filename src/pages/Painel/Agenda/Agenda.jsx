@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import logoCaretea from "../../assets/logo-caretea.png";
+import logoCaretea from "../../../assets/logo-caretea.png";
 import "./Agenda.css";
 
 /* Menu lateral (mesmo do restante do app, com "agenda" ativo). */
@@ -172,36 +172,6 @@ function Agenda({ userName = "Sandy", onNavigate, onLogout }) {
 
   return (
     <div className="agenda-page">
-      <aside className="agenda-sidebar">
-        <img className="agenda-logo" src={logoCaretea} alt="CareTEA" />
-
-        <nav className="agenda-menu" aria-label="Menu principal">
-          {menu.map(([id, icon, label]) => (
-            <button
-              key={id}
-              type="button"
-              className={id === "agenda" ? "active" : ""}
-              onClick={() => onNavigate?.(id)}
-            >
-              <span className="menu-icon">{icon}</span>
-              <span>{label}</span>
-              {id === "notificacoes" && <b>3</b>}
-            </button>
-          ))}
-        </nav>
-
-        <div className="agenda-help">
-          <div className="help-title">
-            <span>🧩</span>
-            <div>
-              <strong>Precisa de ajuda?</strong>
-              <p>A IA pode organizar seus compromissos e lembrar você.</p>
-            </div>
-          </div>
-          <button type="button">Conversar com IA</button>
-        </div>
-      </aside>
-
       <main className="agenda-main">
         <header className="agenda-topbar">
           <div>

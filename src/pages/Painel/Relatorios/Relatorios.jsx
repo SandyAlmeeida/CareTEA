@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logoCaretea from "../../assets/logo-caretea.png";
+import logoCaretea from "../../../assets/logo-caretea.png";
 import "./Relatorios.css";
 
 const menu = [
@@ -47,35 +47,6 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
 
   return (
     <div className="reports-page">
-      <aside className="reports-sidebar">
-        <img className="reports-logo" src={logoCaretea} alt="CareTEA" />
-
-        <nav className="reports-menu">
-          {menu.map(([id, icon, label]) => (
-            <button
-              key={id}
-              className={id === "relatorios" ? "active" : ""}
-              type="button"
-              onClick={() => onNavigate?.(id)}
-            >
-              <span className="menu-icon">{icon}</span>
-              <span>{label}</span>
-              {id === "notificacoes" && <b>3</b>}
-            </button>
-          ))}
-        </nav>
-
-        <div className="reports-help">
-          <div className="help-title">
-            <span>🧩</span>
-            <div>
-              <strong>Precisa de ajuda?</strong>
-              <p>Nossa IA pode ajudar a interpretar os dados.</p>
-            </div>
-          </div>
-          <button type="button">Conversar com IA</button>
-        </div>
-      </aside>
 
       <main className="reports-main">
         <header className="reports-topbar">
