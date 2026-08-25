@@ -1,0 +1,346 @@
+* {
+  box-sizing: border-box;
+}
+
+.docs-page {
+  /* Cores base alinhadas ao index.css do projeto. */
+  --dc-bg: #f6f7fc;
+  --dc-card: #ffffff;
+  --dc-text: #111936;
+  --dc-muted: #717996;
+  --dc-border: #e7eaf3;
+  --dc-purple: #6947e7;
+  --dc-purple-dark: #5235d0;
+
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 244px minmax(0, 1fr);
+  background: var(--dc-bg);
+  color: var(--dc-text);
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+.docs-page button {
+  border: 0;
+  cursor: pointer;
+}
+
+/* ------------------------ sidebar ------------------------ */
+
+.docs-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  padding: 28px 20px 20px;
+  overflow-y: auto;
+  border-right: 1px solid #eceef6;
+  background: rgba(255, 255, 255, 0.97);
+}
+
+.docs-logo {
+  display: block;
+  width: 164px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 8px 23px;
+  mix-blend-mode: multiply;
+}
+
+.docs-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.docs-menu button {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 47px;
+  align-items: center;
+  gap: 13px;
+  padding: 0 13px;
+  border-radius: 10px;
+  background: transparent;
+  color: #222c4b;
+  text-align: left;
+  font-size: 14px;
+}
+
+.docs-menu button:hover {
+  background: #f4f2ff;
+  color: var(--dc-purple-dark);
+}
+
+.docs-menu button.active {
+  background: linear-gradient(100deg, #7048eb, #7750ef);
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(104, 70, 232, 0.18);
+}
+
+.menu-icon {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  font-size: 23px;
+}
+
+.docs-menu button b {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  margin-left: auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--dc-purple);
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.docs-help {
+  margin-top: auto;
+  padding: 20px 18px 18px;
+  border: 1px solid var(--dc-border);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(21, 30, 62, 0.05);
+}
+
+.help-title {
+  display: flex;
+  gap: 11px;
+}
+.help-title > span {
+  font-size: 38px;
+}
+.docs-help strong {
+  font-size: 14px;
+}
+.docs-help p {
+  margin: 6px 0 13px;
+  color: var(--dc-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.docs-help button {
+  width: 100%;
+  height: 43px;
+  border: 1px solid var(--dc-purple);
+  border-radius: 9px;
+  background: #ffffff;
+  color: var(--dc-purple);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ------------------------ main / topbar ------------------------ */
+
+.docs-main {
+  min-width: 0;
+  padding: 30px 30px 58px;
+}
+
+.docs-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.docs-topbar h1 {
+  margin: 8px 0 5px;
+  font-size: clamp(31px, 2.4vw, 39px);
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.docs-topbar p {
+  margin: 0;
+  color: var(--dc-muted);
+  font-size: 15px;
+}
+
+.profile-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bell {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  color: #1e2848;
+  font-size: 26px;
+}
+.bell span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 50%;
+  background: #ef3e5d;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+}
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--dc-text);
+  text-align: left;
+}
+.profile > span:nth-child(2) {
+  display: flex;
+  min-width: 105px;
+  flex-direction: column;
+}
+.profile strong {
+  font-size: 14px;
+}
+.profile small {
+  color: var(--dc-muted);
+  font-size: 12px;
+}
+.logout {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 9px;
+  background: #eef0f8;
+  color: #2a3352;
+  font-size: 13px;
+  font-weight: 600;
+}
+.logout:hover {
+  background: #e2e5f2;
+}
+
+/* ------------------------ cabeçalho da seção ------------------------ */
+
+.docs-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 28px;
+}
+.docs-head-copy h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  letter-spacing: -0.4px;
+}
+.docs-head-copy p {
+  margin: 0;
+  color: var(--dc-muted);
+  font-size: 14px;
+}
+.add-btn {
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: linear-gradient(100deg, #7048eb, #7750ef);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 16px rgba(104, 70, 232, 0.22);
+}
+.add-btn:hover {
+  filter: brightness(1.05);
+}
+
+/* ------------------------ estado vazio ------------------------ */
+
+.docs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  padding: 60px 24px;
+  border: 1px dashed var(--dc-border);
+  border-radius: 18px;
+  background: var(--dc-card);
+  text-align: center;
+}
+.docs-empty .empty-icon {
+  font-size: 52px;
+}
+.docs-empty strong {
+  font-size: 18px;
+}
+.docs-empty p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--dc-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.empty-btn {
+  margin-top: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 11px;
+  border: 1px solid var(--dc-purple);
+  background: #ffffff;
+  color: var(--dc-purple);
+  font-size: 14px;
+  font-weight: 600;
+}
+.empty-btn:hover {
+  background: #f4f2ff;
+}
+
+/* ------------------------ responsivo ------------------------ */
+
+@media (max-width: 1080px) {
+  .docs-page {
+    grid-template-columns: 1fr;
+  }
+  .docs-sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .docs-logo {
+    margin: 0 12px 0 0;
+  }
+  .docs-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .docs-menu button {
+    width: auto;
+    min-height: 40px;
+  }
+  .docs-menu button span:last-child {
+    display: none;
+  }
+  .docs-menu button.active span:last-child {
+    display: inline;
+  }
+  .docs-help {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .docs-main {
+    padding: 20px 16px 40px;
+  }
+}

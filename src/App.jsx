@@ -8,6 +8,7 @@ import Agenda from "./pages/Agenda/Agenda.jsx";
 import Relatorios from "./pages/Relatorios/Relatorios.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
 import CriarNovaSenha from "./pages/EsqueciSenha/CriarNovaSenha.jsx";
+import Documentos from "./pages/Documentos/Documentos.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/agenda" element={<Agenda />} />
       <Route path="/relatorios" element={<Relatorios />} />
+      <Route path="/documentos" element={<Documentos />} />
 
       <Route path="/reset-password" element={<EsqueciSenha />} />
       <Route
