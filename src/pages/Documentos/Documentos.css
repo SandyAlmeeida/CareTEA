@@ -12,6 +12,18 @@
   --dc-purple: #6947e7;
   --dc-purple-dark: #5235d0;
 
+  /* Cores por categoria (strong = destaque, soft = fundo). */
+  --blue: #3485e8;
+  --blue-soft: #e8f1fd;
+  --green: #22a96f;
+  --green-soft: #e2f6ee;
+  --purple: #7255dc;
+  --purple-soft: #efeafc;
+  --red: #ef4444;
+  --red-soft: #fde6e6;
+  --orange: #f39b28;
+  --orange-soft: #fdf0dd;
+
   min-height: 100vh;
   display: grid;
   grid-template-columns: 244px minmax(0, 1fr);
@@ -302,6 +314,162 @@ select {
   background: #f4f2ff;
 }
 
+/* ------------------------ busca + filtro ------------------------ */
+
+.docs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 280px;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--dc-border);
+  border-radius: 12px;
+  background: var(--dc-card);
+}
+.search-box span {
+  font-size: 16px;
+  opacity: 0.7;
+}
+.search-box input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--dc-text);
+  font-size: 14px;
+}
+.search-box:focus-within {
+  border-color: var(--dc-purple);
+  box-shadow: 0 0 0 3px rgba(105, 71, 231, 0.12);
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--dc-border);
+  background: var(--dc-card);
+  color: #3a4566;
+  font-size: 13px;
+  font-weight: 500;
+}
+.filter-chip .chip-icon {
+  font-size: 14px;
+}
+.filter-chip:hover {
+  border-color: #cfd5ea;
+}
+.filter-chip.active {
+  border-color: transparent;
+  background: var(--dc-purple);
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(104, 70, 232, 0.2);
+}
+
+/* ------------------------ grid de cards ------------------------ */
+
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--dc-border);
+  border-radius: 16px;
+  background: var(--dc-card);
+  box-shadow: 0 8px 20px rgba(21, 30, 62, 0.05);
+  border-top: 3px solid var(--dc-border);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.doc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(21, 30, 62, 0.1);
+}
+.card-blue { border-top-color: var(--blue); }
+.card-green { border-top-color: var(--green); }
+.card-purple { border-top-color: var(--purple); }
+.card-red { border-top-color: var(--red); }
+.card-orange { border-top-color: var(--orange); }
+
+.doc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 22px;
+}
+.icon-blue { background: var(--blue-soft); }
+.icon-green { background: var(--green-soft); }
+.icon-purple { background: var(--purple-soft); }
+.icon-red { background: var(--red-soft); }
+.icon-orange { background: var(--orange-soft); }
+
+.cat-tag {
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.tag-blue { background: var(--blue-soft); color: #1f66c2; }
+.tag-green { background: var(--green-soft); color: #167a51; }
+.tag-purple { background: var(--purple-soft); color: #573fbb; }
+.tag-red { background: var(--red-soft); color: #c53030; }
+.tag-orange { background: var(--orange-soft); color: #c47714; }
+
+.doc-name {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+}
+.doc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+.doc-meta div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-meta dt {
+  margin: 0;
+  font-size: 13px;
+}
+.doc-meta dd {
+  margin: 0;
+  color: var(--dc-muted);
+  font-size: 13px;
+}
+
 /* ------------------------ responsivo ------------------------ */
 
 @media (max-width: 1080px) {
@@ -342,5 +510,12 @@ select {
 @media (max-width: 860px) {
   .docs-main {
     padding: 20px 16px 40px;
+  }
+  .docs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .search-box {
+    flex-basis: 100%;
   }
 }
