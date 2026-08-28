@@ -9,6 +9,8 @@ import Relatorios from "./pages/Relatorios/Relatorios.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
 import CriarNovaSenha from "./pages/EsqueciSenha/CriarNovaSenha.jsx";
 import Documentos from "./pages/Documentos/Documentos.jsx";
+import Consultas from "./pages/Consultas/Consultas.jsx";
+import Medicamentos from "./pages/Medicamentos/Medicamentos.jsx";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         path="/create-new-password"
         element={<CriarNovaSenha />}
       />
+      <Route path="/consultas" element={<Consultas />} />
+      <Route path="/medicamentos" element={<Medicamentos />} />
     </Routes>
   );
 }
