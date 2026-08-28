@@ -1,0 +1,130 @@
+.AI-main {
+    position: relative;
+    background-color: white;
+    border-radius: .5rem;
+    min-height: 80vh;
+    height: auto;
+    margin: 1rem;
+    padding: 1rem;
+    padding-bottom: 6rem;
+    overflow: hidden;
+}
+
+.AI-main-title {
+    margin: .5rem 0;
+}
+
+.AI-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    background-color: var(--gray);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: .5rem;
+
+    height: 65vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.AI-sugestoes {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 1rem;
+    padding: 4px;
+}
+
+.AI-sugestao {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    box-shadow:
+        2px 2px 4px var(--purple-light),
+        -2px -2px 4px var(--purple-light),
+        inset 1px 1px 2px var(--purple-light),
+        inset -1px -1px 2px var(--purple-light);
+}
+
+.AI-sugestao:hover {
+    scale: 1.01;
+    transition: 0.2s ease;
+    box-shadow:
+        2px 2px 4px var(--purple),
+        -2px -2px 4px var(--purple),
+        inset 1px 1px 2px var(--purple),
+        inset -1px -1px 2px var(--purple);
+}
+
+.AI-form {
+    width: 100%;
+    height: 10%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.AI-label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.AI-label input, .AI-label button {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.AI-label input {
+    width: 90%;
+    border: 3px solid var(--gray);
+    padding: 1rem;
+}
+
+.AI-label button {
+    width: 10%;
+    color: white;
+    background-color: var(--blue);
+    justify-self: flex;
+}
+
+.AI-label button:hover {
+    cursor: pointer;
+    background-color: var(--purple);
+    transition: 0.2s ease;
+}
+
+.AI-message {
+    padding: 1rem;
+    border-radius: 1rem;
+    min-width: 120px;
+    text-align: center;
+}
+
+.AI-ai-message {
+    color: white;
+    background-color: var(--blue);
+    align-self: flex-start;
+}
+
+.AI-user-message {
+    color: white;
+    background-color: var(--green);
+    align-self: flex-end;
+}

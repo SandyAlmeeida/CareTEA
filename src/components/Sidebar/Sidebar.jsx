@@ -15,6 +15,7 @@ const menuItems = [
   { id: "documentos", path: "documentos", icon: "▤", label: "Documentos" },
   { id: "relatorios", path: "relatorios", icon: "▥", label: "Relatórios" },
   { id: "configuracoes", path: "configuracoes", icon: "⚙", label: "Configurações" },
+  { id: "logout", path: "/", icon: "<-", label: "Logout" },
 ];
 
 function Sidebar() {

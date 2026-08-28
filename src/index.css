@@ -11,6 +11,8 @@
   --yellow: #ffbc20;
   --red: #ff4f4e;
   --purple: #7255dc;
+  --purple-light: #b3a4e9;
+  --gray: #F6F7FC;
   font-family: "Poppins", Arial, sans-serif;
   color: var(--navy);
   background: #ffffff;

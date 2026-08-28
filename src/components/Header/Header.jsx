@@ -30,9 +30,9 @@ function Header() {
               Cadastrar-se
             </Link>
 
-            <Link to="/painel" className="landing-header-button landing-register-button">
+            {/* <Link to="/painel" className="landing-header-button landing-register-button">
               Painel
-            </Link>
+            </Link> */}
           </div>
 
         </div>

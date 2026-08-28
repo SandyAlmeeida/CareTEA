@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import Home from "./pages/Home/Home.jsx";
 import Login from "./pages/Login/Login.jsx";
@@ -19,9 +19,16 @@ import Documentos from "./pages/Painel/Documentos/Documentos.jsx";
 import Configuracoes from "./pages/Painel/Configuracoes/Configuracoes.jsx";
 
 function App() {
+
+  const location = useLocation();
+
+  const rotasComHeader = ["/", "/login", "/cadastro", "/reset-password", "/create-new-password"];
+
+  const mostrarHeader = rotasComHeader.includes(location.pathname);
+
   return (
     <>
-    <Header/>
+    {mostrarHeader && <Header />}
     <Routes>
       <Route path="/" element={<Home />} />
 
