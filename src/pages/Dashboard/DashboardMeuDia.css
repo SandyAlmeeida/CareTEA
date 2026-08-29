@@ -1,0 +1,867 @@
+:root {
+  --care-blue: #2e70db;
+  --care-purple: #765bd9;
+  --care-yellow: #ffbf2d;
+  --care-green: #7cc66d;
+  --care-red: #fa5d61;
+  --care-text: #283657;
+  --care-muted: #7784a0;
+  --care-border: #e9edf5;
+  --care-background: #f8f9fd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.autista-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  background:
+    radial-gradient(
+      circle at 6% 5%,
+      rgba(46, 112, 219, 0.08),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 95% 17%,
+      rgba(118, 91, 217, 0.07),
+      transparent 25%
+    ),
+    var(--care-background);
+
+  color: var(--care-text);
+}
+
+.autista-main {
+  width: min(calc(100% - 32px), 760px);
+  flex: 1;
+  margin: 0 auto;
+  padding: 26px 0 55px;
+}
+
+.autista-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 20px;
+}
+
+.brand-colors {
+  display: flex;
+  align-items: center;
+}
+
+.brand-color {
+  width: 14px;
+  height: 14px;
+  margin-left: -3px;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.brand-color:first-child {
+  margin-left: 0;
+}
+
+.brand-blue {
+  background: var(--care-blue);
+}
+
+.brand-purple {
+  background: var(--care-purple);
+}
+
+.brand-yellow {
+  background: var(--care-yellow);
+}
+
+.brand-green {
+  background: var(--care-green);
+}
+
+.brand-red {
+  background: var(--care-red);
+}
+
+.brand-name {
+  color: var(--care-blue);
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.brand-name span {
+  color: var(--care-purple);
+}
+
+.welcome-card {
+  position: relative;
+  min-height: 175px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  overflow: hidden;
+  padding: 30px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(118, 91, 217, 0.1);
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      125deg,
+      #f1f6ff 0%,
+      #f7f3ff 55%,
+      #fff9e9 100%
+    );
+
+  box-shadow: 0 14px 40px rgba(62, 80, 130, 0.08);
+}
+
+.welcome-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--care-blue),
+      var(--care-purple),
+      var(--care-yellow),
+      var(--care-green),
+      var(--care-red)
+    );
+}
+
+.welcome-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.welcome-circle-one {
+  width: 130px;
+  height: 130px;
+  top: -55px;
+  right: -45px;
+  background: rgba(118, 91, 217, 0.08);
+}
+
+.welcome-circle-two {
+  width: 80px;
+  height: 80px;
+  right: 75px;
+  bottom: -45px;
+  background: rgba(46, 112, 219, 0.06);
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+}
+
+.welcome-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--care-purple);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.welcome-content h1 {
+  margin: 0;
+  color: var(--care-text);
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+}
+
+.wave {
+  font-size: 27px;
+}
+
+.welcome-content p {
+  max-width: 420px;
+  margin: 9px 0 0;
+  color: var(--care-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.welcome-profile {
+  position: relative;
+  z-index: 2;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--care-blue),
+      var(--care-purple)
+    );
+
+  color: white;
+  font-size: 19px;
+  font-weight: 800;
+  box-shadow: 0 10px 22px rgba(88, 88, 190, 0.2);
+}
+
+.care-section {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  margin-bottom: 17px;
+  border: 1px solid var(--care-border);
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 8px 28px rgba(50, 67, 108, 0.055);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: var(--care-text);
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+.section-heading p {
+  margin: 5px 0 0;
+  color: var(--care-muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #8792aa;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  font-size: 22px;
+}
+
+.section-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+}
+
+.mood-icon {
+  color: #967000;
+  background: #fff7d7;
+}
+
+.mood-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  margin-top: 22px;
+}
+
+.mood-option {
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 8px;
+  border: 2px solid #eef0f5;
+  border-radius: 19px;
+  background: #fbfcfe;
+  color: #46526c;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.mood-option:hover {
+  transform: translateY(-2px);
+  border-color: #dce1eb;
+}
+
+.mood-face {
+  font-size: 38px;
+}
+
+.mood-option strong {
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.mood-option.selected {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(48, 65, 105, 0.09);
+}
+
+.mood-good {
+  border-color: var(--care-green) !important;
+  background: #f4fbf2;
+}
+
+.mood-medium {
+  border-color: var(--care-yellow) !important;
+  background: #fffbeb;
+}
+
+.mood-bad {
+  border-color: var(--care-red) !important;
+  background: #fff4f4;
+}
+
+.mood-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 16px;
+  color: #65738e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mood-confirmation span {
+  color: var(--care-green);
+}
+
+.medication-accent {
+  background: var(--care-green);
+}
+
+.medication-icon {
+  background: #edf9eb;
+}
+
+.medication-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.medication-item {
+  padding: 18px;
+  border: 1px solid #e9edf5;
+  border-radius: 19px;
+  background: #fafbfd;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.medication-item-taken {
+  border-color: #cce7c8;
+  background: #f5fbf3;
+}
+
+.medication-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.medication-main-info {
+  min-width: 0;
+}
+
+.medication-period {
+  display: block;
+  margin-bottom: 5px;
+  color: #63a859;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.medication-item h3 {
+  margin: 0 0 4px;
+  color: var(--care-text);
+  font-size: 18px;
+}
+
+.medication-dose {
+  color: #7b879f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.medication-time {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 13px;
+  border-radius: 14px;
+  background: #edf8eb;
+  color: #507b4a;
+}
+
+.clock-icon {
+  font-size: 18px;
+}
+
+.medication-time strong {
+  font-size: 16px;
+}
+
+.taken-button {
+  width: 100%;
+  min-height: 53px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: none;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #75c96b,
+      #62b875
+    );
+
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(89, 167, 100, 0.16);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.taken-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(89, 167, 100, 0.22);
+}
+
+.check-circle {
+  width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.taken-confirmation {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 16px;
+  background: #eaf7e7;
+  color: #4e7c53;
+}
+
+.taken-check {
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--care-green);
+  color: white;
+  font-weight: 900;
+}
+
+.taken-confirmation div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.taken-confirmation strong {
+  font-size: 14px;
+}
+
+.taken-confirmation div span {
+  color: #6f9073;
+  font-size: 12px;
+}
+
+.appointment-accent {
+  background: var(--care-blue);
+}
+
+.appointment-icon {
+  background: #edf4ff;
+}
+
+.appointment-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 21px;
+}
+
+.appointment-date {
+  width: 65px;
+  height: 65px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #eef4ff;
+  color: var(--care-blue);
+}
+
+.appointment-date strong {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.appointment-date span {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.appointment-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.appointment-text strong {
+  color: #3c4966;
+  font-size: 15px;
+}
+
+.appointment-text span {
+  color: var(--care-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.quick-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.quick-action {
+  width: 100%;
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 16px 18px;
+  border-radius: 21px;
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.quick-action:hover {
+  transform: translateY(-2px);
+}
+
+.care-ai {
+  border: 1px solid #e2dcff;
+
+  background:
+    linear-gradient(
+      110deg,
+      #f5f2ff,
+      #faf8ff
+    );
+
+  color: #514491;
+}
+
+.care-ai:hover {
+  box-shadow: 0 10px 24px rgba(118, 91, 217, 0.1);
+}
+
+.care-help {
+  border: 1px solid #ffdddd;
+
+  background:
+    linear-gradient(
+      110deg,
+      #fff4f4,
+      #fffafa
+    );
+
+  color: #9a5357;
+}
+
+.care-help:hover {
+  box-shadow: 0 10px 24px rgba(250, 93, 97, 0.09);
+}
+
+.quick-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 25px;
+}
+
+.care-icon {
+  color: var(--care-purple);
+}
+
+.help-icon {
+  color: var(--care-red);
+  font-size: 30px;
+}
+
+.quick-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quick-text strong {
+  font-size: 15px;
+}
+
+.quick-text span {
+  opacity: 0.72;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.quick-arrow {
+  opacity: 0.55;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.autista-footer {
+  width: 100%;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+@media (max-width: 600px) {
+  .autista-main {
+    width: calc(100% - 24px);
+    padding-top: 20px;
+    padding-bottom: 42px;
+  }
+
+  .autista-brand {
+    margin-left: 4px;
+  }
+
+  .welcome-card {
+    min-height: 155px;
+    padding: 23px 20px;
+    border-radius: 23px;
+  }
+
+  .welcome-content h1 {
+    font-size: 25px;
+  }
+
+  .welcome-content p {
+    font-size: 13px;
+  }
+
+  .welcome-profile {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+  }
+
+  .care-section {
+    padding: 20px 17px;
+    border-radius: 21px;
+  }
+
+  .section-heading h2 {
+    font-size: 17px;
+  }
+
+  .section-heading p {
+    font-size: 12px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .mood-options {
+    gap: 7px;
+  }
+
+  .mood-option {
+    min-height: 102px;
+    padding: 11px 4px;
+    border-radius: 16px;
+  }
+
+  .mood-face {
+    font-size: 33px;
+  }
+
+  .mood-option strong {
+    font-size: 11px;
+  }
+
+  .medication-item {
+    padding: 15px;
+  }
+
+  .medication-time {
+    padding: 9px 11px;
+  }
+
+  .quick-action {
+    min-height: 78px;
+    padding: 14px 15px;
+    border-radius: 19px;
+  }
+
+  .quick-icon {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 400px) {
+  .welcome-profile {
+    display: none;
+  }
+
+  .mood-face {
+    font-size: 30px;
+  }
+
+  .mood-option strong {
+    font-size: 10px;
+  }
+
+  .medication-item-top {
+    align-items: flex-start;
+  }
+
+  .medication-time {
+    padding: 8px 9px;
+  }
+
+  .medication-time strong {
+    font-size: 14px;
+  }
+}
+
+.autista-footer {
+  width: 100%;
+  margin-top: auto;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.autista-footer {
+  width: 100%;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 0;
+}
+
+.autista-puzzle-strip {
+  position: static;
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  width: 100%;
+  height: 28px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.autista-puzzle-strip span {
+  position: relative;
+}
+
+.autista-puzzle-strip span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: inherit;
+}
+
+.autista-puzzle-color-0 {
+  background: #2e70db;
+}
+
+.autista-puzzle-color-1 {
+  background: #765bd9;
+}
+
+.autista-puzzle-color-2 {
+  background: #ffbf2d;
+}
+
+.autista-puzzle-color-3 {
+  background: #7cc66d;
+}
+
+.autista-puzzle-color-4 {
+  background: #fa5d61;
+}

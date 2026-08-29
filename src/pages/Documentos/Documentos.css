@@ -712,48 +712,17 @@ select {
 }
 
 .docs-puzzle-strip {
-  display: grid;
   width: 100%;
   height: 25px;
-  grid-template-columns: repeat(18, 1fr);
   overflow: hidden;
 }
 
-.docs-puzzle-strip span {
-  position: relative;
-}
-
-.docs-puzzle-strip span::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -7px;
-  z-index: 2;
-  width: 14px;
-  height: 14px;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: inherit;
-}
-
-.docs-puzzle-strip .blue {
-  background: #2e70db;
-}
-
-.docs-puzzle-strip .purple {
-  background: #765bd9;
-}
-
-.docs-puzzle-strip .yellow {
-  background: #ffbf2d;
-}
-
-.docs-puzzle-strip .green {
-  background: #7cc66d;
-}
-
-.docs-puzzle-strip .red {
-  background: #fa5d61;
+.docs-puzzle-strip .puzzle-strip {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 25px !important;
+  margin: 0;
 }
 
 .docs-page-footer {

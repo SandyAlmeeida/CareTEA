@@ -1,31 +1,6 @@
-import { useState } from "react"; 
-import { useNavigate } from "react-router-dom";
-import logoCaretea from "../../assets/logo-caretea.png"; 
+import { useState } from "react";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx"; 
 import "./Documentos.css"; 
-
-/* Menu lateral (mesmo do restante do app, com "documentos" ativo). */ 
-const menu = [ 
-  ["dashboard", "⌂", "Dashboard"], 
-  ["agenda", "▣", "Agenda"], 
-  ["medicamentos", "◊", "Medicamentos"], 
-  ["consultas", "♧", "Consultas"], 
-  ["exames", "△", "Exames"], 
-  ["terapias", "♡", "Terapias"], 
-  ["assistente", "◉", "IA Assistente"], 
-  ["notificacoes", "♢", "Notificações"], 
-  ["documentos", "▤", "Documentos"], 
-  ["relatorios", "▥", "Relatórios"], 
-  ["perfil", "♙", "Perfil"], 
-  ["responsaveis", "♧", "Responsáveis"], 
-  ["configuracoes", "⚙", "Configurações"], 
-]; 
-
-const rotasDoMenu = {
-  dashboard: "/dashboard",
-  agenda: "/agenda",
-  documentos: "/documentos",
-  relatorios: "/relatorios",
-};
 
 /* Apenas acrescentado para reproduzir a faixa colorida já usada no CareTEA. */
 const puzzleColors = [
@@ -50,7 +25,6 @@ const puzzleColors = [
 ];
 
 function Documentos({ userName = "Sandy", onNavigate, onLogout }) { 
-  const navigate = useNavigate();
   const [abrirNovo, setAbrirNovo] = useState(false); 
   const [documentos, setDocumentos] = useState([]); 
   const [descricao, setDescricao] = useState(""); 
@@ -92,45 +66,10 @@ function Documentos({ userName = "Sandy", onNavigate, onLogout }) {
   } 
 
   return ( 
-    <div className="docs-page"> 
-      <aside className="docs-sidebar"> 
-        <img className="docs-logo" src={logoCaretea} alt="CareTEA" /> 
+    <div className="docs-page">
+      <Sidebar />
 
-        <nav className="docs-menu" aria-label="Menu principal"> 
-          {menu.map(([id, icon, label]) => ( 
-            <button 
-              key={id} 
-              type="button" 
-              className={id === "documentos" ? "active" : ""} 
-              onClick={() => {
-                const rota = rotasDoMenu[id];
-                if (rota) {
-                  navigate(rota);
-                  return;
-                }
-                onNavigate?.(id);
-              }}
-            > 
-              <span className="menu-icon">{icon}</span> 
-              <span>{label}</span> 
-              {id === "notificacoes" && <b>3</b>} 
-            </button> 
-          ))} 
-        </nav> 
-
-        <div className="docs-help"> 
-          <div className="help-title"> 
-            <span>🧩</span> 
-            <div> 
-              <strong>Precisa de ajuda?</strong> 
-              <p>A IA pode explicar receitas e laudos em linguagem simples.</p> 
-            </div> 
-          </div> 
-          <button type="button">Conversar com IA</button> 
-        </div> 
-      </aside> 
-
-      <main className="docs-main"> 
+<main className="docs-main"> 
         <header className="docs-topbar"> 
           <div> 
             <h1>Documentos</h1> 
