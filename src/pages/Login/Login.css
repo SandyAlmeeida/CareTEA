@@ -129,7 +129,7 @@
   box-shadow: 0 0 0 4px rgba(47, 73, 223, .1);
 }
 
-.input-box > svg {
+.input-box > svg, .input-box > img {
   position: absolute;
   top: 50%;
   left: 16px;
@@ -174,7 +174,7 @@
   cursor: pointer;
 }
 
-.password-toggle svg {
+.password-toggle svg, .password-toggle img {
   width: 22px;
   height: 22px;
   fill: none;
@@ -230,7 +230,7 @@
   color: #fff;
 }
 
-.checkbox svg {
+.checkbox svg, .checkbox img {
   width: 15px;
   height: 15px;
   fill: none;
@@ -288,7 +288,7 @@
   transform: translateY(1px);
 }
 
-.login-button svg {
+.login-button svg, .login-button img {
   width: 20px;
   height: 20px;
   fill: none;
@@ -337,7 +337,7 @@
   background: #fafbff;
 }
 
-.google-button svg {
+.google-button svg, .google-button img {
   width: 25px;
   height: 25px;
 }

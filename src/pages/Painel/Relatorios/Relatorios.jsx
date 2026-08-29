@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logoCaretea from "../../../assets/logo-caretea.png";
 import "./Relatorios.css";
 
 const menu = [

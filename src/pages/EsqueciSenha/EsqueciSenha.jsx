@@ -1,9 +1,6 @@
-import { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import logoCaretea from "../../assets/logo-caretea.png";
-import familiaCaretea from "../../assets/familia-caretea.png";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 import "./EsqueciSenha.css";
 
 function EsqueciSenha() {

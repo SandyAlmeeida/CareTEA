@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import logoCaretea from "../../../assets/logo-caretea.png";
 import "./Agenda.css";
 
 /* Menu lateral (mesmo do restante do app, com "agenda" ativo). */

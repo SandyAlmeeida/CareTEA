@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logoCaretea from "../../assets/logo-caretea.png";
+import logoCaretea from "../../assets/imagens/logo_careTEA.svg?react";
 import PuzzleStrip from "../PuzzleStrip/PuzzleStrip.jsx";
 import "./Header.css";
 

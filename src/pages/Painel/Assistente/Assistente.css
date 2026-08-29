@@ -100,11 +100,15 @@
 .AI-label button {
     width: 10%;
     color: white;
-    background-color: var(--blue);
+    background-color: var(--muted);
     justify-self: flex;
 }
 
-.AI-label button:hover {
+.AI-form:valid button {
+    background-color: var(--blue);
+}
+
+.AI-form:valid button:hover{
     cursor: pointer;
     background-color: var(--purple);
     transition: 0.2s ease;

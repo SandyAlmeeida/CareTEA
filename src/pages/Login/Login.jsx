@@ -1,11 +1,15 @@
 import { useRef, useState } from "react";
-import logoCaretea from "../../assets/logo-caretea.png";
-import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 import FormsPresentation from "../../components/FormsPresentation/FormsPresentation";
+import CoracaoCareTEA from "../../assets/imagens/coracao_careTEA.svg?react";
+import Mail from "../../assets/icons/envelope-simple.svg?react";
+import Lock from "../../assets/icons/lock.svg?react";
+import EyeOpen from "../../assets/icons/eye.svg?react";
+import EyeClosed from "../../assets/icons/eye-slash.svg?react";
+import LockSimple from "../../assets/icons/lock-simple.svg?react";
+import Google from "../../assets/icons/google-logo.svg?react";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -135,24 +139,7 @@ function Login({
 
           <section className="login-side">
             <aside className="inclusion-note">
-              <svg viewBox="0 0 64 64" aria-hidden="true">
-                <path
-                  fill="#1b78d1"
-                  d="M5 7h19v12a7 7 0 1 1 10 6v14H20a7 7 0 1 0-6 10H5V35h10a7 7 0 1 0 0-14H5Z"
-                />
-                <path
-                  fill="#39b86b"
-                  d="M32 7h14v10a7 7 0 1 0 10 6V7h3v24H48a7 7 0 1 0-6 10v16H32V44a7 7 0 1 0-10-6H5V32h18a7 7 0 0 0 9-9Z"
-                />
-                <path
-                  fill="#ffbc2e"
-                  d="M5 32h14a7 7 0 1 1 6 10v15H5V46h9a7 7 0 1 0-9-7Z"
-                />
-                <path
-                  fill="#ff584e"
-                  d="M32 32h11a7 7 0 1 1 7 10v15H32V47a7 7 0 1 0-7-7V32Z"
-                />
-              </svg>
+              <img src={CoracaoCareTEA} />
               <div>
                 <strong>Inclusão. Respeito. Compreensão.</strong>
                 <span>Juntos, fazemos a diferença. 💙</span>
@@ -171,10 +158,7 @@ function Login({
                 <div className="form-group">
                   <label htmlFor="email">E-mail</label>
                   <div className="input-box">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="3" y="5" width="18" height="14" rx="2" />
-                      <path d="m3 7 9 6 9-6" />
-                    </svg>
+                    <img src={Mail} />
                     <input
                       id="email"
                       name="email"
@@ -190,11 +174,7 @@ function Login({
                 <div className="form-group">
                   <label htmlFor="password">Senha</label>
                   <div className="input-box">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="5" y="10" width="14" height="10" rx="2" />
-                      <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2" />
-                    </svg>
-
+                    <img src={Lock} />
                     <input
                       ref={passwordInputRef}
                       id="password"
@@ -212,21 +192,8 @@ function Login({
                       aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                       onClick={togglePasswordVisibility}
                     >
-                      <svg
-                        className="eye-open"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-                        <circle cx="12" cy="12" r="2.7" />
-                      </svg>
-                      <svg
-                        className="eye-closed"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path d="m3 3 18 18M10.6 6.2A9 9 0 0 1 12 6c6 0 9.5 6 9.5 6a15 15 0 0 1-2.2 2.8M6.2 6.2C3.8 8 2.5 12 2.5 12s3.5 6 9.5 6a10 10 0 0 0 3.2-.5" />
-                      </svg>
+                      <img className="eye-open" src={EyeOpen} />
+                      <img className="eye-closed" src={EyeClosed} />
                     </button>
                   </div>
                 </div>
@@ -257,10 +224,7 @@ function Login({
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="6" y="10" width="12" height="10" rx="2" />
-                    <path d="M9 10V7a3 3 0 0 1 6 0v3" />
-                  </svg>
+                  <img src={LockSimple} />
                   {isSubmitting ? "Entrando..." : "Entrar"}
                 </button>
 
@@ -280,24 +244,7 @@ function Login({
                     )
                   }
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      fill="#4285F4"
-                      d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.4Z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2.1 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2H3v2.6A10 10 0 0 0 12 22Z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M6.4 13.9A6 6 0 0 1 6.1 12c0-.7.1-1.3.3-1.9V7.5H3A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.5l3.4-2.6Z"
-                    />
-                    <path
-                      fill="#EA4335"
-                      d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A9.6 9.6 0 0 0 12 2a10 10 0 0 0-9 5.5l3.4 2.6C7.2 7.7 9.4 6 12 6Z"
-                    />
-                  </svg>
+                  <img src={Google} />
                   Entrar com Google
                 </button>
 

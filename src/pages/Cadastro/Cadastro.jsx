@@ -1,6 +1,4 @@
 import { useState } from "react";
-import logoCaretea from "../../assets/logo-caretea.png";
-import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Cadastro.css";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
