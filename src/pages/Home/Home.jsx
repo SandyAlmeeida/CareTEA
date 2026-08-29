@@ -176,7 +176,7 @@ function Home() {
 
                 <div className="ct-window-welcome">
                   <div>
-                    <span>Olá, Sandy 👋</span>
+                    <span>Olá, Evellyn 👋</span>
                     <h3>Seu dia, com mais leveza.</h3>
                   </div>
 

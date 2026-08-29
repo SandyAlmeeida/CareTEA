@@ -1126,29 +1126,16 @@ button {
   right:20px;
   bottom:10px;
   left:20px;
-  display:grid;
-  grid-template-columns:repeat(18,1fr);
-  height:28px;
   overflow:hidden;
   border-radius:8px;
   opacity:.9
 }
 
-.dashboard-puzzle-strip span {
-  position:relative
-}
-
-.dashboard-puzzle-strip span:after {
-  content:"";
-  position:absolute;
-  top:50%;
-  right:-8px;
-  z-index:2;
-  width:16px;
-  height:16px;
-  transform:translateY(-50%);
-  border-radius:50%;
-  background:inherit
+.dashboard-puzzle-strip .puzzle-strip {
+  position:relative !important;
+  inset:auto !important;
+  width:100% !important;
+  height:28px !important;
 }
 
 .puzzle-color-0 {

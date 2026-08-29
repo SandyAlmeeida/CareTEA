@@ -1,23 +1,7 @@
 import { useMemo, useState } from "react";
-import logoCaretea from "../../assets/logo-caretea.png";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip.jsx";
 import "./Agenda.css";
-
-/* Menu lateral (mesmo do restante do app, com "agenda" ativo). */
-const menu = [
-  ["dashboard", "⌂", "Dashboard"],
-  ["agenda", "▣", "Agenda"],
-  ["medicamentos", "◊", "Medicamentos"],
-  ["consultas", "♧", "Consultas"],
-  ["exames", "△", "Exames"],
-  ["terapias", "♡", "Terapias"],
-  ["assistente", "◉", "IA Assistente"],
-  ["notificacoes", "♢", "Notificações"],
-  ["documentos", "▤", "Documentos"],
-  ["relatorios", "▥", "Relatórios"],
-  ["perfil", "♙", "Perfil"],
-  ["responsaveis", "♧", "Responsáveis"],
-  ["configuracoes", "⚙", "Configurações"],
-];
 
 /* Tipos de evento pedidos para a agenda. Cada um tem rótulo, ícone e cor. */
 const TIPOS = {
@@ -121,7 +105,7 @@ const EVENTOS = [
 
 /* ------------------------ componente ------------------------ */
 
-function Agenda({ userName = "Sandy", onNavigate, onLogout }) {
+function Agenda({ userName = "Evellyn", onNavigate, onLogout }) {
   const [view, setView] = useState("mes"); // "dia" | "semana" | "mes"
   const [ref, setRef] = useState(HOJE); // data de referência da navegação
   const [tiposAtivos, setTiposAtivos] = useState(() => new Set(Object.keys(TIPOS)));
@@ -172,37 +156,9 @@ function Agenda({ userName = "Sandy", onNavigate, onLogout }) {
 
   return (
     <div className="agenda-page">
-      <aside className="agenda-sidebar">
-        <img className="agenda-logo" src={logoCaretea} alt="CareTEA" />
+      <Sidebar />
 
-        <nav className="agenda-menu" aria-label="Menu principal">
-          {menu.map(([id, icon, label]) => (
-            <button
-              key={id}
-              type="button"
-              className={id === "agenda" ? "active" : ""}
-              onClick={() => onNavigate?.(id)}
-            >
-              <span className="menu-icon">{icon}</span>
-              <span>{label}</span>
-              {id === "notificacoes" && <b>3</b>}
-            </button>
-          ))}
-        </nav>
-
-        <div className="agenda-help">
-          <div className="help-title">
-            <span>🧩</span>
-            <div>
-              <strong>Precisa de ajuda?</strong>
-              <p>A IA pode organizar seus compromissos e lembrar você.</p>
-            </div>
-          </div>
-          <button type="button">Conversar com IA</button>
-        </div>
-      </aside>
-
-      <main className="agenda-main">
+<main className="agenda-main">
         <header className="agenda-topbar">
           <div>
             <h1>Agenda</h1>
@@ -293,6 +249,10 @@ function Agenda({ userName = "Sandy", onNavigate, onLogout }) {
           <VisaoSemana ref={ref} eventosDe={eventosDe} aoAbrir={setSelecionado} aoEscolherDia={(d) => { setRef(d); setView("dia"); }} />
         )}
         {view === "dia" && <VisaoDia ref={ref} eventos={eventosDe(ref)} aoAbrir={setSelecionado} />}
+
+        <div className="agenda-puzzle-strip">
+          <PuzzleStrip />
+        </div>
       </main>
 
       {selecionado && <DetalheEvento evento={selecionado} aoFechar={() => setSelecionado(null)} />}

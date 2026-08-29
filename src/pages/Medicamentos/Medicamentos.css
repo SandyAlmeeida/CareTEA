@@ -1,0 +1,478 @@
+.medicamentos-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 244px minmax(0, 1fr);
+    background: #f6f7fc;
+    color: var(--navy);
+}
+
+.medicamentos-main {
+    position: relative;
+    min-width: 0;
+    padding: 30px 30px 58px;
+    overflow: hidden;
+}
+
+.medicamentos-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .12s, background .16s, color .16s, border-color .16s;
+}
+
+.medicamentos-btn:active {
+    transform: translateY(1px);
+}
+
+.medicamentos-btn-primary {
+    color: #fff;
+    background: linear-gradient(100deg, #7048eb, #7750ef);
+    box-shadow: 0 8px 16px rgba(104, 70, 232, .17);
+}
+
+.medicamentos-btn-secondary {
+    border: 1px solid var(--border);
+    color: #5e6781;
+    background: #fff;
+}
+
+.medicamentos-btn-secondary:hover {
+    background: #f8f9fc;
+}
+
+.medicamentos-icon-button {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: #5f6e8e;
+    background: #fff;
+    cursor: pointer;
+    transition: background .16s, color .16s, border-color .16s;
+}
+
+.medicamentos-icon-button:hover {
+    border-color: #cfc7ff;
+    color: var(--purple);
+    background: #f8f6ff;
+}
+
+.medicamentos-status-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.medicamentos-status-pill.success {
+    background: #eaf8f1;
+    color: var(--green);
+}
+
+.medicamentos-status-pill.pending {
+    background: #f1f4fa;
+    color: #596783;
+}
+
+.medicamentos-status-pill.warning {
+    background: #fff2d9;
+    color: #d67b00;
+}
+
+.medicamentos-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.medicamentos-form-grid-small {
+    margin-top: 13px;
+}
+
+.medicamentos-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.medicamentos-field-full {
+    grid-column: 1 / -1;
+}
+
+.medicamentos-field>span {
+    color: #343d5b;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.medicamentos-field input,
+.medicamentos-field select,
+.medicamentos-field textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: 0;
+    background: #fff;
+    color: #26304f;
+    font: inherit;
+    font-size: 12px;
+    resize: vertical;
+    transition: border-color .16s, box-shadow .16s;
+}
+
+.medicamentos-field input:focus,
+.medicamentos-field select:focus,
+.medicamentos-field textarea:focus {
+    border-color: #9d8ae9;
+    box-shadow: 0 0 0 3px rgba(105, 71, 231, .09);
+}
+
+.medicamentos-field input::placeholder {
+    color: #8792aa;
+}
+
+.medicamentos-content {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 30px;
+}
+
+.app-section-heading-simple {
+    margin: 0 0 16px;
+}
+
+.app-section-heading-simple h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.medication-list {
+    display: grid;
+    gap: 15px;
+}
+
+.medication-card {
+    padding: 18px 20px 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: var(--shadow-md);
+    transition: .18s;
+}
+
+.medication-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(27, 35, 67, .08);
+}
+
+.medication-card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.medication-heading {
+    min-width: 0;
+}
+
+.medication-name-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.medication-name-row h3 {
+    margin: 0;
+    color: #17284e;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.medication-meta {
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 13px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.medication-meta span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.medication-instructions {
+    margin: 7px 0 0;
+    color: #5d6b87;
+    font-size: 11px;
+}
+
+.medication-actions {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.medication-card-footer {
+    margin-top: 17px;
+    padding-top: 14px;
+    border-top: 1px solid #edf0f5;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.medicamentos-taken-button,
+.medicamentos-remind-button {
+    height: 37px;
+    border-radius: 19px;
+    font-size: 12px;
+}
+
+.medicamentos-remind-button:hover {
+    border-color: #bbc5e5;
+    background: #fafbff;
+}
+
+.medicamentos-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 22px;
+}
+
+.medicamentos-card {
+    padding: 19px 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: var(--shadow-md);
+}
+
+.medicamentos-card-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.medicamentos-card-title-icon {
+    display: grid;
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+    place-items: center;
+    color: var(--purple);
+}
+
+.medicamentos-card-title h2 {
+    margin: 0;
+    color: #17284e;
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.medicamentos-card-title p {
+    max-width: 340px;
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.medicamentos-card .medicamentos-field {
+    margin-top: 15px;
+}
+
+.medicamentos-history-list {
+    margin-top: 14px;
+}
+
+.medicamentos-history-item {
+    padding: 10px 0;
+    border-top: 1px solid #edf0f6;
+}
+
+.medicamentos-history-item:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.medicamentos-history-item strong,
+.medicamentos-history-item span {
+    display: block;
+}
+
+.medicamentos-history-item strong {
+    color: #213252;
+    font-size: 12px;
+}
+
+.medicamentos-history-item span {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.medicamentos-history-empty {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.medicamentos-empty {
+    padding: 50px 30px;
+    border: 1px dashed #ccd4e6;
+    border-radius: 16px;
+    text-align: center;
+    background: rgba(255, 255, 255, .62);
+    color: var(--purple);
+}
+
+.medicamentos-empty h3 {
+    margin: 12px 0 0;
+    color: var(--navy);
+    font-size: 16px;
+}
+
+.medicamentos-empty p {
+    margin: 7px auto 18px;
+    max-width: 420px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.medicamentos-reminder-config {
+    margin-top: 19px;
+    padding: 15px;
+    border: 1px solid #dbe5ff;
+    border-radius: 14px;
+    background: #f6f8ff;
+}
+
+.medicamentos-reminder-config-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--purple);
+}
+
+.medicamentos-reminder-config-title>div {
+    min-width: 0;
+}
+
+.medicamentos-reminder-config-title strong,
+.medicamentos-reminder-config-title span {
+    display: block;
+}
+
+.medicamentos-reminder-config-title strong {
+    color: var(--navy);
+    font-size: 12px;
+}
+
+.medicamentos-reminder-config-title span {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.medicamentos-strip {
+  margin-top: 40px;
+}
+.medicamentos-strip .puzzle-strip {
+        position: relative !important;
+        inset: auto !important;
+        width: 100% !important;
+        margin: 0;
+}
+
+@media (max-width: 1100px) {
+    .medicamentos-page {
+        grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .medicamentos-main {
+        padding: 25px 20px 45px;
+    }
+}
+
+@media (max-width: 1080px) {
+    .medicamentos-content {
+        grid-template-columns: 1fr;
+    }
+
+    .medicamentos-sidebar {
+        grid-template-columns: 1fr 1fr;
+        display: grid;
+    }
+}
+
+@media (max-width: 800px) {
+    .medicamentos-page {
+        display: block;
+    }
+}
+
+@media (max-width: 760px) {
+    .medicamentos-sidebar {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .medicamentos-main {
+        padding: 20px 14px 40px;
+    }
+
+    .medicamentos-btn {
+        width: 100%;
+    }
+
+    .medicamentos-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medicamentos-field-full {
+        grid-column: auto;
+    }
+
+    .medication-card {
+        padding: 16px;
+    }
+
+    .medication-card-top {
+        gap: 10px;
+    }
+
+    .medication-card-footer {
+        flex-wrap: wrap;
+    }
+
+    .medicamentos-taken-button,
+    .medicamentos-remind-button {
+        flex: 1 1 145px;
+    }
+}

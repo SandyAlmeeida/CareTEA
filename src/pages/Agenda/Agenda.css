@@ -161,6 +161,18 @@ select {
   min-width: 0;
   padding: 30px 30px 58px;
 }
+.agenda-puzzle-strip {
+  width: 100%;
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.agenda-puzzle-strip .puzzle-strip {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  margin: 0;
+}
 
 .agenda-topbar {
   display: flex;

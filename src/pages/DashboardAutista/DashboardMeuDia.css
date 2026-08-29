@@ -1,0 +1,1074 @@
+
+/* =========================================================
+   CARETEA — MINHA ROTINA / DASHBOARD AUTISTA
+   Arquivo: DashboardMeuDia.css
+   ========================================================= */
+
+.autista-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(46, 112, 219, 0.08), transparent 22%),
+    radial-gradient(circle at 92% 12%, rgba(118, 91, 217, 0.08), transparent 22%),
+    #f6f8fd;
+  color: #273657;
+  font-family: inherit;
+}
+
+.autista-main {
+  width: min(1120px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 28px 0 52px;
+}
+
+/* ------------------------- marca ------------------------- */
+
+.autista-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.brand-colors {
+  display: flex;
+  gap: 3px;
+}
+
+.brand-color {
+  width: 9px;
+  height: 22px;
+  border-radius: 8px;
+}
+
+.brand-blue { background: #2e70db; }
+.brand-purple { background: #765bd9; }
+.brand-yellow { background: #ffbf2d; }
+.brand-green { background: #7cc66d; }
+.brand-red { background: #fa5d61; }
+
+.brand-name {
+  color: #2d3d61;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.7px;
+}
+
+.brand-name > span {
+  color: #765bd9;
+}
+
+/* ------------------------- boas-vindas ------------------------- */
+
+.welcome-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 34px 38px;
+  border: 1px solid #e3def8;
+  border-radius: 28px;
+  background:
+    linear-gradient(125deg, rgba(255,255,255,0.98), rgba(244,241,255,0.98));
+  box-shadow: 0 16px 38px rgba(48, 57, 100, 0.08);
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+}
+
+.welcome-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 29px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #ece8ff;
+  color: #6650c7;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.welcome-card h1 {
+  margin: 14px 0 8px;
+  color: #273657;
+  font-size: clamp(31px, 4.3vw, 44px);
+  line-height: 1.03;
+  letter-spacing: -1.4px;
+}
+
+.welcome-card p {
+  margin: 0;
+  color: #6e7b97;
+  font-size: 17px;
+}
+
+.wave {
+  display: inline-block;
+  transform: rotate(-8deg);
+}
+
+.welcome-profile {
+  position: relative;
+  z-index: 2;
+  width: 82px;
+  height: 82px;
+  flex: 0 0 82px;
+  display: grid;
+  place-items: center;
+  border: 6px solid rgba(255,255,255,0.8);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2e70db, #765bd9);
+  color: #fff;
+  font-size: 31px;
+  font-weight: 900;
+  box-shadow: 0 10px 28px rgba(76, 74, 187, 0.22);
+}
+
+.welcome-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.welcome-circle-one {
+  right: -48px;
+  top: -58px;
+  width: 190px;
+  height: 190px;
+  background: rgba(118, 91, 217, 0.12);
+}
+
+.welcome-circle-two {
+  right: 84px;
+  bottom: -92px;
+  width: 175px;
+  height: 175px;
+  background: rgba(46, 112, 219, 0.08);
+}
+
+/* ------------------------- cards gerais ------------------------- */
+
+.care-section {
+  position: relative;
+  overflow: hidden;
+  margin-top: 22px;
+  padding: 28px;
+  border: 1px solid #e7e9f2;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 11px 28px rgba(38, 48, 84, 0.055);
+}
+
+.section-accent {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+}
+
+.medication-accent {
+  background: linear-gradient(#765bd9, #2e70db);
+}
+
+.appointment-accent {
+  background: linear-gradient(#2e70db, #7cc66d);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.section-icon {
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  font-size: 26px;
+}
+
+.mood-icon {
+  background: #fff5d8;
+  color: #b77900;
+}
+
+.medication-icon {
+  background: #eeeaff;
+}
+
+.appointment-icon {
+  background: #e7f2ff;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #293758;
+  font-size: 25px;
+  letter-spacing: -0.4px;
+}
+
+.section-heading p {
+  margin: 5px 0 0;
+  color: #7a869f;
+  font-size: 14px;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #765bd9;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ------------------------- humor ------------------------- */
+
+.mood-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.mood-option {
+  min-height: 142px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 16px;
+  border: 1px solid #e6e8f0;
+  border-radius: 20px;
+  background: #fbfcff;
+  color: #344260;
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease,
+    background 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.mood-option:hover {
+  transform: translateY(-2px);
+  border-color: #d3cff1;
+  box-shadow: 0 9px 20px rgba(51, 61, 100, 0.07);
+}
+
+.mood-face {
+  font-size: 43px;
+  line-height: 1;
+}
+
+.mood-option strong {
+  font-size: 15px;
+}
+
+.mood-option.selected {
+  border-width: 2px;
+}
+
+.mood-good {
+  border-color: #7cc66d !important;
+  background: #f3fbf1 !important;
+}
+
+.mood-medium {
+  border-color: #ffbf2d !important;
+  background: #fffaeb !important;
+}
+
+.mood-bad {
+  border-color: #fa5d61 !important;
+  background: #fff3f4 !important;
+}
+
+.mood-confirmation {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid #cfe9ce;
+  border-radius: 14px;
+  background: #f4fbf3;
+  color: #4b7951;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mood-confirmation > span {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #7cc66d;
+  color: #fff;
+  font-size: 12px;
+}
+
+/* ------------------------- medicamentos ------------------------- */
+
+.medication-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.medication-item {
+  padding: 20px;
+  border: 1px solid #e4e6ef;
+  border-radius: 18px;
+  background: #fbfcff;
+  transition: 0.18s ease;
+}
+
+.medication-item-taken {
+  border-color: #cde5c9;
+  background: #f7fcf6;
+}
+
+.medication-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.medication-main-info {
+  min-width: 0;
+}
+
+.medication-period {
+  display: inline-flex;
+  min-height: 25px;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #eeeaff;
+  color: #6650c7;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.medication-main-info h3 {
+  margin: 9px 0 5px;
+  color: #2d3b5b;
+  font-size: 19px;
+}
+
+.medication-dose {
+  color: #7a869f;
+  font-size: 13px;
+}
+
+.medication-time {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: #f0f4ff;
+  color: #49679f;
+}
+
+.medication-time strong {
+  font-size: 16px;
+}
+
+.clock-icon {
+  font-size: 18px;
+}
+
+.taken-button {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 17px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(100deg, #7257e6, #8069eb);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(107, 81, 222, 0.17);
+}
+
+.check-circle {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+.taken-confirmation {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 17px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eaf7e7;
+  color: #426f47;
+}
+
+.taken-check {
+  width: 31px;
+  height: 31px;
+  flex: 0 0 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #7cc66d;
+  color: #fff;
+  font-weight: 900;
+}
+
+.taken-confirmation strong,
+.taken-confirmation span {
+  display: block;
+}
+
+.taken-confirmation div > span {
+  margin-top: 2px;
+  color: #6f8c71;
+  font-size: 11px;
+}
+
+/* ------------------------- consulta ------------------------- */
+
+.appointment-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #deebfa;
+  border-radius: 18px;
+  background: #f6faff;
+}
+
+.appointment-date {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+  display: grid;
+  place-content: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #2e70db, #5a91ea);
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 7px 17px rgba(46,112,219,0.17);
+}
+
+.appointment-date strong {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.appointment-date span {
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+}
+
+.appointment-text strong,
+.appointment-text span {
+  display: block;
+}
+
+.appointment-text strong {
+  color: #344260;
+  font-size: 17px;
+}
+
+.appointment-text span {
+  margin-top: 4px;
+  color: #7a869f;
+  font-size: 13px;
+}
+
+/* ------------------------- ações rápidas ------------------------- */
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.quick-action {
+  min-height: 98px;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #e5e7f0;
+  border-radius: 19px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(38, 48, 84, 0.05);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.quick-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 27px rgba(38, 48, 84, 0.08);
+}
+
+.quick-icon {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  font-size: 25px;
+}
+
+.care-icon {
+  background: #eeeaff;
+  color: #765bd9;
+}
+
+.help-icon {
+  background: #fff0f2;
+  color: #e55366;
+}
+
+.quick-text strong,
+.quick-text span {
+  display: block;
+}
+
+.quick-text strong {
+  color: #344260;
+  font-size: 15px;
+}
+
+.quick-text span {
+  margin-top: 4px;
+  color: #7e899f;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.quick-arrow {
+  color: #9aa3b6;
+  font-size: 28px;
+}
+
+/* ------------------------- rodapé ------------------------- */
+
+.autista-footer {
+  width: 100%;
+}
+
+.autista-puzzle-strip {
+  display: grid;
+  width: 100%;
+  height: 25px;
+  grid-template-columns: repeat(18, 1fr);
+  overflow: hidden;
+}
+
+.autista-puzzle-color {
+  position: relative;
+}
+
+.autista-puzzle-color::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: inherit;
+}
+
+.autista-puzzle-color-0 { background: #2e70db; }
+.autista-puzzle-color-1 { background: #765bd9; }
+.autista-puzzle-color-2 { background: #ffbf2d; }
+.autista-puzzle-color-3 { background: #7cc66d; }
+.autista-puzzle-color-4 { background: #fa5d61; }
+
+/* =========================================================
+   TEMA ESCURO
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .autista-page {
+  background:
+    radial-gradient(circle at 8% 8%, rgba(46, 112, 219, 0.1), transparent 22%),
+    radial-gradient(circle at 92% 12%, rgba(118, 91, 217, 0.1), transparent 22%),
+    #111521;
+  color: #eef1f8;
+}
+
+html[data-caretea-theme="dark"] .brand-name,
+html[data-caretea-theme="dark"] .welcome-card h1,
+html[data-caretea-theme="dark"] .section-heading h2,
+html[data-caretea-theme="dark"] .medication-main-info h3,
+html[data-caretea-theme="dark"] .appointment-text strong,
+html[data-caretea-theme="dark"] .quick-text strong {
+  color: #eef1f8;
+}
+
+html[data-caretea-theme="dark"] .welcome-card,
+html[data-caretea-theme="dark"] .care-section,
+html[data-caretea-theme="dark"] .quick-action {
+  border-color: #30384b;
+  background: #1b2130;
+  color: #eef1f8;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+}
+
+html[data-caretea-theme="dark"] .welcome-card {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(118,91,217,0.12), transparent 30%),
+    #1b2130;
+}
+
+html[data-caretea-theme="dark"] .welcome-card p,
+html[data-caretea-theme="dark"] .section-heading p,
+html[data-caretea-theme="dark"] .medication-dose,
+html[data-caretea-theme="dark"] .appointment-text span,
+html[data-caretea-theme="dark"] .quick-text span {
+  color: #a7afc2;
+}
+
+html[data-caretea-theme="dark"] .welcome-label,
+html[data-caretea-theme="dark"] .medication-period {
+  background: #302a4d;
+  color: #b8a9ff;
+}
+
+html[data-caretea-theme="dark"] .mood-option,
+html[data-caretea-theme="dark"] .medication-item,
+html[data-caretea-theme="dark"] .appointment-info {
+  border-color: #30384b;
+  background: #171d2a;
+  color: #eef1f8;
+}
+
+html[data-caretea-theme="dark"] .mood-option {
+  color: #eef1f8;
+}
+
+html[data-caretea-theme="dark"] .mood-good {
+  border-color: #568b4e !important;
+  background: #1b2b1c !important;
+}
+
+html[data-caretea-theme="dark"] .mood-medium {
+  border-color: #9d7b25 !important;
+  background: #2a2618 !important;
+}
+
+html[data-caretea-theme="dark"] .mood-bad {
+  border-color: #9b4f55 !important;
+  background: #2c1e22 !important;
+}
+
+html[data-caretea-theme="dark"] .mood-confirmation,
+html[data-caretea-theme="dark"] .taken-confirmation {
+  border-color: #385b3d;
+  background: #1c2a1f;
+  color: #90cf98;
+}
+
+html[data-caretea-theme="dark"] .taken-confirmation div > span {
+  color: #7fa887;
+}
+
+html[data-caretea-theme="dark"] .medication-time {
+  background: #202a3e;
+  color: #91b5ef;
+}
+
+html[data-caretea-theme="dark"] .medication-item-taken {
+  border-color: #36583d;
+  background: #18251b;
+}
+
+html[data-caretea-theme="dark"] .appointment-info {
+  background: #182333;
+}
+
+html[data-caretea-theme="dark"] .care-icon {
+  background: #302a4d;
+  color: #b8a9ff;
+}
+
+html[data-caretea-theme="dark"] .help-icon {
+  background: #342128;
+  color: #ff8c9b;
+}
+
+/* ------------------------- responsivo ------------------------- */
+
+@media (max-width: 760px) {
+  .autista-main {
+    width: min(100% - 24px, 1120px);
+    padding-top: 18px;
+  }
+
+  .welcome-card {
+    min-height: auto;
+    padding: 26px 22px;
+  }
+
+  .welcome-profile {
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
+    font-size: 24px;
+  }
+
+  .welcome-card h1 {
+    font-size: 33px;
+  }
+
+  .welcome-card p {
+    font-size: 14px;
+  }
+
+  .care-section {
+    padding: 22px 18px;
+  }
+
+  .mood-options {
+    grid-template-columns: 1fr;
+  }
+
+  .mood-option {
+    min-height: 98px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 16px 20px;
+  }
+
+  .mood-face {
+    font-size: 36px;
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .autista-brand {
+    margin-left: 2px;
+  }
+
+  .brand-name {
+    font-size: 21px;
+  }
+
+  .welcome-card {
+    align-items: flex-start;
+  }
+
+  .welcome-profile {
+    display: none;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    border-radius: 14px;
+    font-size: 22px;
+  }
+
+  .section-heading h2 {
+    font-size: 21px;
+  }
+
+  .medication-item-top {
+    flex-direction: column;
+  }
+
+  .medication-time {
+    width: fit-content;
+  }
+
+  .appointment-info {
+    align-items: flex-start;
+  }
+
+  .quick-action {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    padding: 15px;
+  }
+
+  .quick-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+
+/* =========================================================
+   CHAT DA CARE DENTRO DA MINHA ROTINA
+   ========================================================= */
+
+.care-chat {
+  overflow: hidden;
+  margin-top: 16px;
+  border: 1px solid #dedaf5;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(45, 54, 94, 0.09);
+}
+
+.care-chat-header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+  border-bottom: 1px solid #eceaf5;
+  background:
+    linear-gradient(135deg, #f5f2ff 0%, #fbfcff 100%);
+}
+
+.care-chat-avatar,
+.care-message-avatar {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2e70db, #765bd9);
+  color: #ffffff;
+}
+
+.care-chat-avatar {
+  width: 44px;
+  height: 44px;
+  font-size: 21px;
+  box-shadow: 0 7px 16px rgba(84, 75, 196, 0.18);
+}
+
+.care-chat-header strong,
+.care-chat-header span {
+  display: block;
+}
+
+.care-chat-header strong {
+  color: #2f3d5d;
+  font-size: 16px;
+}
+
+.care-chat-header span {
+  margin-top: 2px;
+  color: #8993a9;
+  font-size: 12px;
+}
+
+.care-chat-close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #7f89a0;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.care-chat-close:hover {
+  background: #ece9f9;
+  color: #5f4dbe;
+}
+
+.care-chat-messages {
+  max-height: 330px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(118, 91, 217, 0.045), transparent 27%),
+    #fbfcff;
+}
+
+.care-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.care-message > div {
+  max-width: min(76%, 620px);
+  padding: 11px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.care-message-care {
+  align-self: flex-start;
+}
+
+.care-message-care > div {
+  border: 1px solid #e3e0f3;
+  border-bottom-left-radius: 5px;
+  background: #ffffff;
+  color: #44516d;
+}
+
+.care-message-avatar {
+  width: 27px;
+  height: 27px;
+  flex: 0 0 27px;
+  font-size: 12px;
+}
+
+.care-message-usuario {
+  justify-content: flex-end;
+  align-self: flex-end;
+  width: 100%;
+}
+
+.care-message-usuario > div {
+  border-bottom-right-radius: 5px;
+  background: linear-gradient(135deg, #7157dd, #8069eb);
+  color: #ffffff;
+}
+
+.care-chat-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 9px;
+  padding: 13px;
+  border-top: 1px solid #eceaf5;
+  background: #ffffff;
+}
+
+.care-chat-form input {
+  min-width: 0;
+  height: 44px;
+  border: 1px solid #dde1ec;
+  border-radius: 14px;
+  outline: none;
+  padding: 0 14px;
+  background: #f9faff;
+  color: #344260;
+  font: inherit;
+  font-size: 14px;
+}
+
+.care-chat-form input:focus {
+  border-color: #9a8be1;
+  box-shadow: 0 0 0 3px rgba(118, 91, 217, 0.10);
+}
+
+.care-chat-form button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2e70db, #765bd9);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.care-chat-form button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+/* Chat no tema escuro */
+html[data-caretea-theme="dark"] .care-chat {
+  border-color: #30384b;
+  background: #1b2130;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+}
+
+html[data-caretea-theme="dark"] .care-chat-header {
+  border-color: #30384b;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(118,91,217,0.12), transparent 35%),
+    #1b2130;
+}
+
+html[data-caretea-theme="dark"] .care-chat-header strong {
+  color: #eef1f8;
+}
+
+html[data-caretea-theme="dark"] .care-chat-header span {
+  color: #a7afc2;
+}
+
+html[data-caretea-theme="dark"] .care-chat-close {
+  color: #a7afc2;
+}
+
+html[data-caretea-theme="dark"] .care-chat-close:hover {
+  background: #272e40;
+  color: #c0b4ff;
+}
+
+html[data-caretea-theme="dark"] .care-chat-messages {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(118,91,217,0.07), transparent 27%),
+    #151a26;
+}
+
+html[data-caretea-theme="dark"] .care-message-care > div {
+  border-color: #30384b;
+  background: #202636;
+  color: #d7dceb;
+}
+
+html[data-caretea-theme="dark"] .care-chat-form {
+  border-color: #30384b;
+  background: #1b2130;
+}
+
+html[data-caretea-theme="dark"] .care-chat-form input {
+  border-color: #3a4256;
+  background: #151a26;
+  color: #eef1f8;
+}
+
+@media (max-width: 520px) {
+  .care-chat-messages {
+    max-height: 400px;
+    padding: 14px;
+  }
+
+  .care-message > div {
+    max-width: 84%;
+  }
+}

@@ -1,0 +1,308 @@
+:root {
+  --care-blue: #2e70db;
+  --care-purple: #765bd9;
+  --care-yellow: #ffbf2d;
+  --care-green: #7cc66d;
+  --care-red: #fa5d61;
+  --care-text: #283657;
+  --care-muted: #7784a0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.acesso-meu-dia-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(46, 112, 219, 0.1), transparent 25%),
+    radial-gradient(circle at 92% 14%, rgba(118, 91, 217, 0.1), transparent 28%),
+    #f8f9fd;
+  color: var(--care-text);
+}
+
+.acesso-meu-dia-main {
+  width: min(calc(100% - 28px), 620px);
+  flex: 1;
+  margin: 0 auto;
+  padding: 34px 0 60px;
+}
+
+.acesso-meu-dia-page .puzzle-strip {
+  position: relative !important;
+  inset: auto !important;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.acesso-meu-dia-page .page-footer {
+  position: static !important;
+  width: 100%;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.acesso-meu-dia-logo-link {
+  display: inline-flex;
+  margin-bottom: 22px;
+}
+
+.acesso-meu-dia-logo-link img {
+  width: 155px;
+  height: auto;
+}
+
+.acesso-meu-dia-card {
+  position: relative;
+  overflow: hidden;
+  padding: 40px;
+  border: 1px solid #e5e7f1;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(53, 67, 109, 0.09);
+}
+
+.acesso-meu-dia-color-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  height: 6px;
+}
+
+.acesso-meu-dia-color-line span:nth-child(1) {
+  background: var(--care-blue);
+}
+
+.acesso-meu-dia-color-line span:nth-child(2) {
+  background: var(--care-purple);
+}
+
+.acesso-meu-dia-color-line span:nth-child(3) {
+  background: var(--care-yellow);
+}
+
+.acesso-meu-dia-color-line span:nth-child(4) {
+  background: var(--care-green);
+}
+
+.acesso-meu-dia-color-line span:nth-child(5) {
+  background: var(--care-red);
+}
+
+.acesso-meu-dia-phone {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 17px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--care-blue), var(--care-purple));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(77, 83, 190, 0.2);
+}
+
+.acesso-meu-dia-phone svg {
+  width: 29px;
+  height: 29px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.acesso-meu-dia-label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--care-purple);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.acesso-meu-dia-card h1 {
+  margin: 0;
+  font-size: 32px;
+  letter-spacing: -0.8px;
+}
+
+.acesso-meu-dia-description {
+  max-width: 470px;
+  margin: 10px 0 28px;
+  color: var(--care-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.acesso-meu-dia-card form {
+  display: grid;
+  gap: 10px;
+}
+
+.acesso-meu-dia-card label {
+  color: #3f4d6c;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.acesso-meu-dia-card input {
+  width: 100%;
+  height: 58px;
+  padding: 0 18px;
+  border: 2px solid #e2e6ef;
+  border-radius: 16px;
+  outline: none;
+  background: #fafbfd;
+  color: var(--care-text);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.acesso-meu-dia-card input:focus {
+  border-color: #8b7ae2;
+  box-shadow: 0 0 0 4px rgba(118, 91, 217, 0.1);
+}
+
+.acesso-meu-dia-primary,
+.acesso-meu-dia-qr {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.acesso-meu-dia-primary {
+  margin-top: 4px;
+  border: 0;
+  background: linear-gradient(100deg, var(--care-blue), var(--care-purple));
+  color: #fff;
+  box-shadow: 0 9px 22px rgba(71, 82, 188, 0.18);
+}
+
+.acesso-meu-dia-or {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #929bb0;
+}
+
+.acesso-meu-dia-or span {
+  height: 1px;
+  background: #e5e8ef;
+}
+
+.acesso-meu-dia-or p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.acesso-meu-dia-qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #dcd8f5;
+  background: #f7f5ff;
+  color: #5d4eb1;
+}
+
+.acesso-meu-dia-qr svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+.acesso-meu-dia-message {
+  margin: 14px 0 0;
+  color: #b14f58;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.acesso-meu-dia-help {
+  margin-top: 22px;
+  padding: 16px;
+  border: 1px solid #e7e4f6;
+  border-radius: 16px;
+  background: #faf9ff;
+}
+
+.acesso-meu-dia-help strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #4e438b;
+  font-size: 13px;
+}
+
+.acesso-meu-dia-help p {
+  margin: 0;
+  color: #737f99;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.acesso-meu-dia-back {
+  display: block;
+  margin-top: 22px;
+  color: #65718e;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.acesso-meu-dia-back:hover {
+  color: var(--care-purple);
+}
+
+@media (max-width: 600px) {
+  .acesso-meu-dia-main {
+    width: calc(100% - 22px);
+    padding-top: 24px;
+    padding-bottom: 44px;
+  }
+
+  .acesso-meu-dia-logo-link img {
+    width: 140px;
+  }
+
+  .acesso-meu-dia-card {
+    padding: 30px 20px;
+    border-radius: 23px;
+  }
+
+  .acesso-meu-dia-card h1 {
+    font-size: 27px;
+  }
+
+  .acesso-meu-dia-description {
+    font-size: 13px;
+  }
+
+  .acesso-meu-dia-card input {
+    height: 55px;
+    font-size: 18px;
+  }
+}

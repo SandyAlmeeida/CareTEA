@@ -1,0 +1,885 @@
+/* =========================================================
+   BOTÃO GLOBAL DE TEMA
+   ========================================================= */
+
+.caretea-theme-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+
+  border: 1px solid #765bd9;
+  border-radius: 50%;
+  background: #eee9ff;
+  color: #5135cf;
+
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 24px rgba(32, 38, 68, 0.14),
+    0 2px 6px rgba(32, 38, 68, 0.08);
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.caretea-theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 28px rgba(32, 38, 68, 0.18),
+    0 3px 8px rgba(32, 38, 68, 0.1);
+}
+
+.caretea-theme-toggle:focus-visible {
+  outline: 3px solid rgba(118, 91, 217, 0.24);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   VARIÁVEIS GLOBAIS DO TEMA ESCURO
+   ========================================================= */
+
+html[data-caretea-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #111521;
+  --card: #1b2130;
+  --text: #f3f5fb;
+  --muted: #a7afc2;
+  --border: #30384b;
+
+  --purple: #927cf5;
+  --purple-dark: #b4a6ff;
+  --green: #58c991;
+  --orange: #f5ba4f;
+  --blue: #62a1f2;
+  --pink: #f1739a;
+
+  --dc-bg: #111521;
+  --dc-card: #1b2130;
+  --dc-text: #f3f5fb;
+  --dc-muted: #a7afc2;
+  --dc-border: #30384b;
+}
+
+html[data-caretea-theme="dark"],
+html[data-caretea-theme="dark"] body,
+html[data-caretea-theme="dark"] #root {
+  background: #111521;
+  color: #f3f5fb;
+}
+
+/* =========================================================
+   ESTRUTURAS PRINCIPAIS
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .caretea-dashboard,
+html[data-caretea-theme="dark"] .configuracoes-page,
+html[data-caretea-theme="dark"] .bem-estar-page,
+html[data-caretea-theme="dark"] .gerenciar-meu-dia-page,
+html[data-caretea-theme="dark"] .acesso-meu-dia-page,
+html[data-caretea-theme="dark"] .caretea-login-page,
+html[data-caretea-theme="dark"] .caretea-cadastro-page {
+  background: #111521 !important;
+  color: #f3f5fb !important;
+}
+
+html[data-caretea-theme="dark"] .dashboard-main,
+html[data-caretea-theme="dark"] .configuracoes-main,
+html[data-caretea-theme="dark"] .bem-estar-main,
+html[data-caretea-theme="dark"] .gerenciar-meu-dia-main,
+html[data-caretea-theme="dark"] .acesso-meu-dia-main {
+  color: #f3f5fb;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .sidebar,
+html[data-caretea-theme="dark"] .dashboard-sidebar {
+  border-color: #292f40 !important;
+  background: #171c29 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-logo {
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 4px;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-item {
+  color: #c8cede !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-item:hover {
+  background: #232a3b !important;
+  color: #fff !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-item-active,
+html[data-caretea-theme="dark"] .sidebar-item-active:hover {
+  background: linear-gradient(100deg, #7257e6, #856cef) !important;
+  color: #fff !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-help-card {
+  border-color: #30384b !important;
+  background: #202636 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-help-card p {
+  color: #aeb6c9 !important;
+}
+
+html[data-caretea-theme="dark"] .sidebar-help-button,
+html[data-caretea-theme="dark"] .sidebar-help-card button {
+  border-color: #8069e8 !important;
+  background: #1b2130 !important;
+  color: #b7a9ff !important;
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .dashboard-topbar h1 {
+  color: #f3f5fb !important;
+}
+
+html[data-caretea-theme="dark"] .dashboard-topbar p,
+html[data-caretea-theme="dark"] .profile-copy small {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .notification-button,
+html[data-caretea-theme="dark"] .profile-button {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .profile-avatar {
+  border-color: #2d3447 !important;
+  background: #2a3142 !important;
+  box-shadow: 0 0 0 1px #41495e !important;
+}
+
+html[data-caretea-theme="dark"] .logout-button {
+  background: #28243c !important;
+  color: #b7a9ff !important;
+}
+
+/* =========================================================
+   DASHBOARD E PAINÉIS
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .dashboard-panel,
+html[data-caretea-theme="dark"] .stat-card,
+html[data-caretea-theme="dark"] .calendar-panel,
+html[data-caretea-theme="dark"] .mood-panel,
+html[data-caretea-theme="dark"] .quick-info-panel,
+html[data-caretea-theme="dark"] .assistant-card {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.14) !important;
+}
+
+html[data-caretea-theme="dark"] .timeline,
+html[data-caretea-theme="dark"] .agenda-list,
+html[data-caretea-theme="dark"] .quick-info-list {
+  border-color: #30384b !important;
+  background: #181e2b !important;
+}
+
+html[data-caretea-theme="dark"] .timeline-row,
+html[data-caretea-theme="dark"] .agenda-list article,
+html[data-caretea-theme="dark"] .quick-info-list article {
+  border-color: #30384b !important;
+}
+
+html[data-caretea-theme="dark"] .timeline-copy strong,
+html[data-caretea-theme="dark"] .agenda-list strong,
+html[data-caretea-theme="dark"] .quick-info-list strong,
+html[data-caretea-theme="dark"] .panel-header h2,
+html[data-caretea-theme="dark"] .stat-copy span,
+html[data-caretea-theme="dark"] .stat-copy strong {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .timeline-copy small,
+html[data-caretea-theme="dark"] .agenda-list small,
+html[data-caretea-theme="dark"] .quick-info-list small,
+html[data-caretea-theme="dark"] .stat-copy small {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .quick-actions button {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #b7a9ff !important;
+}
+
+/* =========================================================
+   CONFIGURAÇÕES
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .configuracoes-hero,
+html[data-caretea-theme="dark"] .config-card,
+html[data-caretea-theme="dark"] .config-profile-summary,
+html[data-caretea-theme="dark"] .config-account-options > div,
+html[data-caretea-theme="dark"] .config-readonly-value,
+html[data-caretea-theme="dark"] .config-card-note {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+  box-shadow: 0 9px 22px rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-caretea-theme="dark"] .configuracoes-hero h1,
+html[data-caretea-theme="dark"] .config-card-header h2,
+html[data-caretea-theme="dark"] .config-profile-summary strong,
+html[data-caretea-theme="dark"] .config-row strong,
+html[data-caretea-theme="dark"] .config-select-row strong,
+html[data-caretea-theme="dark"] .config-account-options strong {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .configuracoes-hero p,
+html[data-caretea-theme="dark"] .config-profile-summary span,
+html[data-caretea-theme="dark"] .config-row p,
+html[data-caretea-theme="dark"] .config-select-row p,
+html[data-caretea-theme="dark"] .config-account-options p,
+html[data-caretea-theme="dark"] .config-field small,
+html[data-caretea-theme="dark"] .config-card-note {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .config-card-header,
+html[data-caretea-theme="dark"] .config-row,
+html[data-caretea-theme="dark"] .config-select-row {
+  border-color: #30384b !important;
+}
+
+html[data-caretea-theme="dark"] .config-field > span {
+  color: #cdd3e1 !important;
+}
+
+html[data-caretea-theme="dark"] .config-field input,
+html[data-caretea-theme="dark"] .config-select-row select {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .config-field input:disabled,
+html[data-caretea-theme="dark"] .config-readonly-value {
+  background: #202636 !important;
+  color: #aeb6c9 !important;
+}
+
+html[data-caretea-theme="dark"] .config-edit-button,
+html[data-caretea-theme="dark"] .config-secondary-button,
+html[data-caretea-theme="dark"] .config-security-actions button,
+html[data-caretea-theme="dark"] .config-reset-button {
+  border-color: #3a4256 !important;
+  background: #202636 !important;
+  color: #b7a9ff !important;
+}
+
+html[data-caretea-theme="dark"] .config-danger-zone {
+  border-color: #65404b !important;
+  background: #2a1d25 !important;
+}
+
+html[data-caretea-theme="dark"] .config-caretea-footer,
+html[data-caretea-theme="dark"] .config-page-footer {
+  background: #171c29 !important;
+  color: #a7afc2 !important;
+}
+
+/* =========================================================
+   BEM-ESTAR
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .bem-estar-hero,
+html[data-caretea-theme="dark"] .bem-estar-card,
+html[data-caretea-theme="dark"] .bem-estar-history,
+html[data-caretea-theme="dark"] .bem-estar-current,
+html[data-caretea-theme="dark"] .bem-estar-days article {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-hero h1,
+html[data-caretea-theme="dark"] .bem-estar-card h2,
+html[data-caretea-theme="dark"] .bem-estar-history h2,
+html[data-caretea-theme="dark"] .bem-estar-days article strong {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-hero p,
+html[data-caretea-theme="dark"] .bem-estar-card p {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-moods button,
+html[data-caretea-theme="dark"] .bem-estar-tags button,
+html[data-caretea-theme="dark"] .bem-estar-energy button {
+  border-color: #3a4256 !important;
+  background: #202636 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-form textarea {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+/* =========================================================
+   ACESSO DA PESSOA AUTISTA / MINHA ROTINA
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .gerenciar-intro,
+html[data-caretea-theme="dark"] .gerenciar-access-card,
+html[data-caretea-theme="dark"] .gerenciar-generate-card,
+html[data-caretea-theme="dark"] .gerenciar-qr-card,
+html[data-caretea-theme="dark"] .gerenciar-note,
+html[data-caretea-theme="dark"] .acesso-meu-dia-card,
+html[data-caretea-theme="dark"] .acesso-meu-dia-help {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .gerenciar-access-data,
+html[data-caretea-theme="dark"] .gerenciar-code-row,
+html[data-caretea-theme="dark"] .gerenciar-link-row,
+html[data-caretea-theme="dark"] .acesso-meu-dia-phone {
+  border-color: #30384b !important;
+  background: #181e2b !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .acesso-meu-dia-card input {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+/* =========================================================
+   DOCUMENTOS
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .docs-page,
+html[data-caretea-theme="dark"] .docs-main {
+  background: #111521 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .docs-head,
+html[data-caretea-theme="dark"] .docs-card,
+html[data-caretea-theme="dark"] .docs-empty,
+html[data-caretea-theme="dark"] .docs-caretea-footer,
+html[data-caretea-theme="dark"] .docs-page-footer {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .docs-head-copy h2,
+html[data-caretea-theme="dark"] .docs-card strong,
+html[data-caretea-theme="dark"] .docs-empty strong {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .docs-head-copy p,
+html[data-caretea-theme="dark"] .docs-card p,
+html[data-caretea-theme="dark"] .docs-empty p {
+  color: #a7afc2 !important;
+}
+
+/* =========================================================
+   LOGIN E CADASTRO
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .page-shell,
+html[data-caretea-theme="dark"] .cadastro-shell {
+  background: #151a26 !important;
+}
+
+html[data-caretea-theme="dark"] .login-card,
+html[data-caretea-theme="dark"] .cadastro-card,
+html[data-caretea-theme="dark"] .cadastro-inclusion-note,
+html[data-caretea-theme="dark"] .inclusion-note {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .login-header h2,
+html[data-caretea-theme="dark"] .cadastro-header h2,
+html[data-caretea-theme="dark"] .cadastro-form-section strong,
+html[data-caretea-theme="dark"] .cadastro-form-group label {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .login-header p,
+html[data-caretea-theme="dark"] .cadastro-header p,
+html[data-caretea-theme="dark"] .cadastro-form-section p,
+html[data-caretea-theme="dark"] .cadastro-field-help {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .input-box,
+html[data-caretea-theme="dark"] .cadastro-password-box,
+html[data-caretea-theme="dark"] .cadastro-form-group input,
+html[data-caretea-theme="dark"] .cadastro-form-group select {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .cadastro-account-card,
+html[data-caretea-theme="dark"] .cadastro-level-option,
+html[data-caretea-theme="dark"] .cadastro-notification-option {
+  border-color: #3a4256 !important;
+  background: #202636 !important;
+  color: #eef1f8 !important;
+}
+
+/* =========================================================
+   CAMPOS E TEXTOS GENÉRICOS DENTRO DA ÁREA LOGADA
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .caretea-dashboard input,
+html[data-caretea-theme="dark"] .caretea-dashboard textarea,
+html[data-caretea-theme="dark"] .caretea-dashboard select {
+  border-color: #3a4256;
+  background: #151a26;
+  color: #eef1f8;
+}
+
+html[data-caretea-theme="dark"] ::placeholder {
+  color: #727d95;
+}
+
+/* O botão também muda de aparência */
+html[data-caretea-theme="dark"] .caretea-theme-toggle {
+  border-color: #3b4358;
+  background: #202636;
+  color: #ffd96c;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.24),
+    0 2px 6px rgba(0, 0, 0, 0.16);
+}
+
+@media (max-width: 640px) {
+  .caretea-theme-toggle {
+    right: 14px;
+    bottom: 14px;
+    width: 43px;
+    height: 43px;
+    font-size: 21px;
+  }
+}
+
+
+/* Logo sempre nítido nos dois temas */
+.sidebar-logo {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Botão do tema mais fácil de enxergar no modo claro */
+html:not([data-caretea-theme="dark"]) .caretea-theme-toggle {
+  background: #eee9ff;
+  color: #5135cf;
+  border-color: #765bd9;
+  box-shadow:
+    0 8px 22px rgba(81, 53, 207, 0.20),
+    0 2px 6px rgba(32, 38, 68, 0.08);
+}
+
+html:not([data-caretea-theme="dark"]) .caretea-theme-toggle:hover {
+  background: #e3dcff;
+}
+
+
+/* =========================================================
+   CORREÇÃO 2 — TELAS QUE AINDA FICAVAM CLARAS
+   Agenda, Medicamentos, Consultas e Relatórios
+   ========================================================= */
+
+/* Variáveis extras usadas/possivelmente usadas pelas páginas antigas */
+html[data-caretea-theme="dark"] {
+  --agenda-bg: #111521;
+  --agenda-card: #1b2130;
+  --agenda-text: #f3f5fb;
+  --agenda-muted: #a7afc2;
+  --agenda-border: #30384b;
+
+  --reports-bg: #111521;
+  --reports-card: #1b2130;
+  --reports-text: #f3f5fb;
+  --reports-muted: #a7afc2;
+  --reports-border: #30384b;
+
+  --med-bg: #111521;
+  --med-card: #1b2130;
+  --med-text: #f3f5fb;
+  --med-muted: #a7afc2;
+  --med-border: #30384b;
+
+  --meds-bg: #111521;
+  --meds-card: #1b2130;
+  --meds-text: #f3f5fb;
+  --meds-muted: #a7afc2;
+  --meds-border: #30384b;
+
+  --consultas-bg: #111521;
+  --consultas-card: #1b2130;
+  --consultas-text: #f3f5fb;
+  --consultas-muted: #a7afc2;
+  --consultas-border: #30384b;
+
+  --consult-bg: #111521;
+  --consult-card: #1b2130;
+  --consult-text: #f3f5fb;
+  --consult-muted: #a7afc2;
+  --consult-border: #30384b;
+}
+
+/* ---------- fundos principais ---------- */
+
+html[data-caretea-theme="dark"] .agenda-page,
+html[data-caretea-theme="dark"] .agenda-main,
+html[data-caretea-theme="dark"] .reports-page,
+html[data-caretea-theme="dark"] .reports-main,
+html[data-caretea-theme="dark"] .medicamentos-page,
+html[data-caretea-theme="dark"] .medicamentos-main,
+html[data-caretea-theme="dark"] .medications-page,
+html[data-caretea-theme="dark"] .medications-main,
+html[data-caretea-theme="dark"] .meds-page,
+html[data-caretea-theme="dark"] .meds-main,
+html[data-caretea-theme="dark"] .consultas-page,
+html[data-caretea-theme="dark"] .consultas-main,
+html[data-caretea-theme="dark"] .consultations-page,
+html[data-caretea-theme="dark"] .consultations-main,
+html[data-caretea-theme="dark"] [class*="medicamentos-page"],
+html[data-caretea-theme="dark"] [class*="medicamentos-main"],
+html[data-caretea-theme="dark"] [class*="consultas-page"],
+html[data-caretea-theme="dark"] [class*="consultas-main"] {
+  background: #111521 !important;
+  color: #f3f5fb !important;
+}
+
+/* ---------- cabeçalhos / perfil ---------- */
+
+html[data-caretea-theme="dark"] .agenda-topbar h1,
+html[data-caretea-theme="dark"] .reports-topbar h1,
+html[data-caretea-theme="dark"] .medicamentos-page h1,
+html[data-caretea-theme="dark"] .medications-page h1,
+html[data-caretea-theme="dark"] .meds-page h1,
+html[data-caretea-theme="dark"] .consultas-page h1,
+html[data-caretea-theme="dark"] .consultations-page h1 {
+  color: #f3f5fb !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-topbar p,
+html[data-caretea-theme="dark"] .reports-topbar p,
+html[data-caretea-theme="dark"] .medicamentos-page header p,
+html[data-caretea-theme="dark"] .medications-page header p,
+html[data-caretea-theme="dark"] .meds-page header p,
+html[data-caretea-theme="dark"] .consultas-page header p,
+html[data-caretea-theme="dark"] .consultations-page header p,
+html[data-caretea-theme="dark"] .profile small {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-page .profile,
+html[data-caretea-theme="dark"] .reports-page .profile,
+html[data-caretea-theme="dark"] .medicamentos-page .profile,
+html[data-caretea-theme="dark"] .medications-page .profile,
+html[data-caretea-theme="dark"] .meds-page .profile,
+html[data-caretea-theme="dark"] .consultas-page .profile,
+html[data-caretea-theme="dark"] .consultations-page .profile {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-page .avatar,
+html[data-caretea-theme="dark"] .reports-page .avatar,
+html[data-caretea-theme="dark"] .medicamentos-page .avatar,
+html[data-caretea-theme="dark"] .medications-page .avatar,
+html[data-caretea-theme="dark"] .meds-page .avatar,
+html[data-caretea-theme="dark"] .consultas-page .avatar,
+html[data-caretea-theme="dark"] .consultations-page .avatar {
+  border-color: #30384b !important;
+  background: #2a3142 !important;
+  box-shadow: 0 0 0 1px #41495e !important;
+}
+
+/* =========================================================
+   AGENDA
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .agenda-toolbar,
+html[data-caretea-theme="dark"] .agenda-legend,
+html[data-caretea-theme="dark"] .cal-month,
+html[data-caretea-theme="dark"] .cal-week,
+html[data-caretea-theme="dark"] .cal-day,
+html[data-caretea-theme="dark"] .ag-modal {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14) !important;
+}
+
+html[data-caretea-theme="dark"] .month-head,
+html[data-caretea-theme="dark"] .month-cell,
+html[data-caretea-theme="dark"] .week-col,
+html[data-caretea-theme="dark"] .week-col-head,
+html[data-caretea-theme="dark"] .week-col-body,
+html[data-caretea-theme="dark"] .day-head,
+html[data-caretea-theme="dark"] .day-row,
+html[data-caretea-theme="dark"] .day-card,
+html[data-caretea-theme="dark"] .day-empty,
+html[data-caretea-theme="dark"] .modal-info {
+  border-color: #30384b !important;
+  background: #181e2b !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .month-cell.muted {
+  background: #151a26 !important;
+  color: #727d95 !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-page
+:is(.toolbar-title, .month-cell, .week-col, .day-head, .day-card, .ag-modal)
+:is(strong, h2, h3, time) {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-page
+:is(.agenda-topbar, .month-cell, .week-col, .day-card, .day-empty, .ag-modal)
+:is(p, small) {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-page
+:is(.nav-btn, .today-btn, .view-switch button, .legend-chip, .modal-close, .btn-ghost) {
+  border-color: #3a4256 !important;
+  background: #202636 !important;
+  color: #d7dcef !important;
+}
+
+html[data-caretea-theme="dark"] .agenda-page .view-switch button.active {
+  border-color: #8069e8 !important;
+  background: #342b5b !important;
+  color: #ffffff !important;
+}
+
+/* =========================================================
+   RELATÓRIOS
+   ========================================================= */
+
+html[data-caretea-theme="dark"] .reports-page .report-filter,
+html[data-caretea-theme="dark"] .reports-page .summary-card,
+html[data-caretea-theme="dark"] .reports-page .panel,
+html[data-caretea-theme="dark"] .reports-page .adherence-highlight,
+html[data-caretea-theme="dark"] .reports-page .report-note {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14) !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page .adherence-highlight,
+html[data-caretea-theme="dark"] .reports-page .history-list article,
+html[data-caretea-theme="dark"] .reports-page .care-stat,
+html[data-caretea-theme="dark"] .reports-page .mood-main {
+  border-color: #30384b !important;
+  background: #181e2b !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page
+:is(.section-title, .summary-card, .panel, .adherence-highlight, .history-list, .care-stat)
+:is(h2, h3, strong, td) {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page
+:is(.section-title, .summary-card, .panel, .adherence-highlight, .history-list, .care-stat)
+:is(p, small) {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page .filter-controls label > span,
+html[data-caretea-theme="dark"] .reports-page .table-wrap th {
+  color: #c8cede !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page .filter-controls select {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page .table-wrap th,
+html[data-caretea-theme="dark"] .reports-page .table-wrap td {
+  border-color: #30384b !important;
+}
+
+html[data-caretea-theme="dark"] .reports-page .progress-ring::before {
+  background: #1b2130 !important;
+}
+
+/* =========================================================
+   MEDICAMENTOS
+   Compatível com as nomenclaturas antigas mais comuns do projeto.
+   ========================================================= */
+
+html[data-caretea-theme="dark"] :is(
+  .medicamentos-page,
+  .medications-page,
+  .meds-page,
+  [class*="medicamentos-page"]
+) :is(
+  .medication-card,
+  .medicamento-card,
+  .medicine-card,
+  .med-card,
+  .calendar-card,
+  .summary-card,
+  .week-summary,
+  .interaction-card,
+  .interactions-card,
+  .alert-card,
+  .tip-card,
+  .info-card,
+  .date-header,
+  .adherence-card,
+  .medication-list
+) {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-caretea-theme="dark"] :is(
+  .medicamentos-page,
+  .medications-page,
+  .meds-page,
+  [class*="medicamentos-page"]
+) :is(h1, h2, h3, strong, .medication-name, .medicine-name) {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] :is(
+  .medicamentos-page,
+  .medications-page,
+  .meds-page,
+  [class*="medicamentos-page"]
+) :is(p, small, .subtitle, .muted, .medication-type) {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] :is(
+  .medicamentos-page,
+  .medications-page,
+  .meds-page,
+  [class*="medicamentos-page"]
+) :is(input, select, textarea) {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+/* =========================================================
+   CONSULTAS
+   Compatível com as nomenclaturas antigas mais comuns do projeto.
+   ========================================================= */
+
+html[data-caretea-theme="dark"] :is(
+  .consultas-page,
+  .consultations-page,
+  .appointments-page,
+  [class*="consultas-page"]
+) :is(
+  .consulta-card,
+  .consultation-card,
+  .appointment-card,
+  .doctor-card,
+  .calendar-card,
+  .summary-card,
+  .filter-card,
+  .info-card,
+  .next-consultation,
+  .next-appointment,
+  .consultation-list,
+  .appointment-list
+) {
+  border-color: #30384b !important;
+  background: #1b2130 !important;
+  color: #eef1f8 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-caretea-theme="dark"] :is(
+  .consultas-page,
+  .consultations-page,
+  .appointments-page,
+  [class*="consultas-page"]
+) :is(h1, h2, h3, strong) {
+  color: #eef1f8 !important;
+}
+
+html[data-caretea-theme="dark"] :is(
+  .consultas-page,
+  .consultations-page,
+  .appointments-page,
+  [class*="consultas-page"]
+) :is(p, small, .subtitle, .muted) {
+  color: #a7afc2 !important;
+}
+
+html[data-caretea-theme="dark"] :is(
+  .consultas-page,
+  .consultations-page,
+  .appointments-page,
+  [class*="consultas-page"]
+) :is(input, select, textarea) {
+  border-color: #3a4256 !important;
+  background: #151a26 !important;
+  color: #eef1f8 !important;
+}
+
+/* Fallback seguro para páginas cujo nome da classe inclui "medicamento" ou "consulta" */
+html[data-caretea-theme="dark"] :is(
+  [class*="medicamento"][class*="page"],
+  [class*="medicamento"][class*="main"],
+  [class*="consulta"][class*="page"],
+  [class*="consulta"][class*="main"]
+) {
+  background: #111521 !important;
+  color: #f3f5fb !important;
+}
