@@ -402,12 +402,6 @@
 .medicamentos-strip {
   margin-top: 40px;
 }
-.medicamentos-strip .puzzle-strip {
-        position: relative !important;
-        inset: auto !important;
-        width: 100% !important;
-        margin: 0;
-}
 
 @media (max-width: 1100px) {
     .medicamentos-page {

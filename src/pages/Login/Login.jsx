@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Login.css";
-import "./LoginMeuDia.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 
