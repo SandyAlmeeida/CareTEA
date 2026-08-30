@@ -4,9 +4,37 @@ import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function criarSessaoDeTeste(email) {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (normalizedEmail === "autista@caretea.com") {
+    return {
+      accountType: "autista",
+      autismLevel: 1,
+      userName: "Lucas",
+      profileName: "Lucas",
+    };
+  }
+
+  if (normalizedEmail === "responsavel3@caretea.com") {
+    return {
+      accountType: "responsavel",
+      autismLevel: 3,
+      userName: "Adriana",
+      profileName: "Evellyn",
+    };
+  }
+
+  return {
+    accountType: "responsavel",
+    autismLevel: 2,
+    userName: "Adriana",
+    profileName: "Evellyn",
+  };
+}
 
 function Login({
   onLogin,
@@ -15,7 +43,6 @@ function Login({
   onRegister,
 }) {
 
-/*ADICIONEI NAVIGATE*/
   const navigate = useNavigate();
 
   const passwordInputRef = useRef(null);
@@ -85,12 +112,18 @@ function Login({
         remember: formData.remember,
       });
 
+      const session = criarSessaoDeTeste(email);
+      const storage = formData.remember ? localStorage : sessionStorage;
+      const otherStorage = formData.remember ? sessionStorage : localStorage;
+
+      otherStorage.removeItem("careteaSession");
+      storage.setItem("careteaSession", JSON.stringify(session));
+
       setMessage({
-        text: "Login validado. Agora conecte o formulário ao backend.",
+        text: "Login realizado.",
         type: "success",
       });
 
-/*ADICIONEI UMA ROTA PARA O DASHBOARD NO BOTÃO DE LOGIN PARA VISUALIZAÇÃO DAS PÁGINAS*/
       navigate("/dashboard");
 
 
@@ -103,6 +136,11 @@ function Login({
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+
+  function abrirAcessoMeuDia() {
+    navigate("/acesso-meu-dia");
   }
 
   function handleAuxiliaryAction(callback, fallbackMessage) {
@@ -400,6 +438,35 @@ function Login({
                   {message.text}
                 </p>
               </form>
+            </section>
+
+
+            <section className="meu-dia-access-card" aria-labelledby="meu-dia-access-title">
+              <div className="meu-dia-access-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="7" y="2.5" width="10" height="19" rx="2.5" />
+                  <path d="M10 18.5h4" />
+                  <path d="M9.5 7.5h5M9.5 11h5M9.5 14.5h3" />
+                </svg>
+              </div>
+
+              <div className="meu-dia-access-copy">
+                <span className="meu-dia-access-label">Acesso simplificado</span>
+                <h3 id="meu-dia-access-title">Tenho um código de acesso</h3>
+                <p>
+                  Use o código, link ou QR Code criado pelo responsável para abrir
+                  a Minha Rotina no celular.
+                </p>
+              </div>
+
+              <button
+                className="meu-dia-access-button"
+                type="button"
+                onClick={abrirAcessoMeuDia}
+              >
+                Acessar Minha Rotina
+                <span aria-hidden="true">›</span>
+              </button>
             </section>
           </section>
         </section>

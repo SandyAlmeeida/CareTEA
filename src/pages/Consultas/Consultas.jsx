@@ -170,7 +170,7 @@ function ConsultaModal({ consulta, onClose, onSave }) {
 
 /* Página de consultas */
 
-function Consultas({ userName = "Sandy", onLogout }) {
+function Consultas({ userName = "Evellyn", onLogout }) {
     const [consultas, setConsultas] = useState(sampleConsultas);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("todas");

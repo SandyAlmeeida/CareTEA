@@ -1,0 +1,718 @@
+* {
+  box-sizing: border-box;
+}
+
+.configuracoes-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 244px minmax(0, 1fr);
+  background: #f6f7fc;
+  color: #101938;
+}
+
+.configuracoes-content {
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.configuracoes-main {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  padding: 30px 30px 48px;
+}
+
+.configuracoes-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 24px 26px;
+  border: 1px solid #e8eaf3;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 92% 15%, rgba(118, 91, 217, 0.10), transparent 28%),
+    linear-gradient(135deg, #ffffff, #faf9ff);
+  box-shadow: 0 10px 25px rgba(31, 39, 75, 0.05);
+}
+
+.configuracoes-hero-icon {
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #7048eb, #765bd9);
+  color: #fff;
+  font-size: 30px;
+  box-shadow: 0 9px 18px rgba(112, 72, 235, 0.18);
+}
+
+.configuracoes-hero span,
+.config-card-header span {
+  display: block;
+  margin-bottom: 5px;
+  color: #765bd9;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.configuracoes-hero h1 {
+  margin: 0;
+  color: #273657;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.configuracoes-hero p {
+  max-width: 790px;
+  margin: 7px 0 0;
+  color: #73809b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.configuracoes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.config-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #e8eaf3;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 9px 22px rgba(27, 35, 67, 0.045);
+}
+
+.config-profile-card {
+  margin-top: 20px;
+}
+
+.config-account-card {
+  margin-top: 20px;
+}
+
+.config-card-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #eef0f6;
+}
+
+.config-card-header-between {
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.config-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.config-card-header h2 {
+  margin: 0;
+  color: #2e3b5d;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.config-card-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.config-card-icon-purple {
+  background: #eee8ff;
+  color: #7048eb;
+}
+
+.config-card-icon-blue {
+  background: #e9f2ff;
+  color: #3383e8;
+}
+
+.config-card-icon-green {
+  background: #e9f8ef;
+  color: #32a96d;
+}
+
+.config-card-icon-yellow {
+  background: #fff4d9;
+  color: #d89717;
+}
+
+.config-card-icon-red {
+  background: #fff0f2;
+  color: #d85f71;
+}
+
+.config-edit-button,
+.config-secondary-button,
+.config-security-actions button,
+.config-reset-button {
+  min-height: 41px;
+  padding: 0 16px;
+  border: 1px solid #dedfee;
+  border-radius: 10px;
+  background: #fff;
+  color: #6551bd;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.config-edit-button {
+  flex: 0 0 auto;
+}
+
+.config-profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 16px 17px;
+  border: 1px solid #edf0f6;
+  border-radius: 15px;
+  background: #fafbfe;
+}
+
+.config-profile-avatar {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eceff7;
+  font-size: 29px;
+}
+
+.config-profile-summary strong,
+.config-profile-summary span,
+.config-profile-summary small {
+  display: block;
+}
+
+.config-profile-summary strong {
+  color: #283756;
+  font-size: 14px;
+}
+
+.config-profile-summary span {
+  margin-top: 4px;
+  color: #6f7b96;
+  font-size: 11.5px;
+}
+
+.config-profile-summary small {
+  margin-top: 5px;
+  color: #765bd9;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.config-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px 18px;
+  margin-top: 20px;
+}
+
+.config-field {
+  min-width: 0;
+}
+
+.config-field > span {
+  display: block;
+  margin-bottom: 7px;
+  color: #4d5873;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.config-field input,
+.config-select-row select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #dfe3ec;
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+  color: #2d3a58;
+  padding: 0 13px;
+  font: inherit;
+  font-size: 12px;
+  transition: 0.18s ease;
+}
+
+.config-field input:focus,
+.config-select-row select:focus {
+  border-color: #846ce0;
+  box-shadow: 0 0 0 3px rgba(118, 91, 217, 0.10);
+}
+
+.config-field input:disabled {
+  background: #f6f7fa;
+  color: #707a92;
+  cursor: not-allowed;
+}
+
+.config-field small {
+  display: block;
+  margin-top: 6px;
+  color: #8a93a8;
+  font-size: 9.5px;
+  line-height: 1.4;
+}
+
+.config-readonly-value {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 13px;
+  border: 1px solid #e3e6ee;
+  border-radius: 10px;
+  background: #f6f7fa;
+  color: #626d86;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.config-profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.config-primary-button {
+  min-height: 43px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(100deg, #2e70db, #765bd9);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(77, 84, 190, 0.17);
+}
+
+.config-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-row,
+.config-select-row {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 15px 2px;
+  border-bottom: 1px solid #eef0f6;
+}
+
+.config-row:last-child,
+.config-select-row:last-child {
+  border-bottom: 0;
+}
+
+.config-row strong,
+.config-select-row strong {
+  display: block;
+  color: #34415f;
+  font-size: 13px;
+}
+
+.config-row p,
+.config-select-row p {
+  max-width: 510px;
+  margin: 5px 0 0;
+  color: #7c879f;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.config-select-row select {
+  width: 190px;
+  flex: 0 0 190px;
+  cursor: pointer;
+}
+
+.config-switch {
+  position: relative;
+  width: 48px;
+  height: 27px;
+  flex: 0 0 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #dfe3eb;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.config-switch span {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(31, 39, 75, 0.16);
+  transition: 0.18s ease;
+}
+
+.config-switch-active {
+  background: linear-gradient(100deg, #7048eb, #765bd9);
+}
+
+.config-switch-active span {
+  transform: translateX(21px);
+}
+
+.config-time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.config-card-note {
+  margin: 13px 0 0;
+  padding: 12px 13px;
+  border-radius: 11px;
+  background: #f8f7fd;
+  color: #747e96;
+  font-size: 10.5px;
+  line-height: 1.5;
+}
+
+.config-security-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.config-account-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.config-account-options > div {
+  padding: 17px;
+  border: 1px solid #edf0f6;
+  border-radius: 14px;
+  background: #fafbfe;
+}
+
+.config-account-options strong {
+  display: block;
+  color: #34415f;
+  font-size: 13px;
+}
+
+.config-account-options p {
+  margin: 5px 0 14px;
+  color: #7c879f;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.config-danger-zone {
+  border-color: #f2dadd !important;
+  background: #fff9fa !important;
+}
+
+.config-danger-button {
+  min-height: 41px;
+  padding: 0 16px;
+  border: 1px solid #f0cfd4;
+  border-radius: 10px;
+  background: #fff;
+  color: #c85366;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.configuracoes-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 11px;
+  margin-top: 20px;
+}
+
+.configuracoes-actions .config-primary-button {
+  min-width: 180px;
+}
+
+.config-feedback {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  margin: 14px 0 0 auto;
+  padding: 11px 14px;
+  border: 1px solid #cfe9ce;
+  border-radius: 12px;
+  background: #f4fbf3;
+  color: #35845a;
+}
+
+.config-feedback span {
+  display: grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  border-radius: 50%;
+  background: #45af74;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.config-feedback p {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+/* Rodapé local para manter o alinhamento correto com a Sidebar */
+.config-caretea-footer {
+  width: calc(100% + 60px);
+  margin: 46px -30px -48px;
+  background: #fff;
+}
+
+.config-puzzle-strip {
+  display: grid;
+  width: 100%;
+  height: 25px;
+  grid-template-columns: repeat(18, 1fr);
+  overflow: hidden;
+}
+
+.config-puzzle-strip span {
+  position: relative;
+}
+
+.config-puzzle-strip span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: inherit;
+}
+
+.config-puzzle-strip .blue {
+  background: #2e70db;
+}
+
+.config-puzzle-strip .purple {
+  background: #765bd9;
+}
+
+.config-puzzle-strip .yellow {
+  background: #ffbf2d;
+}
+
+.config-puzzle-strip .green {
+  background: #7cc66d;
+}
+
+.config-puzzle-strip .red {
+  background: #fa5d61;
+}
+
+.config-page-footer {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  padding: 0 24px;
+  color: #68789b;
+  background: rgba(255, 255, 255, 0.97);
+  font-size: 10px;
+}
+
+.config-page-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.config-page-footer a:hover {
+  text-decoration: underline;
+}
+
+.config-security {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.config-security svg {
+  width: 17px;
+  height: 17px;
+  fill: #2e70db;
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.config-footer-divider {
+  width: 1px;
+  height: 18px;
+  background: #ccd3e4;
+}
+
+@media (max-width: 1100px) {
+  .configuracoes-page {
+    grid-template-columns: 215px minmax(0, 1fr);
+  }
+
+  .configuracoes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .configuracoes-page {
+    display: block;
+  }
+
+  .configuracoes-main {
+    padding: 22px 18px 42px;
+  }
+
+  .config-caretea-footer {
+    width: calc(100% + 36px);
+    margin-right: -18px;
+    margin-bottom: -42px;
+    margin-left: -18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .config-fields-grid,
+  .config-time-grid,
+  .config-account-options {
+    grid-template-columns: 1fr;
+  }
+
+  .config-card-header-between {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .config-edit-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .configuracoes-main {
+    padding: 18px 13px 36px;
+  }
+
+  .configuracoes-hero {
+    align-items: flex-start;
+    padding: 20px 18px;
+  }
+
+  .configuracoes-hero-icon {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+    border-radius: 15px;
+    font-size: 25px;
+  }
+
+  .configuracoes-hero h1 {
+    font-size: 20px;
+  }
+
+  .config-card {
+    padding: 18px 16px;
+  }
+
+  .config-row,
+  .config-select-row {
+    gap: 14px;
+  }
+
+  .config-select-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .config-select-row select {
+    width: 100%;
+    flex: auto;
+  }
+
+  .config-profile-actions,
+  .config-security-actions,
+  .configuracoes-actions {
+    flex-direction: column;
+  }
+
+  .config-profile-actions button,
+  .config-security-actions button,
+  .configuracoes-actions button {
+    width: 100%;
+  }
+
+  .config-feedback {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .config-caretea-footer {
+    width: calc(100% + 26px);
+    margin-right: -13px;
+    margin-left: -13px;
+  }
+
+  .config-page-footer {
+    min-height: 58px;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+
+  .config-footer-divider {
+    display: none;
+  }
+}

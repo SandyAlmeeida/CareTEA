@@ -157,7 +157,9 @@ select {
 
 .docs-main {
   min-width: 0;
+  position: relative;
   padding: 30px 30px 58px;
+  overflow: hidden;
 }
 
 .docs-topbar {
@@ -257,6 +259,26 @@ select {
   margin: 0;
   color: var(--dc-muted);
   font-size: 14px;
+}
+.docs-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 13px;
+  padding: 7px 11px;
+  border: 1px solid #e5e0ff;
+  border-radius: 999px;
+  background: #f7f5ff;
+  color: var(--dc-purple-dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+.docs-count-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e95586;
+  box-shadow: 0 0 0 4px #fce8f0;
 }
 .add-btn {
   height: 46px;
@@ -804,5 +826,144 @@ select {
   }
   .search-box {
     flex-basis: 100%;
+  }
+}
+
+
+/* =========================================================
+   ACRÉSCIMOS DA PÁGINA DE DOCUMENTOS
+   O CSS original acima foi mantido.
+   ========================================================= */
+
+/* A antiga faixa simples continua no JSX original, mas fica oculta.
+   O rodapé com peças abaixo ocupa seu lugar. */
+.docs-ribbon {
+  display: none;
+}
+
+/* Um pouco mais de acabamento, sem alterar a estrutura do colega. */
+.docs-head {
+  padding: 22px 24px;
+  border: 1px solid #e8e4fb;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 92% 18%, rgba(112, 72, 235, 0.07), transparent 24%),
+    #ffffff;
+  box-shadow: 0 9px 24px rgba(21, 30, 62, 0.045);
+}
+
+.docs-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.docs-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #7048eb, #5b9cf6, #ef6b9a);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.docs-card:hover::before {
+  opacity: 1;
+}
+
+.docs-empty {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(112, 72, 235, 0.05), transparent 36%),
+    #ffffff;
+}
+
+/* Rodapé no mesmo padrão visual já usado no CareTEA. */
+.docs-caretea-footer {
+  width: calc(100% + 60px);
+  margin: 46px -30px -58px;
+  background: #ffffff;
+}
+
+.docs-puzzle-strip {
+  width: 100%;
+  height: 25px;
+  overflow: hidden;
+}
+
+.docs-puzzle-strip .puzzle-strip {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 25px !important;
+  margin: 0;
+}
+
+.docs-page-footer {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  padding: 0 24px;
+  color: #68789b;
+  background: rgba(255, 255, 255, 0.97);
+  font-size: 10px;
+}
+
+.docs-page-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.docs-page-footer a:hover {
+  text-decoration: underline;
+}
+
+.docs-security {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.docs-security svg {
+  width: 17px;
+  height: 17px;
+  fill: #2e70db;
+  stroke: #ffffff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.docs-footer-divider {
+  width: 1px;
+  height: 18px;
+  background: #ccd3e4;
+}
+
+@media (max-width: 860px) {
+  .docs-caretea-footer {
+    width: calc(100% + 32px);
+    margin-right: -16px;
+    margin-bottom: -40px;
+    margin-left: -16px;
+  }
+}
+
+@media (max-width: 610px) {
+  .docs-page-footer {
+    height: auto;
+    min-height: 58px;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+
+  .docs-footer-divider {
+    display: none;
   }
 }

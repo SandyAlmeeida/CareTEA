@@ -96,64 +96,115 @@ function Documentos({ userName = "Sandy", onNavigate, onLogout }) {
     link.remove();
   }
 
-  return (
+  function excluirDocumento(documento) { 
+    if (!window.confirm(`Deseja excluir "${documento.descricao}"?`)) return; 
+
+    if (documento.arquivoUrl) URL.revokeObjectURL(documento.arquivoUrl); 
+    setDocumentos((documentosAtuais) => documentosAtuais.filter((item) => item.id !== documento.id)); 
+    setDocumentoVisualizado(null); 
+  } 
+
+  return ( 
     <div className="docs-page">
-      <aside className="docs-sidebar">
-        <img className="docs-logo" src={logoCaretea} alt="CareTEA" />
+      <Sidebar />
 
-        <nav className="docs-menu" aria-label="Menu principal">
-          {menu.map(([id, icon, label]) => (
-            <button
-              key={id}
-              type="button"
-              className={id === "documentos" ? "active" : ""}
-              onClick={() => onNavigate?.(id)}
-            >
-              <span className="menu-icon">{icon}</span>
-              <span>{label}</span>
-              {id === "notificacoes" && <b>3</b>}
-            </button>
-          ))}
-        </nav>
+<main className="docs-main"> 
+        <header className="docs-topbar"> 
+          <div> 
+            <h1>Documentos</h1> 
+            <p>Receitas, laudos, exames e atestados reunidos e seguros.</p> 
+          </div> 
 
-        <div className="docs-help">
-          <div className="help-title">
-            <span>🧩</span>
-            <div>
-              <strong>Precisa de ajuda?</strong>
-              <p>A IA pode explicar receitas e laudos em linguagem simples.</p>
-            </div>
-          </div>
-          <button type="button">Conversar com IA</button>
+          <div className="profile-area"> 
+            <button className="bell" type="button" aria-label="Notificações"> 
+              ♢ <span>3</span> 
+            </button> 
+            <button className="profile" type="button"> 
+              <span className="avatar">👩🏻</span> 
+              <span> 
+                <strong>{userName}</strong> 
+                <small>Nível 2 - Assistida</small> 
+              </span> 
+              <i>⌄</i> 
+            </button> 
+            {onLogout && ( 
+              <button className="logout" type="button" onClick={onLogout}> 
+                Sair 
+              </button> 
+            )} 
+          </div> 
+        </header> 
+
+        <section className="docs-head"> 
+          <div className="docs-head-copy"> 
+            <h2>Meus documentos</h2> 
+            <p>Centralize os arquivos importantes de saúde em um só lugar.</p> 
+            <span className="docs-count"> 
+              <span className="docs-count-dot" aria-hidden="true" /> 
+              {documentos.length} {documentos.length === 1 ? "documento salvo" : "documentos salvos"} 
+            </span> 
+          </div> 
+          <button className="add-btn" type="button" onClick={abrirModal}> 
+            ＋ Adicionar documento 
+          </button> 
+        </section> 
+
+        {documentos.length === 0 ? ( 
+          <section className="docs-empty"> 
+            <span className="empty-icon">🗂️</span> 
+            <strong>Nenhum documento por aqui ainda</strong> 
+            <p>Adicione receitas, laudos, exames e atestados para manter tudo organizado e acessível.</p> 
+            <button className="empty-btn" type="button" onClick={abrirModal}> 
+              ＋ Adicionar primeiro documento 
+            </button> 
+          </section> 
+        ) : ( 
+          <section className="docs-list" aria-label="Documentos adicionados"> 
+            {documentos.map((documento) => ( 
+              <article className="docs-card" key={documento.id}> 
+                {documento.tipoArquivo.startsWith("image/") ? ( 
+                  <img className="docs-card-image" src={documento.arquivoUrl} alt={documento.descricao} /> 
+                ) : ( 
+                  <span className="docs-card-icon">📄</span> 
+                )} 
+                <div className="docs-card-content"> 
+                  <button 
+                    className="docs-card-name" 
+                    type="button" 
+                    onClick={() => setDocumentoVisualizado(documento)} 
+                    aria-label={`Visualizar ${documento.nomeArquivo}`} 
+                  > 
+                    <strong>{documento.nomeArquivo}</strong> 
+                  </button> 
+                  <p>{documento.descricao}</p> 
+                </div> 
+              </article> 
+            ))} 
+          </section> 
+        )} 
+
+        <div className="docs-ribbon" aria-hidden="true"> 
+          <span /> 
+          <span /> 
+          <span /> 
         </div>
-      </aside>
 
-      <main className="docs-main">
-        <header className="docs-topbar">
-          <div>
-            <h1>Documentos</h1>
-            <p>Receitas, laudos, exames e atestados reunidos e seguros.</p>
+        {/* Acrescentado: mesmo padrão de rodapé com peças coloridas usado no CareTEA. */}
+        <div className="docs-caretea-footer">
+          <div className="docs-puzzle-strip" aria-hidden="true">
+            {puzzleColors.map((color, index) => (
+              <span className={color} key={`${color}-${index}`} />
+            ))}
           </div>
 
-          <div className="profile-area">
-            <button className="bell" type="button" aria-label="Notificações">
-              ♢ <span>3</span>
-            </button>
-            <button className="profile" type="button">
-              <span className="avatar">👩🏻</span>
-              <span>
-                <strong>{userName}</strong>
-                <small>Nível 2 - Assistida</small>
-              </span>
-              <i>⌄</i>
-            </button>
-            {onLogout && (
-              <button className="logout" type="button" onClick={onLogout}>
-                Sair
-              </button>
-            )}
-          </div>
-        </header>
+          <footer className="docs-page-footer">
+            <span className="docs-security">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6l-7-3Z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              Seus dados estão protegidos conosco.
+            </span>
 
         <section className="docs-head">
           <div className="docs-head-copy">

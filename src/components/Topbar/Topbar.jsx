@@ -3,7 +3,7 @@ import "./Topbar.css";
 function Topbar({
   title = "Olá!",
   subtitle = "Vamos juntos tornar o dia de hoje mais leve e organizado.",
-  userName = "Sandy",
+  userName = "Evellyn",
   userLevel = "Nível 2 - Assistida",
   notifications = 3,
   onLogout,

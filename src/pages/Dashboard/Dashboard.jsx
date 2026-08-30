@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import Topbar from "../../components/Topbar/Topbar.jsx";
 import StatCard from "../../components/StatCard/StatCard.jsx";
+import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip.jsx";
 
 import "./Dashboard.css";
 
@@ -20,13 +21,6 @@ const stats = [
     label: "Consulta",
     description: "Hoje",
     variant: "blue",
-  },
-  {
-    icon: "△",
-    value: "1",
-    label: "Exame",
-    description: "Próximo",
-    variant: "green",
   },
 ];
 
@@ -60,72 +54,107 @@ const schedule = [
   },
 ];
 
-const moods = [
-  ["🙂", "Ótimo", "otimo", "green"],
-  ["😐", "Bem", "bem", "yellow"],
-  ["😮", "Mais ou menos", "medio", "orange"],
-  ["🙁", "Mal", "mal", "red"],
-  ["😣", "Muito mal", "muito-mal", "purple"],
-];
+
 
 function Dashboard({
-  userName = "Sandy",
+  accountType,
+  userName,
+  profileName,
+  autismLevel,
   onLogout,
 }) {
-  const [selectedMood, setSelectedMood] = useState("bem");
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-  const weekBars = useMemo(
-    () => [
-      ["Seg", 100],
-      ["Ter", 80],
-      ["Qua", 100],
-      ["Qui", 100],
-      ["Sex", 80],
-      ["Sáb", 100],
-      ["Dom", 100],
-    ],
-    []
-  );
+  function readStoredSession() {
+    const rawSession =
+      sessionStorage.getItem("careteaSession") ||
+      localStorage.getItem("careteaSession");
 
-  function sendMessage(event) {
-    event.preventDefault();
+    if (!rawSession) {
+      return null;
+    }
 
-    if (!message.trim()) {
+    try {
+      return JSON.parse(rawSession);
+    } catch {
+      sessionStorage.removeItem("careteaSession");
+      localStorage.removeItem("careteaSession");
+      return null;
+    }
+  }
+
+  const storedSession = readStoredSession();
+
+  const resolvedAccountType =
+    accountType ?? storedSession?.accountType ?? "responsavel";
+
+  const resolvedAutismLevel =
+    autismLevel ??
+    storedSession?.autismLevel ??
+    (resolvedAccountType === "autista" ? 1 : 2);
+
+  const isResponsible = resolvedAccountType === "responsavel";
+
+  const resolvedUserName =
+    userName ??
+    storedSession?.userName ??
+    (isResponsible ? "Adriana" : "Lucas");
+
+  const resolvedProfileName =
+    profileName ??
+    storedSession?.profileName ??
+    (isResponsible ? "Evellyn" : resolvedUserName);
+
+  const topbarSubtitle = isResponsible
+    ? `Acompanhando a rotina de ${resolvedProfileName}.`
+    : "Sua rotina, cuidados e compromissos em um só lugar.";
+
+  const topbarLevel = isResponsible
+    ? `Responsável · Nível ${resolvedAutismLevel}`
+    : `Nível ${resolvedAutismLevel} · Autonomia`;
+
+  function handleLogout() {
+    sessionStorage.removeItem("careteaSession");
+    localStorage.removeItem("careteaSession");
+
+    if (onLogout) {
+      onLogout();
       return;
     }
 
-    console.log("Pergunta para IA:", message.trim());
-
-    setMessage("");
+    navigate("/login");
   }
 
   return (
     <div className="caretea-dashboard">
-      <Sidebar />
+      <Sidebar
+        hideExames
+        accountType={resolvedAccountType}
+        autismLevel={resolvedAutismLevel}
+      />
 
       <main className="dashboard-main">
         <Topbar
-          title={`Olá, ${userName}! 👋`}
-          subtitle="Vamos juntos tornar o dia de hoje mais leve e organizado."
-          userName={userName}
-          userLevel="Nível 2 - Assistida"
+          title={`Olá, ${resolvedUserName}! 👋`}
+          subtitle={topbarSubtitle}
+          userName={resolvedUserName}
+          userLevel={topbarLevel}
           notifications={3}
-          onLogout={onLogout}
+          onLogout={handleLogout}
         />
 
         <section className="quick-actions">
-          <button type="button">
+          <button type="button" onClick={() => navigate("/agenda")}>
             <span>＋</span>
             Novo lembrete
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/consultas")}>
             <span>▣</span>
             Nova consulta
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/documentos")}>
             <span>▤</span>
             Enviar documento
           </button>
@@ -148,9 +177,13 @@ function Dashboard({
 
             <section className="dashboard-panel organized-day-panel">
               <div className="panel-header">
-                <h2>Seu dia, organizado</h2>
+                <h2>
+                  {isResponsible
+                    ? `Rotina de ${resolvedProfileName}`
+                    : "Seu dia, organizado"}
+                </h2>
 
-                <button type="button">
+                <button type="button" onClick={() => navigate("/agenda")}>
                   Ver agenda completa
                 </button>
               </div>
@@ -196,155 +229,18 @@ function Dashboard({
               </div>
             </section>
 
-            <section className="bottom-grid">
-              <article className="dashboard-panel adherence-panel">
-                <div className="panel-header compact">
-                  <h2>Adesão aos medicamentos</h2>
-
-                  <button type="button">
-                    Esta semana⌄
-                  </button>
-                </div>
-
-                <div className="adherence-summary">
-                  <div className="progress-ring">
-                    <span>92%</span>
-                  </div>
-
-                  <div>
-                    <strong>Excelente!</strong>
-
-                    <p>
-                      Você está indo muito bem com seus
-                      medicamentos.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bar-chart">
-                  {weekBars.map(
-                    ([day, value], index) => (
-                      <div
-                        className="bar-column"
-                        key={`${day}-${index}`}
-                      >
-                        <small>{value}%</small>
-
-                        <span
-                          style={{
-                            height: `${value * 0.76}px`,
-                          }}
-                        />
-
-                        <b>{day}</b>
-                      </div>
-                    )
-                  )}
-                </div>
-              </article>
-
-              <article className="dashboard-panel streak-panel">
-                <div className="panel-header compact">
-                  <h2>Sequência de cuidados</h2>
-                </div>
-
-                <div className="streak-number">
-                  <span>🔥</span>
-
-                  <strong>14</strong>
-
-                  <p>dias consecutivos</p>
-                </div>
-
-                <p className="streak-caption">
-                  Continue assim!
-                </p>
-
-                <div className="streak-days">
-                  {[
-                    "S",
-                    "T",
-                    "Q",
-                    "Q",
-                    "S",
-                    "S",
-                    "D",
-                  ].map((day, index) => (
-                    <div key={`${day}-${index}`}>
-                      <span
-                        className={
-                          index === 6 ? "today" : ""
-                        }
-                      >
-                        {index === 6 ? "★" : "✓"}
-                      </span>
-
-                      <small>{day}</small>
-                    </div>
-                  ))}
-                </div>
-              </article>
-
-              <article className="dashboard-panel assistant-panel">
-                <div className="panel-header compact">
-                  <h2>IA Assistente</h2>
-
-                  <button type="button">
-                    Ver histórico
-                  </button>
-                </div>
-
-                <div className="assistant-card">
-                  <div className="assistant-greeting">
-                    <span>🤖</span>
-
-                    <div>
-                      <strong>
-                        Olá, {userName}! 👋
-                      </strong>
-
-                      <p>
-                        Como posso te ajudar hoje?
-                      </p>
-                    </div>
-                  </div>
-
-                  <button type="button">
-                    Quais são meus compromissos de hoje?
-                  </button>
-
-                  <button type="button">
-                    Me lembre dos medicamentos da tarde
-                  </button>
-
-                  <button type="button">
-                    Dicas para organizar minha rotina
-                  </button>
-
-                  <form onSubmit={sendMessage}>
-                    <input
-                      value={message}
-                      onChange={(event) =>
-                        setMessage(event.target.value)
-                      }
-                      placeholder="Digite sua pergunta..."
-                    />
-
-                    <button type="submit">
-                      ➤
-                    </button>
-                  </form>
-                </div>
-              </article>
-            </section>
           </div>
 
           <aside className="dashboard-right">
             <section className="dashboard-panel calendar-panel">
               <div className="panel-header">
-                <h2>Agenda do dia</h2>
+                <h2>
+                  {isResponsible
+                    ? `Agenda de ${resolvedProfileName}`
+                    : "Agenda do dia"}
+                </h2>
 
-                <button type="button">
+                <button type="button" onClick={() => navigate("/agenda")}>
                   Ver calendário
                 </button>
               </div>
@@ -453,50 +349,6 @@ function Dashboard({
               </div>
             </section>
 
-            <section className="dashboard-panel mood-panel">
-              <div className="panel-header">
-                <h2>Como você está hoje?</h2>
-
-                <button type="button">
-                  Atualizar
-                </button>
-              </div>
-
-              <div className="mood-options">
-                {moods.map(
-                  ([
-                    emoji,
-                    label,
-                    value,
-                    tone,
-                  ]) => (
-                    <button
-                      type="button"
-                      key={value}
-                      className={
-                        selectedMood === value
-                          ? "mood-selected"
-                          : ""
-                      }
-                      onClick={() =>
-                        setSelectedMood(value)
-                      }
-                    >
-                      <span
-                        className={`mood-face mood-face-${tone}`}
-                      >
-                        {emoji}
-                      </span>
-
-                      <small>
-                        {label}
-                      </small>
-                    </button>
-                  )
-                )}
-              </div>
-            </section>
-
             <section className="dashboard-panel quick-info-panel">
               <div className="panel-header compact">
                 <h2>Informações rápidas</h2>
@@ -510,13 +362,6 @@ function Dashboard({
                     "20/05/2025 - Terça, 15:00",
                     "Neurologista",
                     "purple",
-                  ],
-                  [
-                    "△",
-                    "Próximo exame",
-                    "22/05/2025 - 07:30",
-                    "Exame de Sangue",
-                    "blue",
                   ],
                 ].map(
                   ([
@@ -556,6 +401,7 @@ function Dashboard({
               <button
                 className="view-all-button"
                 type="button"
+                onClick={() => navigate("/agenda")}
               >
                 Ver todos os compromissos →
               </button>
@@ -563,21 +409,8 @@ function Dashboard({
           </aside>
         </section>
 
-        <div
-          className="dashboard-puzzle-strip"
-          aria-hidden="true"
-        >
-          {Array.from(
-            { length: 18 },
-            (_, index) => (
-              <span
-                key={index}
-                className={`puzzle-color puzzle-color-${
-                  index % 6
-                }`}
-              />
-            )
-          )}
+        <div className="dashboard-puzzle-strip">
+          <PuzzleStrip />
         </div>
       </main>
     </div>

@@ -1,0 +1,457 @@
+.bem-estar-page {
+  min-height: 100vh;
+  grid-template-columns: 244px minmax(0, 1fr);
+}
+
+.bem-estar-content {
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bem-estar-main {
+  min-width: 0;
+  flex: 1;
+  padding: 24px 28px 54px;
+}
+
+.bem-estar-page .puzzle-strip,
+.bem-estar-page .page-footer {
+  position: static !important;
+  inset: auto !important;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.bem-estar-page .puzzle-strip {
+  height: 28px;
+  margin: 0;
+}
+
+.bem-estar-page .page-footer {
+  height: 50px;
+}
+
+.bem-estar-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 22px;
+  padding: 28px;
+  border: 1px solid #dce8ff;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(118, 91, 217, 0.12), transparent 28%),
+    linear-gradient(135deg, #f3f8ff 0%, #f9f7ff 100%);
+  box-shadow: 0 12px 30px rgba(54, 71, 117, 0.06);
+}
+
+.bem-estar-hero > div:first-child > span {
+  color: #5372cf;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.bem-estar-hero h1 {
+  margin: 5px 0 7px;
+  color: #273758;
+  font-size: 28px;
+}
+
+.bem-estar-hero p {
+  max-width: 650px;
+  margin: 0;
+  color: #74819d;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.bem-estar-current {
+  width: 135px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
+.bem-estar-current small {
+  color: #8a94aa;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bem-estar-current strong {
+  margin: 6px 0 4px;
+  font-size: 38px;
+  line-height: 1;
+}
+
+.bem-estar-current span {
+  color: #4d5a77;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.bem-estar-form {
+  display: grid;
+  gap: 17px;
+  margin-top: 18px;
+}
+
+.bem-estar-card {
+  padding: 22px;
+  border: 1px solid #e1e5ee;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(54, 65, 102, 0.045);
+}
+
+.bem-estar-card > header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bem-estar-step {
+  width: 31px;
+  height: 31px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eeebff;
+  color: #6652c0;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.bem-estar-card h2 {
+  margin: 0;
+  color: #35425f;
+  font-size: 17px;
+}
+
+.bem-estar-card header p {
+  margin: 4px 0 0;
+  color: #8792a8;
+  font-size: 11px;
+}
+
+.bem-estar-moods {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.bem-estar-moods button {
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 2px solid #edf0f5;
+  border-radius: 18px;
+  background: #fbfcfe;
+  color: #5d6881;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.bem-estar-moods button span {
+  font-size: 36px;
+}
+
+.bem-estar-moods button strong {
+  font-size: 11px;
+}
+
+.bem-estar-moods button:hover {
+  transform: translateY(-2px);
+}
+
+.bem-estar-moods button.selected {
+  border-color: #8e7ce6;
+  background: #f4f1ff;
+  color: #5e4cb6;
+  box-shadow: 0 8px 18px rgba(103, 82, 192, 0.1);
+}
+
+.bem-estar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.bem-estar-tags button {
+  min-height: 38px;
+  padding: 0 15px;
+  border: 1px solid #dfe4ed;
+  border-radius: 999px;
+  background: #fafbfc;
+  color: #66728a;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bem-estar-tags button.selected {
+  border-color: #6d8fe6;
+  background: #eef4ff;
+  color: #4266bf;
+}
+
+.bem-estar-energy {
+  display: grid;
+  grid-template-columns: auto repeat(5, 46px) auto;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.bem-estar-energy > span {
+  color: #8994a8;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.bem-estar-energy button {
+  width: 46px;
+  height: 46px;
+  border: 1px solid #e0e4ed;
+  border-radius: 14px;
+  background: #fafbfe;
+  color: #69758c;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.bem-estar-energy button.selected {
+  border-color: #7cc66d;
+  background: #eff9ed;
+  color: #4d9144;
+  box-shadow: 0 7px 17px rgba(95, 158, 81, 0.11);
+}
+
+.bem-estar-card textarea {
+  width: 100%;
+  min-height: 116px;
+  margin-top: 18px;
+  padding: 14px 15px;
+  resize: vertical;
+  border: 1px solid #dde2eb;
+  border-radius: 15px;
+  outline: none;
+  background: #fbfcfe;
+  color: #3f4b66;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.bem-estar-card textarea:focus {
+  border-color: #8e7ce6;
+  box-shadow: 0 0 0 4px rgba(118, 91, 217, 0.08);
+}
+
+.bem-estar-counter {
+  display: block;
+  margin-top: 5px;
+  color: #9aa2b4;
+  text-align: right;
+  font-size: 9.5px;
+}
+
+.bem-estar-save {
+  min-height: 50px;
+  border: 0;
+  border-radius: 15px;
+  background: linear-gradient(100deg, #2e70db, #765bd9);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 9px 20px rgba(75, 84, 190, 0.17);
+}
+
+.bem-estar-saved {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+  border: 1px solid #d2ead0;
+  border-radius: 15px;
+  background: #f4fbf3;
+}
+
+.bem-estar-saved > span {
+  width: 31px;
+  height: 31px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #7cc66d;
+  color: #fff;
+  font-weight: 900;
+}
+
+.bem-estar-saved strong {
+  color: #4f744f;
+  font-size: 11.5px;
+}
+
+.bem-estar-saved p {
+  margin: 4px 0 0;
+  color: #789078;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.bem-estar-history {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid #e2e5ed;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.bem-estar-history > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.bem-estar-history header span {
+  color: #7c69ca;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.bem-estar-history h2 {
+  margin: 3px 0 0;
+  color: #37445f;
+  font-size: 16px;
+}
+
+.bem-estar-history header button {
+  border: 0;
+  background: transparent;
+  color: #6653bc;
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.bem-estar-days {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.bem-estar-days article {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 62px;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+  background: #fbfcfd;
+}
+
+.bem-estar-days article span {
+  font-size: 25px;
+}
+
+.bem-estar-days article strong {
+  color: #66718a;
+  font-size: 10.5px;
+}
+
+@media (max-width: 850px) {
+  .bem-estar-moods {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bem-estar-moods button:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .bem-estar-energy {
+    grid-template-columns: repeat(5, 46px);
+  }
+
+  .bem-estar-energy > span {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .bem-estar-main {
+    padding: 18px 14px 44px;
+  }
+
+  .bem-estar-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 22px;
+  }
+
+  .bem-estar-current {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 9px;
+  }
+
+  .bem-estar-current strong {
+    margin: 0;
+    font-size: 30px;
+  }
+
+  .bem-estar-moods {
+    grid-template-columns: 1fr;
+  }
+
+  .bem-estar-moods button:last-child {
+    grid-column: auto;
+  }
+
+  .bem-estar-energy {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+  }
+
+  .bem-estar-energy button {
+    width: 100%;
+  }
+
+  .bem-estar-history > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .bem-estar-days {
+    grid-template-columns: repeat(5, minmax(58px, 1fr));
+    overflow-x: auto;
+  }
+}
