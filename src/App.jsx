@@ -11,6 +11,7 @@ import Relatorios from "./pages/Relatorios/Relatorios.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
 import CriarNovaSenha from "./pages/EsqueciSenha/CriarNovaSenha.jsx";
 import Documentos from "./pages/Documentos/Documentos.jsx";
+import Notificacoes from "./pages/Notificacoes/Notificacoes.jsx";
 import Consultas from "./pages/Consultas/Consultas.jsx";
 import Medicamentos from "./pages/Medicamentos/Medicamentos.jsx";
 import GerenciarMeuDia from "./pages/GerenciarMeuDia/GerenciarMeuDia.jsx";
@@ -29,6 +30,7 @@ function App() {
       medicamentos: "/medicamentos",
       consultas: "/consultas",
       documentos: "/documentos",
+      notificacoes: "/notificacoes",
       relatorios: "/relatorios",
       configuracoes: "/configuracoes",
       "gerenciar-meu-dia": "/gerenciar-meu-dia",
@@ -95,6 +97,15 @@ function App() {
         element={
           <ProtecaoDePerfil>
             <Documentos onNavigate={handleNavigate} />
+          </ProtecaoDePerfil>
+        }
+      />
+
+      <Route
+        path="/notificacoes"
+        element={
+          <ProtecaoDePerfil>
+            <Notificacoes onNavigate={handleNavigate} />
           </ProtecaoDePerfil>
         }
       />
