@@ -125,10 +125,12 @@
     color: white;
     background-color: var(--blue);
     align-self: flex-start;
+    border-radius: 0 1rem 1rem 1rem;
 }
 
 .AI-user-message {
     color: white;
     background-color: var(--green);
     align-self: flex-end;
+    border-radius: 1rem 0 1rem 1rem;
 }
