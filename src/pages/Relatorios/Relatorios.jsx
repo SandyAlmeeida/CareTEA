@@ -1,25 +1,133 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip.jsx";
+import PerfilAvatar from "../../components/PerfilAvatar/PerfilAvatar.jsx";
+import ModalNotificacoes from "../../components/ModalNotificacoes/ModalNotificacoes.jsx";
+import ModalPerfil from "../../components/ModalPerfil/ModalPerfil.jsx";
+
+import {
+  getCareteaProfile,
+  clearCareteaSession,
+} from "../../utils/careteaSession.js";
+
 import "./Relatorios.css";
 
-
 const cards = [
-  ["◊", "92%", "Adesão aos medicamentos", "23 de 25 doses registradas", "purple"],
-  ["▣", "2", "Consultas realizadas", "1 próxima consulta agendada", "blue"],
-  ["♡", "6", "Terapias realizadas", "1 falta registrada", "pink"],
-  ["△", "3", "Exames", "2 realizados e 1 pendente", "green"],
+  [
+    "◊",
+    "92%",
+    "Adesão aos medicamentos",
+    "23 de 25 doses registradas",
+    "purple",
+  ],
+  [
+    "▣",
+    "2",
+    "Consultas realizadas",
+    "1 próxima consulta agendada",
+    "blue",
+  ],
+  [
+    "♡",
+    "6",
+    "Terapias realizadas",
+    "1 falta registrada",
+    "pink",
+  ],
+  [
+    "△",
+    "3",
+    "Exames",
+    "2 realizados e 1 pendente",
+    "green",
+  ],
 ];
 
 const history = [
-  ["12/05/2025", "▣", "Consulta - Neurologista", "Clínica Neuro • Realizada", "Consulta", "blue"],
-  ["13/05/2025", "♡", "Fonoaudiologia", "Sessão online • Realizada", "Terapia", "pink"],
-  ["15/05/2025", "△", "Exame de sangue", "Laboratório Vida • Realizado", "Exame", "green"],
-  ["18/05/2025", "◊", "Metilfenidato 10mg", "Dose das 12:00 • Não registrada", "Medicamento", "orange"],
+  [
+    "12/05/2025",
+    "▣",
+    "Consulta - Neurologista",
+    "Clínica Neuro • Realizada",
+    "Consulta",
+    "blue",
+  ],
+  [
+    "13/05/2025",
+    "♡",
+    "Fonoaudiologia",
+    "Sessão online • Realizada",
+    "Terapia",
+    "pink",
+  ],
+  [
+    "15/05/2025",
+    "△",
+    "Exame de sangue",
+    "Laboratório Vida • Realizado",
+    "Exame",
+    "green",
+  ],
+  [
+    "18/05/2025",
+    "◊",
+    "Metilfenidato 10mg",
+    "Dose das 12:00 • Não registrada",
+    "Medicamento",
+    "orange",
+  ],
 ];
 
-function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
-  const [periodo, setPeriodo] = useState("30");
-  const [tipo, setTipo] = useState("geral");
+const routeMap = {
+  dashboard: "/dashboard",
+  agenda: "/agenda",
+  medicamentos: "/medicamentos",
+  consultas: "/consultas",
+  "bem-estar": "/bem-estar",
+  "gerenciar-meu-dia": "/gerenciar-meu-dia",
+  assistente: "/assistente",
+  notificacoes: "/notificacoes",
+  documentos: "/documentos",
+  relatorios: "/relatorios",
+  configuracoes: "/configuracoes",
+};
+
+function Relatorios({
+  onNavigate,
+  onLogout,
+}) {
+  const navigate = useNavigate();
+
+  const profile = getCareteaProfile();
+
+  const userName =
+    profile?.userName || "Usuário";
+
+  const userLevel =
+    profile?.userLevel || "";
+
+  const [periodo, setPeriodo] =
+    useState("30");
+
+  const [tipo, setTipo] =
+    useState("geral");
+
+  const [
+    notificacoesAbertas,
+    setNotificacoesAbertas,
+  ] = useState(false);
+
+  const [
+    perfilAberto,
+    setPerfilAberto,
+  ] = useState(false);
+
+  const [
+    quantidadeNotificacoes,
+    setQuantidadeNotificacoes,
+  ] = useState(3);
 
   const periodoTexto =
     periodo === "7"
@@ -30,6 +138,52 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
           ? "Período personalizado"
           : "Últimos 30 dias";
 
+  function navegarPagina(id) {
+    setPerfilAberto(false);
+    setNotificacoesAbertas(false);
+
+    if (onNavigate) {
+      onNavigate(id);
+      return;
+    }
+
+    const path = routeMap[id];
+
+    if (path) {
+      navigate(path);
+    }
+  }
+
+  function handleLogout() {
+    clearCareteaSession();
+
+    setPerfilAberto(false);
+    setNotificacoesAbertas(false);
+
+    if (onLogout) {
+      onLogout();
+      return;
+    }
+
+    navigate("/login");
+  }
+
+  function abrirNotificacoes() {
+    setPerfilAberto(false);
+
+    setNotificacoesAbertas(
+      (aberto) => !aberto,
+    );
+  }
+
+  function abrirPerfil() {
+    setNotificacoesAbertas(false);
+
+    setPerfilAberto(
+      (aberto) => !aberto,
+    );
+  }
+
   return (
     <div className="reports-page">
       <Sidebar />
@@ -38,63 +192,154 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
         <header className="reports-topbar">
           <div>
             <h1>Relatórios</h1>
-            <p>Acompanhe a evolução dos cuidados e gere relatórios para consultas.</p>
+
+            <p>
+              Acompanhe a evolução dos cuidados
+              e gere relatórios para consultas.
+            </p>
           </div>
 
           <div className="profile-area">
-            <button className="bell" type="button">
-              ♢ <span>3</span>
+            <button
+              className="bell"
+              type="button"
+              aria-label="Notificações"
+              aria-expanded={
+                notificacoesAbertas
+              }
+              onClick={
+                abrirNotificacoes
+              }
+            >
+              ♢
+
+              {quantidadeNotificacoes > 0 && (
+                <span>
+                  {quantidadeNotificacoes}
+                </span>
+              )}
             </button>
 
-            <button className="profile" type="button">
-              <span className="avatar">👩🏻</span>
+            <button
+              className="profile"
+              type="button"
+              aria-label="Abrir menu do perfil"
+              aria-expanded={perfilAberto}
+              onClick={abrirPerfil}
+            >
+              <PerfilAvatar />
+
               <span>
-                <strong>{userName}</strong>
-                <small>Nível 2 - Assistida</small>
-              </span>
-              <i>⌄</i>
-            </button>
+                <strong>
+                  {userName}
+                </strong>
 
-            {onLogout && (
-              <button className="logout" type="button" onClick={onLogout}>
-                Sair
-              </button>
-            )}
+                {userLevel && (
+                  <small>
+                    {userLevel}
+                  </small>
+                )}
+              </span>
+
+              <i>
+                {perfilAberto
+                  ? "⌃"
+                  : "⌄"}
+              </i>
+            </button>
           </div>
         </header>
 
         <section className="report-filter">
           <div className="filter-intro">
-            <span className="filter-icon">▥</span>
+            <span className="filter-icon">
+              ▥
+            </span>
+
             <div>
-              <strong>Relatório de acompanhamento</strong>
-              <p>Selecione o período e o tipo de informação que deseja visualizar.</p>
+              <strong>
+                Relatório de acompanhamento
+              </strong>
+
+              <p>
+                Selecione o período e o tipo de
+                informação que deseja visualizar.
+              </p>
             </div>
           </div>
 
           <div className="filter-controls">
             <label>
               <span>Período</span>
-              <select value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
-                <option value="7">Últimos 7 dias</option>
-                <option value="30">Últimos 30 dias</option>
-                <option value="90">Últimos 90 dias</option>
-                <option value="personalizado">Personalizado</option>
+
+              <select
+                value={periodo}
+                onChange={(event) =>
+                  setPeriodo(
+                    event.target.value,
+                  )
+                }
+              >
+                <option value="7">
+                  Últimos 7 dias
+                </option>
+
+                <option value="30">
+                  Últimos 30 dias
+                </option>
+
+                <option value="90">
+                  Últimos 90 dias
+                </option>
+
+                <option value="personalizado">
+                  Personalizado
+                </option>
               </select>
             </label>
 
             <label>
-              <span>Tipo de relatório</span>
-              <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-                <option value="geral">Relatório geral</option>
-                <option value="medicamentos">Medicamentos</option>
-                <option value="consultas">Consultas</option>
-                <option value="terapias">Terapias</option>
-                <option value="exames">Exames</option>
+              <span>
+                Tipo de relatório
+              </span>
+
+              <select
+                value={tipo}
+                onChange={(event) =>
+                  setTipo(
+                    event.target.value,
+                  )
+                }
+              >
+                <option value="geral">
+                  Relatório geral
+                </option>
+
+                <option value="medicamentos">
+                  Medicamentos
+                </option>
+
+                <option value="consultas">
+                  Consultas
+                </option>
+
+                <option value="terapias">
+                  Terapias
+                </option>
+
+                <option value="exames">
+                  Exames
+                </option>
               </select>
             </label>
 
-            <button className="pdf-button" type="button" onClick={() => window.print()}>
+            <button
+              className="pdf-button"
+              type="button"
+              onClick={() =>
+                window.print()
+              }
+            >
               ⇩ Gerar PDF
             </button>
           </div>
@@ -102,24 +347,59 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
 
         <div className="section-title">
           <div>
-            <h2>Resumo do período</h2>
-            <p>{periodoTexto}</p>
+            <h2>
+              Resumo do período
+            </h2>
+
+            <p>
+              {periodoTexto}
+            </p>
           </div>
-          <span>Atualizado hoje às 18:30</span>
+
+          <span>
+            Atualizado hoje às 18:30
+          </span>
         </div>
 
         <section className="summary-grid">
-          {cards.map(([icon, value, title, detail, tone]) => (
-            <article className="summary-card" key={title}>
-              <span className={`summary-icon ${tone}`}>{icon}</span>
-              <div>
-                <strong>{value}</strong>
-                <h3>{title}</h3>
-                <p>{detail}</p>
-              </div>
-              <button type="button">Ver detalhes →</button>
-            </article>
-          ))}
+          {cards.map(
+            ([
+              icon,
+              value,
+              title,
+              detail,
+              tone,
+            ]) => (
+              <article
+                className="summary-card"
+                key={title}
+              >
+                <span
+                  className={`summary-icon ${tone}`}
+                >
+                  {icon}
+                </span>
+
+                <div>
+                  <strong>
+                    {value}
+                  </strong>
+
+                  <h3>
+                    {title}
+                  </h3>
+
+                  <p>
+                    {detail}
+                  </p>
+                </div>
+
+                <button type="button">
+                  Ver detalhes →
+                </button>
+              </article>
+            ),
+          )}
         </section>
 
         <section className="reports-grid">
@@ -127,19 +407,44 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
             <article className="panel medication-panel">
               <div className="panel-header">
                 <div>
-                  <h2>Adesão aos medicamentos</h2>
-                  <p>Resumo das doses previstas e registradas.</p>
+                  <h2>
+                    Adesão aos medicamentos
+                  </h2>
+
+                  <p>
+                    Resumo das doses previstas e
+                    registradas.
+                  </p>
                 </div>
-                <button type="button">Ver medicamentos</button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    navegarPagina(
+                      "medicamentos",
+                    )
+                  }
+                >
+                  Ver medicamentos
+                </button>
               </div>
 
               <div className="adherence-highlight">
                 <div className="progress-ring">
-                  <span>92%</span>
+                  <span>
+                    92%
+                  </span>
                 </div>
+
                 <div>
-                  <strong>Excelente adesão</strong>
-                  <p>23 de 25 doses previstas foram registradas no período.</p>
+                  <strong>
+                    Excelente adesão
+                  </strong>
+
+                  <p>
+                    23 de 25 doses previstas foram
+                    registradas no período.
+                  </p>
                 </div>
               </div>
 
@@ -147,34 +452,99 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
                 <table>
                   <thead>
                     <tr>
-                      <th>Medicamento</th>
-                      <th>Previstas</th>
-                      <th>Tomadas</th>
-                      <th>Não registradas</th>
-                      <th>Adesão</th>
+                      <th>
+                        Medicamento
+                      </th>
+
+                      <th>
+                        Previstas
+                      </th>
+
+                      <th>
+                        Tomadas
+                      </th>
+
+                      <th>
+                        Não registradas
+                      </th>
+
+                      <th>
+                        Adesão
+                      </th>
                     </tr>
                   </thead>
+
                   <tbody>
                     <tr>
-                      <td>Risperidona 1mg</td>
-                      <td>14</td>
-                      <td>14</td>
-                      <td>0</td>
-                      <td><span className="pill green">100%</span></td>
+                      <td>
+                        Risperidona 1mg
+                      </td>
+
+                      <td>
+                        14
+                      </td>
+
+                      <td>
+                        14
+                      </td>
+
+                      <td>
+                        0
+                      </td>
+
+                      <td>
+                        <span className="pill green">
+                          100%
+                        </span>
+                      </td>
                     </tr>
+
                     <tr>
-                      <td>Metilfenidato 10mg</td>
-                      <td>7</td>
-                      <td>6</td>
-                      <td>1</td>
-                      <td><span className="pill yellow">86%</span></td>
+                      <td>
+                        Metilfenidato 10mg
+                      </td>
+
+                      <td>
+                        7
+                      </td>
+
+                      <td>
+                        6
+                      </td>
+
+                      <td>
+                        1
+                      </td>
+
+                      <td>
+                        <span className="pill yellow">
+                          86%
+                        </span>
+                      </td>
                     </tr>
+
                     <tr>
-                      <td>Melatonina 3mg</td>
-                      <td>4</td>
-                      <td>3</td>
-                      <td>1</td>
-                      <td><span className="pill orange">75%</span></td>
+                      <td>
+                        Melatonina 3mg
+                      </td>
+
+                      <td>
+                        4
+                      </td>
+
+                      <td>
+                        3
+                      </td>
+
+                      <td>
+                        1
+                      </td>
+
+                      <td>
+                        <span className="pill orange">
+                          75%
+                        </span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -184,19 +554,42 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
             <article className="panel evolution-panel">
               <div className="panel-header">
                 <div>
-                  <h2>Evolução dos cuidados</h2>
-                  <p>Visão geral da regularidade das rotinas.</p>
+                  <h2>
+                    Evolução dos cuidados
+                  </h2>
+
+                  <p>
+                    Visão geral da regularidade das
+                    rotinas.
+                  </p>
                 </div>
-                <button type="button">Comparar período</button>
+
+                <button type="button">
+                  Comparar período
+                </button>
               </div>
 
               <div className="chart">
                 <div className="y-axis">
-                  <span>100%</span>
-                  <span>75%</span>
-                  <span>50%</span>
-                  <span>25%</span>
-                  <span>0%</span>
+                  <span>
+                    100%
+                  </span>
+
+                  <span>
+                    75%
+                  </span>
+
+                  <span>
+                    50%
+                  </span>
+
+                  <span>
+                    25%
+                  </span>
+
+                  <span>
+                    0%
+                  </span>
                 </div>
 
                 <div className="chart-area">
@@ -204,7 +597,11 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
                   <div className="grid-line g2" />
                   <div className="grid-line g3" />
                   <div className="grid-line g4" />
-                  <svg viewBox="0 0 600 180" preserveAspectRatio="none">
+
+                  <svg
+                    viewBox="0 0 600 180"
+                    preserveAspectRatio="none"
+                  >
                     <polyline
                       points="0,120 90,90 180,98 270,55 360,68 450,35 540,42 600,22"
                       fill="none"
@@ -213,6 +610,7 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
+
                     <polyline
                       points="0,142 90,128 180,112 270,98 360,82 450,80 540,63 600,58"
                       fill="none"
@@ -224,41 +622,97 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
                   </svg>
 
                   <div className="x-axis">
-                    <span>Semana 1</span>
-                    <span>Semana 2</span>
-                    <span>Semana 3</span>
-                    <span>Semana 4</span>
+                    <span>
+                      Semana 1
+                    </span>
+
+                    <span>
+                      Semana 2
+                    </span>
+
+                    <span>
+                      Semana 3
+                    </span>
+
+                    <span>
+                      Semana 4
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="legend">
-                <span><b className="purple-line" /> Medicamentos</span>
-                <span><b className="green-line" /> Rotinas e compromissos</span>
+                <span>
+                  <b className="purple-line" />
+                  Medicamentos
+                </span>
+
+                <span>
+                  <b className="green-line" />
+                  Rotinas e compromissos
+                </span>
               </div>
             </article>
 
             <article className="panel history-panel">
               <div className="panel-header">
                 <div>
-                  <h2>Histórico recente</h2>
-                  <p>Principais registros do período selecionado.</p>
+                  <h2>
+                    Histórico recente
+                  </h2>
+
+                  <p>
+                    Principais registros do período
+                    selecionado.
+                  </p>
                 </div>
-                <button type="button">Ver histórico completo</button>
+
+                <button type="button">
+                  Ver histórico completo
+                </button>
               </div>
 
               <div className="history-list">
-                {history.map(([date, icon, title, detail, tag, tone]) => (
-                  <article key={`${date}-${title}`}>
-                    <time>{date}</time>
-                    <span className={`history-icon ${tone}`}>{icon}</span>
-                    <div>
-                      <strong>{title}</strong>
-                      <small>{detail}</small>
-                    </div>
-                    <span className={`history-tag ${tone}`}>{tag}</span>
-                  </article>
-                ))}
+                {history.map(
+                  ([
+                    date,
+                    icon,
+                    title,
+                    detail,
+                    tag,
+                    tone,
+                  ]) => (
+                    <article
+                      key={`${date}-${title}`}
+                    >
+                      <time>
+                        {date}
+                      </time>
+
+                      <span
+                        className={`history-icon ${tone}`}
+                      >
+                        {icon}
+                      </span>
+
+                      <div>
+                        <strong>
+                          {title}
+                        </strong>
+
+                        <small>
+                          {detail}
+                        </small>
+                      </div>
+
+                      <span
+                        className={`history-tag ${tone}`}
+                      >
+                        {tag}
+                      </span>
+                    </article>
+                  ),
+                )}
               </div>
             </article>
           </div>
@@ -267,88 +721,197 @@ function Relatorios({ userName = "Sandy", onNavigate, onLogout }) {
             <article className="panel wellbeing-panel">
               <div className="panel-header">
                 <div>
-                  <h2>Bem-estar registrado</h2>
-                  <p>Como os registros de humor ficaram no período.</p>
+                  <h2>
+                    Bem-estar registrado
+                  </h2>
+
+                  <p>
+                    Como os registros de humor
+                    ficaram no período.
+                  </p>
                 </div>
               </div>
 
               <div className="mood-main">
-                <span>🙂</span>
+                <span>
+                  ♡
+                </span>
+
                 <div>
-                  <strong>Bem</strong>
-                  <p>Estado mais registrado</p>
+                  <strong>
+                    Bem
+                  </strong>
+
+                  <p>
+                    Estado mais registrado
+                  </p>
                 </div>
               </div>
 
               <div className="mood-bars">
                 {[
-                  ["Ótimo", 48, "green"],
-                  ["Bem", 78, "yellow"],
-                  ["Mais ou menos", 43, "orange"],
-                  ["Mal", 28, "red"],
-                  ["Muito mal", 15, "purple"],
-                ].map(([label, width, tone]) => (
-                  <div className="mood-row" key={label}>
-                    <span>{label}</span>
-                    <div>
-                      <b className={tone} style={{ width: `${width}%` }} />
+                  [
+                    "Ótimo",
+                    48,
+                    "green",
+                  ],
+                  [
+                    "Bem",
+                    78,
+                    "yellow",
+                  ],
+                  [
+                    "Mais ou menos",
+                    43,
+                    "orange",
+                  ],
+                  [
+                    "Mal",
+                    28,
+                    "red",
+                  ],
+                  [
+                    "Muito mal",
+                    15,
+                    "purple",
+                  ],
+                ].map(
+                  ([
+                    label,
+                    width,
+                    tone,
+                  ]) => (
+                    <div
+                      className="mood-row"
+                      key={label}
+                    >
+                      <span>
+                        {label}
+                      </span>
+
+                      <div>
+                        <b
+                          className={tone}
+                          style={{
+                            width: `${width}%`,
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             </article>
 
             <article className="panel care-summary">
               <div className="panel-header">
                 <div>
-                  <h2>Consultas e terapias</h2>
-                  <p>Resumo das atividades realizadas.</p>
+                  <h2>
+                    Consultas e terapias
+                  </h2>
+
+                  <p>
+                    Resumo das atividades
+                    realizadas.
+                  </p>
                 </div>
               </div>
 
               <div className="care-stat">
-                <span className="purple">▣</span>
+                <span className="purple">
+                  ▣
+                </span>
+
                 <div>
-                  <strong>2 consultas realizadas</strong>
-                  <small>100% das consultas agendadas</small>
+                  <strong>
+                    2 consultas realizadas
+                  </strong>
+
+                  <small>
+                    100% das consultas agendadas
+                  </small>
                 </div>
               </div>
 
               <div className="care-stat">
-                <span className="pink">♡</span>
+                <span className="pink">
+                  ♡
+                </span>
+
                 <div>
-                  <strong>6 terapias realizadas</strong>
-                  <small>1 falta registrada</small>
+                  <strong>
+                    6 terapias realizadas
+                  </strong>
+
+                  <small>
+                    1 falta registrada
+                  </small>
                 </div>
               </div>
 
               <div className="care-stat">
-                <span className="green">△</span>
+                <span className="green">
+                  △
+                </span>
+
                 <div>
-                  <strong>2 exames realizados</strong>
-                  <small>1 exame ainda está pendente</small>
+                  <strong>
+                    2 exames realizados
+                  </strong>
+
+                  <small>
+                    1 exame ainda está pendente
+                  </small>
                 </div>
               </div>
             </article>
 
             <article className="panel report-note">
-              <span>💡</span>
+              <span>
+                💡
+              </span>
+
               <div>
-                <h2>Relatório de acompanhamento</h2>
+                <h2>
+                  Relatório de acompanhamento
+                </h2>
+
                 <p>
-                  Este relatório resume os registros do CareTEA e não substitui
-                  avaliação médica, laudo ou prontuário profissional.
+                  Este relatório resume os registros
+                  do CareTEA e não substitui
+                  avaliação médica, laudo ou
+                  prontuário profissional.
                 </p>
               </div>
             </article>
           </aside>
         </section>
 
-        <div className="reports-strip" aria-hidden="true">
-          {Array.from({ length: 18 }, (_, index) => (
-            <span key={index} className={`strip-${index % 6}`} />
-          ))}
+        <div className="reports-strip">
+          <PuzzleStrip />
         </div>
+
+        <ModalNotificacoes
+          aberto={notificacoesAbertas}
+          onClose={() =>
+            setNotificacoesAbertas(false)
+          }
+          onQuantidadeAlterada={
+            setQuantidadeNotificacoes
+          }
+          onVerTodas={() =>
+            navegarPagina("notificacoes")
+          }
+        />
+
+        <ModalPerfil
+          aberto={perfilAberto}
+          onClose={() =>
+            setPerfilAberto(false)
+          }
+          onNavigate={navegarPagina}
+          onLogout={handleLogout}
+        />
       </main>
     </div>
   );

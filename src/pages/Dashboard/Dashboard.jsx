@@ -1,26 +1,126 @@
+
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
-import Topbar from "../../components/Topbar/Topbar.jsx";
-import StatCard from "../../components/StatCard/StatCard.jsx";
+import logoCaretea from "../../assets/logo-caretea.png";
 import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip.jsx";
+import PerfilAvatar from "../../components/PerfilAvatar/PerfilAvatar.jsx";
+import ModalNotificacoes from "../../components/ModalNotificacoes/ModalNotificacoes.jsx";
+import ModalPerfil from "../../components/ModalPerfil/ModalPerfil.jsx";
+
+import {
+  getCareteaProfile,
+  clearCareteaSession,
+} from "../../utils/careteaSession.js";
 
 import "./Dashboard.css";
+
+const menuItems = [
+  {
+    id: "dashboard",
+    icon: "⌂",
+    label: "Dashboard",
+  },
+  {
+    id: "agenda",
+    icon: "▣",
+    label: "Agenda",
+  },
+  {
+    id: "medicamentos",
+    icon: "◊",
+    label: "Medicamentos",
+  },
+  {
+    id: "consultas",
+    icon: "♧",
+    label: "Consultas",
+  },
+  {
+    id: "bem-estar",
+    icon: "♡",
+    label: "Bem-estar",
+    onlyFor: "autista-nivel-1",
+  },
+  {
+    id: "gerenciar-meu-dia",
+    icon: "▦",
+    label: "Acesso da Pessoa Autista",
+    onlyFor: "responsavel-nivel-2",
+  },
+  {
+    id: "assistente",
+    icon: "◉",
+    label: "IA Assistente",
+  },
+  {
+    id: "notificacoes",
+    icon: "♢",
+    label: "Notificações",
+  },
+  {
+    id: "documentos",
+    icon: "▤",
+    label: "Documentos",
+  },
+  {
+    id: "relatorios",
+    icon: "▥",
+    label: "Relatórios",
+  },
+  {
+    id: "configuracoes",
+    icon: "⚙",
+    label: "Configurações",
+  },
+];
+
+const routeMap = {
+  dashboard: "/dashboard",
+  agenda: "/agenda",
+  medicamentos: "/medicamentos",
+  consultas: "/consultas",
+  "bem-estar": "/bem-estar",
+  "gerenciar-meu-dia": "/gerenciar-meu-dia",
+  assistente: "/assistente",
+  notificacoes: "/notificacoes",
+  documentos: "/documentos",
+  relatorios: "/relatorios",
+  configuracoes: "/configuracoes",
+};
 
 const stats = [
   {
     icon: "◊",
     value: "3",
-    label: "Medicamentos",
-    description: "Hoje",
-    variant: "purple",
+    title: "Medicamentos",
+    subtitle: "Hoje",
+    tone: "purple",
+    route: "medicamentos",
   },
   {
     icon: "▣",
     value: "1",
-    label: "Consulta",
-    description: "Hoje",
-    variant: "blue",
+    title: "Consulta",
+    subtitle: "Hoje",
+    tone: "blue",
+    route: "consultas",
+  },
+  {
+    icon: "△",
+    value: "1",
+    title: "Exame",
+    subtitle: "Próximo",
+    tone: "green",
+    route: "consultas",
+  },
+  {
+    icon: "♡",
+    value: "1",
+    title: "Terapia",
+    subtitle: "Esta semana",
+    tone: "orange",
+    route: "consultas",
   },
 ];
 
@@ -52,109 +152,324 @@ const schedule = [
     tone: "blue",
     dot: "blue",
   },
+  {
+    time: "18:30",
+    icon: "♡",
+    title: "Terapia - Fonoaudiologia",
+    subtitle: "Sessão online",
+    status: "Em 5h 30min",
+    tone: "purple",
+    dot: "pink",
+  },
 ];
 
-
+const moods = [
+  ["🙂", "Ótimo", "otimo", "green"],
+  ["😐", "Bem", "bem", "yellow"],
+  ["😮", "Mais ou menos", "medio", "orange"],
+  ["🙁", "Mal", "mal", "red"],
+  ["😣", "Muito mal", "muito-mal", "purple"],
+];
 
 function Dashboard({
-  accountType,
-  userName,
-  profileName,
-  autismLevel,
+  onNavigate,
   onLogout,
 }) {
-  const navigate = useNavigate();
+  const routerNavigate = useNavigate();
 
-  function readStoredSession() {
-    const rawSession =
-      sessionStorage.getItem("careteaSession") ||
-      localStorage.getItem("careteaSession");
+  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [selectedMood, setSelectedMood] = useState("bem");
+  const [notificacoesAbertas, setNotificacoesAbertas] =
+    useState(false);
 
-    if (!rawSession) {
-      return null;
+  const [perfilAberto, setPerfilAberto] =
+    useState(false);
+
+  const [
+    quantidadeNotificacoes,
+    setQuantidadeNotificacoes,
+  ] = useState(3);
+
+  const profile = getCareteaProfile();
+
+  const accountType = profile?.accountType;
+  const autismLevel = profile?.autismLevel;
+  const isResponsible = profile?.isResponsible === true;
+
+  const userName =
+    profile?.userName || "Usuário";
+
+  const profileName =
+    profile?.profileName || "";
+
+  const userLevel =
+    profile?.userLevel || "";
+
+  const dashboardSubtitle =
+    isResponsible && profileName
+      ? `Acompanhando a rotina de ${profileName}.`
+      : isResponsible
+        ? "Acompanhe a rotina e os cuidados em um só lugar."
+        : "Sua rotina, cuidados e compromissos em um só lugar.";
+
+  const organizedDayTitle =
+    isResponsible && profileName
+      ? `Rotina de ${profileName}`
+      : isResponsible
+        ? "Rotina acompanhada"
+        : "Seu dia, organizado";
+
+  const agendaTitle =
+    isResponsible && profileName
+      ? `Agenda de ${profileName}`
+      : isResponsible
+        ? "Agenda acompanhada"
+        : "Agenda do dia";
+
+  const moodTitle =
+    isResponsible && profileName
+      ? `Como ${profileName} está hoje?`
+      : isResponsible
+        ? "Como está a pessoa acompanhada hoje?"
+        : "Como você está hoje?";
+
+  const visibleMenuItems =
+    menuItems.filter((item) => {
+      if (
+        item.onlyFor === "autista-nivel-1" &&
+        !(
+          accountType === "autista" &&
+          autismLevel === 1
+        )
+      ) {
+        return false;
+      }
+
+      if (
+        item.onlyFor === "responsavel-nivel-2" &&
+        !(
+          accountType === "responsavel" &&
+          autismLevel === 2
+        )
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
+  function navigateTo(id) {
+    setActiveMenu(id);
+    setNotificacoesAbertas(false);
+    setPerfilAberto(false);
+
+    if (onNavigate) {
+      onNavigate(id);
+      return;
     }
 
-    try {
-      return JSON.parse(rawSession);
-    } catch {
-      sessionStorage.removeItem("careteaSession");
-      localStorage.removeItem("careteaSession");
-      return null;
+    const path = routeMap[id];
+
+    if (path) {
+      routerNavigate(path);
     }
   }
 
-  const storedSession = readStoredSession();
-
-  const resolvedAccountType =
-    accountType ?? storedSession?.accountType ?? "responsavel";
-
-  const resolvedAutismLevel =
-    autismLevel ??
-    storedSession?.autismLevel ??
-    (resolvedAccountType === "autista" ? 1 : 2);
-
-  const isResponsible = resolvedAccountType === "responsavel";
-
-  const resolvedUserName =
-    userName ??
-    storedSession?.userName ??
-    (isResponsible ? "Adriana" : "Lucas");
-
-  const resolvedProfileName =
-    profileName ??
-    storedSession?.profileName ??
-    (isResponsible ? "Evellyn" : resolvedUserName);
-
-  const topbarSubtitle = isResponsible
-    ? `Acompanhando a rotina de ${resolvedProfileName}.`
-    : "Sua rotina, cuidados e compromissos em um só lugar.";
-
-  const topbarLevel = isResponsible
-    ? `Responsável · Nível ${resolvedAutismLevel}`
-    : `Nível ${resolvedAutismLevel} · Autonomia`;
-
   function handleLogout() {
-    sessionStorage.removeItem("careteaSession");
-    localStorage.removeItem("careteaSession");
+    clearCareteaSession();
+
+    setPerfilAberto(false);
+    setNotificacoesAbertas(false);
 
     if (onLogout) {
       onLogout();
       return;
     }
 
-    navigate("/login");
+    routerNavigate("/login");
+  }
+
+  function toggleNotifications() {
+    setPerfilAberto(false);
+
+    setNotificacoesAbertas(
+      (aberto) => !aberto,
+    );
+  }
+
+  function toggleProfile() {
+    setNotificacoesAbertas(false);
+
+    setPerfilAberto(
+      (aberto) => !aberto,
+    );
   }
 
   return (
     <div className="caretea-dashboard">
-      <Sidebar
-        hideExames
-        accountType={resolvedAccountType}
-        autismLevel={resolvedAutismLevel}
-      />
-
-      <main className="dashboard-main">
-        <Topbar
-          title={`Olá, ${resolvedUserName}! 👋`}
-          subtitle={topbarSubtitle}
-          userName={resolvedUserName}
-          userLevel={topbarLevel}
-          notifications={3}
-          onLogout={handleLogout}
+      <aside className="dashboard-sidebar">
+        <img
+          src={logoCaretea}
+          alt="CareTEA"
+          className="sidebar-logo"
         />
 
+        <nav
+          className="sidebar-nav"
+          aria-label="Menu principal"
+        >
+          {visibleMenuItems.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`sidebar-item ${
+                activeMenu === item.id
+                  ? "sidebar-item-active"
+                  : ""
+              }`}
+              onClick={() =>
+                navigateTo(item.id)
+              }
+            >
+              <span className="sidebar-icon">
+                {item.icon}
+              </span>
+
+              <span>{item.label}</span>
+
+              {item.id === "notificacoes" &&
+                quantidadeNotificacoes > 0 && (
+                  <span className="sidebar-badge">
+                    {quantidadeNotificacoes}
+                  </span>
+                )}
+            </button>
+          ))}
+        </nav>
+
+        <div className="sidebar-help-card">
+          <div className="help-illustration">
+            🧩
+          </div>
+
+          <strong>
+            Precisa de ajuda?
+          </strong>
+
+          <p>
+            Nossa IA está aqui para te apoiar
+            sempre que precisar.
+          </p>
+
+          <button
+            type="button"
+            onClick={() =>
+              navigateTo("assistente")
+            }
+          >
+            Conversar com IA
+          </button>
+        </div>
+
+        <button
+          className="sidebar-item"
+          type="button"
+          onClick={handleLogout}
+        >
+          <span className="sidebar-icon">
+            ↪
+          </span>
+
+          <span>Sair</span>
+        </button>
+      </aside>
+
+      <main className="dashboard-main">
+        <header className="dashboard-topbar">
+          <div>
+            <h1>
+              Olá, {userName}! 👋
+            </h1>
+
+            <p>
+              {dashboardSubtitle}
+            </p>
+          </div>
+
+          <div className="topbar-actions">
+            <button
+              className="notification-button"
+              type="button"
+              aria-label="Abrir notificações"
+              aria-expanded={notificacoesAbertas}
+              onClick={toggleNotifications}
+            >
+              ♢
+
+              {quantidadeNotificacoes > 0 && (
+                <span>
+                  {quantidadeNotificacoes}
+                </span>
+              )}
+            </button>
+
+            <button
+              className="profile-button"
+              type="button"
+              aria-label="Abrir menu do perfil"
+              aria-expanded={perfilAberto}
+              onClick={toggleProfile}
+            >
+              <PerfilAvatar />
+
+              <span className="profile-copy">
+                <strong>
+                  {userName}
+                </strong>
+
+                {userLevel && (
+                  <small>
+                    {userLevel}
+                  </small>
+                )}
+              </span>
+
+              <span>
+                {perfilAberto
+                  ? "⌃"
+                  : "⌄"}
+              </span>
+            </button>
+          </div>
+        </header>
+
         <section className="quick-actions">
-          <button type="button" onClick={() => navigate("/agenda")}>
+          <button
+            type="button"
+            onClick={() =>
+              navigateTo("agenda")
+            }
+          >
             <span>＋</span>
             Novo lembrete
           </button>
 
-          <button type="button" onClick={() => navigate("/consultas")}>
+          <button
+            type="button"
+            onClick={() =>
+              navigateTo("consultas")
+            }
+          >
             <span>▣</span>
             Nova consulta
           </button>
 
-          <button type="button" onClick={() => navigate("/documentos")}>
+          <button
+            type="button"
+            onClick={() =>
+              navigateTo("documentos")
+            }
+          >
             <span>▤</span>
             Enviar documento
           </button>
@@ -164,26 +479,54 @@ function Dashboard({
           <div className="dashboard-center">
             <section className="stats-grid">
               {stats.map((stat) => (
-                <StatCard
-                  key={stat.label}
-                  icon={stat.icon}
-                  value={stat.value}
-                  label={stat.label}
-                  description={stat.description}
-                  variant={stat.variant}
-                />
+                <article
+                  className="stat-card"
+                  key={stat.title}
+                >
+                  <span
+                    className={`stat-icon stat-icon-${stat.tone}`}
+                  >
+                    {stat.icon}
+                  </span>
+
+                  <div className="stat-copy">
+                    <strong>
+                      {stat.value}
+                    </strong>
+
+                    <span>
+                      {stat.title}
+                    </span>
+
+                    <small>
+                      {stat.subtitle}
+                    </small>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      navigateTo(stat.route)
+                    }
+                  >
+                    Ver todos →
+                  </button>
+                </article>
               ))}
             </section>
 
             <section className="dashboard-panel organized-day-panel">
               <div className="panel-header">
                 <h2>
-                  {isResponsible
-                    ? `Rotina de ${resolvedProfileName}`
-                    : "Seu dia, organizado"}
+                  {organizedDayTitle}
                 </h2>
 
-                <button type="button" onClick={() => navigate("/agenda")}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    navigateTo("agenda")
+                  }
+                >
                   Ver agenda completa
                 </button>
               </div>
@@ -199,7 +542,9 @@ function Dashboard({
                         className={`timeline-dot timeline-dot-${item.dot}`}
                       />
 
-                      <time>{item.time}</time>
+                      <time>
+                        {item.time}
+                      </time>
                     </div>
 
                     <div
@@ -209,8 +554,13 @@ function Dashboard({
                     </div>
 
                     <div className="timeline-copy">
-                      <strong>{item.title}</strong>
-                      <small>{item.subtitle}</small>
+                      <strong>
+                        {item.title}
+                      </strong>
+
+                      <small>
+                        {item.subtitle}
+                      </small>
                     </div>
 
                     <span
@@ -235,12 +585,15 @@ function Dashboard({
             <section className="dashboard-panel calendar-panel">
               <div className="panel-header">
                 <h2>
-                  {isResponsible
-                    ? `Agenda de ${resolvedProfileName}`
-                    : "Agenda do dia"}
+                  {agendaTitle}
                 </h2>
 
-                <button type="button" onClick={() => navigate("/agenda")}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    navigateTo("agenda")
+                  }
+                >
                   Ver calendário
                 </button>
               </div>
@@ -250,7 +603,9 @@ function Dashboard({
                   ‹
                 </button>
 
-                <strong>Maio 2025</strong>
+                <strong>
+                  Maio 2025
+                </strong>
 
                 <button type="button">
                   ›
@@ -311,6 +666,13 @@ function Dashboard({
                     "purple",
                     "›",
                   ],
+                  [
+                    "18:30",
+                    "Terapia - Fonoaudiologia",
+                    "Sessão online",
+                    "orange",
+                    "›",
+                  ],
                 ].map(
                   ([
                     time,
@@ -322,7 +684,9 @@ function Dashboard({
                     <article
                       key={`${time}-${title}`}
                     >
-                      <time>{time}</time>
+                      <time>
+                        {time}
+                      </time>
 
                       <span
                         className={`agenda-line agenda-line-${tone}`}
@@ -344,14 +708,16 @@ function Dashboard({
                         {action}
                       </b>
                     </article>
-                  )
+                  ),
                 )}
               </div>
             </section>
 
             <section className="dashboard-panel quick-info-panel">
               <div className="panel-header compact">
-                <h2>Informações rápidas</h2>
+                <h2>
+                  Informações rápidas
+                </h2>
               </div>
 
               <div className="quick-info-list">
@@ -363,6 +729,20 @@ function Dashboard({
                     "Neurologista",
                     "purple",
                   ],
+                  [
+                    "△",
+                    "Próximo exame",
+                    "22/05/2025 - 07:30",
+                    "Exame de Sangue",
+                    "blue",
+                  ],
+                  [
+                    "♡",
+                    "Próxima terapia",
+                    "13/05/2025 - 18:30",
+                    "Fonoaudiologia",
+                    "pink",
+                  ],
                 ].map(
                   ([
                     icon,
@@ -371,7 +751,9 @@ function Dashboard({
                     tag,
                     tone,
                   ]) => (
-                    <article key={title}>
+                    <article
+                      key={title}
+                    >
                       <span
                         className={`quick-info-icon quick-info-${tone}`}
                       >
@@ -392,16 +774,20 @@ function Dashboard({
                         {tag}
                       </span>
 
-                      <b>♙</b>
+                      <b>
+                        ♙
+                      </b>
                     </article>
-                  )
+                  ),
                 )}
               </div>
 
               <button
                 className="view-all-button"
                 type="button"
-                onClick={() => navigate("/agenda")}
+                onClick={() =>
+                  navigateTo("agenda")
+                }
               >
                 Ver todos os compromissos →
               </button>
@@ -412,7 +798,30 @@ function Dashboard({
         <div className="dashboard-puzzle-strip">
           <PuzzleStrip />
         </div>
+
+        <ModalNotificacoes
+          aberto={notificacoesAbertas}
+          onClose={() =>
+            setNotificacoesAbertas(false)
+          }
+          onQuantidadeAlterada={
+            setQuantidadeNotificacoes
+          }
+          onVerTodas={() =>
+            navigateTo("notificacoes")
+          }
+        />
+
+        <ModalPerfil
+          aberto={perfilAberto}
+          onClose={() =>
+            setPerfilAberto(false)
+          }
+          onNavigate={navigateTo}
+          onLogout={handleLogout}
+        />
       </main>
+
     </div>
   );
 }

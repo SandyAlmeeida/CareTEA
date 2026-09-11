@@ -3,7 +3,6 @@
 }
 
 .docs-page {
-  /* Cores base alinhadas ao index.css do projeto. */
   --dc-bg: #f6f7fc;
   --dc-card: #ffffff;
   --dc-text: #111936;
@@ -29,8 +28,6 @@ select {
   border: 0;
   cursor: pointer;
 }
-
-/* ------------------------ sidebar ------------------------ */
 
 .docs-sidebar {
   position: sticky;
@@ -141,8 +138,6 @@ select {
   font-weight: 600;
 }
 
-/* ------------------------ main / topbar ------------------------ */
-
 .docs-main {
   min-width: 0;
   position: relative;
@@ -228,8 +223,6 @@ select {
   background: #e2e5f2;
 }
 
-/* ------------------------ cabeçalho da seção ------------------------ */
-
 .docs-head {
   display: flex;
   flex-wrap: wrap;
@@ -281,8 +274,6 @@ select {
 .add-btn:hover {
   filter: brightness(1.05);
 }
-
-/* ------------------------ estado vazio ------------------------ */
 
 .docs-empty {
   display: flex;
@@ -444,8 +435,6 @@ select {
     margin-top: 32px;
   }
 }
-
-/* ------------------------ modal ------------------------ */
 
 .docs-modal-overlay {
   position: fixed;
@@ -611,8 +600,6 @@ select {
   background: #ffe1e6;
 }
 
-/* ------------------------ responsivo ------------------------ */
-
 @media (max-width: 1080px) {
   .docs-page {
     grid-template-columns: 1fr;
@@ -655,18 +642,10 @@ select {
 }
 
 
-/* =========================================================
-   ACRÉSCIMOS DA PÁGINA DE DOCUMENTOS
-   O CSS original acima foi mantido.
-   ========================================================= */
-
-/* A antiga faixa simples continua no JSX original, mas fica oculta.
-   O rodapé com peças abaixo ocupa seu lugar. */
 .docs-ribbon {
   display: none;
 }
 
-/* Um pouco mais de acabamento, sem alterar a estrutura do colega. */
 .docs-head {
   padding: 22px 24px;
   border: 1px solid #e8e4fb;
@@ -704,7 +683,6 @@ select {
     #ffffff;
 }
 
-/* Rodapé no mesmo padrão visual já usado no CareTEA. */
 .docs-caretea-footer {
   width: calc(100% + 60px);
   margin: 46px -30px -58px;

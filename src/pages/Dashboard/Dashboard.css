@@ -1122,20 +1122,17 @@ button {
 }
 
 .dashboard-puzzle-strip {
-  position:absolute;
-  right:20px;
-  bottom:10px;
-  left:20px;
+  width:100%;
+  margin-top:28px;
   overflow:hidden;
   border-radius:8px;
-  opacity:.9
 }
 
 .dashboard-puzzle-strip .puzzle-strip {
   position:relative !important;
   inset:auto !important;
   width:100% !important;
-  height:28px !important;
+  margin:0;
 }
 
 .puzzle-color-0 {

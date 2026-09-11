@@ -142,64 +142,6 @@ function DashboardAutista() {
           <div className="welcome-profile">L</div>
         </header>
 
-        <section className="care-section mood-section">
-          <div className="section-heading">
-            <div className="section-icon mood-icon">☺</div>
-
-            <div>
-              <h2>Como você está hoje?</h2>
-              <p>Escolha como você está se sentindo agora.</p>
-            </div>
-          </div>
-
-          <div className="mood-options">
-            <button
-              type="button"
-              aria-pressed={humor === "bem"}
-              className={`mood-option ${
-                humor === "bem" ? "selected mood-good" : ""
-              }`}
-              onClick={() => setHumor("bem")}
-            >
-              <span className="mood-face">😊</span>
-              <strong>Estou bem</strong>
-            </button>
-
-            <button
-              type="button"
-              aria-pressed={humor === "mais-ou-menos"}
-              className={`mood-option ${
-                humor === "mais-ou-menos"
-                  ? "selected mood-medium"
-                  : ""
-              }`}
-              onClick={() => setHumor("mais-ou-menos")}
-            >
-              <span className="mood-face">😐</span>
-              <strong>Mais ou menos</strong>
-            </button>
-
-            <button
-              type="button"
-              aria-pressed={humor === "mal"}
-              className={`mood-option ${
-                humor === "mal" ? "selected mood-bad" : ""
-              }`}
-              onClick={() => setHumor("mal")}
-            >
-              <span className="mood-face">😣</span>
-              <strong>Não estou bem</strong>
-            </button>
-          </div>
-
-          {humor && (
-            <div className="mood-confirmation">
-              <span>✓</span>
-              Obrigado por contar como você está.
-            </div>
-          )}
-        </section>
-
         <section className="care-section medication-section">
           <div className="section-accent medication-accent"></div>
 
