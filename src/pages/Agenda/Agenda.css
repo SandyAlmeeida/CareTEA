@@ -3,7 +3,6 @@
 }
 
 .agenda-page {
-  /* Cores base alinhadas ao index.css do projeto. */
   --ag-bg: #f6f7fc;
   --ag-card: #ffffff;
   --ag-text: #111936;
@@ -12,7 +11,6 @@
   --ag-purple: #6947e7;
   --ag-purple-dark: #5235d0;
 
-  /* Cores por tipo de evento (strong = destaque, soft = fundo). */
   --blue: #3485e8;
   --blue-soft: #e8f1fd;
   --green: #22a96f;
@@ -44,7 +42,6 @@ select {
   cursor: pointer;
 }
 
-/* ------------------------ sidebar ------------------------ */
 
 .agenda-sidebar {
   position: sticky;
@@ -155,7 +152,6 @@ select {
   font-weight: 600;
 }
 
-/* ------------------------ main / topbar ------------------------ */
 
 .agenda-main {
   min-width: 0;
@@ -252,7 +248,6 @@ select {
   background: #e2e5f2;
 }
 
-/* ------------------------ toolbar ------------------------ */
 
 .agenda-toolbar {
   display: flex;
@@ -344,7 +339,6 @@ select {
   filter: brightness(1.05);
 }
 
-/* ------------------------ legenda / filtros ------------------------ */
 
 .agenda-legend {
   display: flex;
@@ -384,7 +378,6 @@ select {
 .chip-orange .chip-dot { background: var(--orange); }
 .chip-red .chip-dot { background: var(--red); }
 
-/* ------------------------ visão de mês ------------------------ */
 
 .cal-month {
   border: 1px solid var(--ag-border);
@@ -492,7 +485,6 @@ select {
   font-weight: 600;
 }
 
-/* Preenchimento por cor de tipo (pílulas, barras e cartões). */
 .ev-blue { background: var(--blue-soft); border-left: 3px solid var(--blue); }
 .ev-green { background: var(--green-soft); border-left: 3px solid var(--green); }
 .ev-purple { background: var(--purple-soft); border-left: 3px solid var(--purple); }
@@ -500,7 +492,6 @@ select {
 .ev-orange { background: var(--orange-soft); border-left: 3px solid var(--orange); }
 .ev-red { background: var(--red-soft); border-left: 3px solid var(--red); }
 
-/* ------------------------ visão de semana ------------------------ */
 
 .cal-week {
   display: grid;
@@ -582,7 +573,6 @@ select {
   font-size: 11px;
 }
 
-/* ------------------------ visão de dia ------------------------ */
 
 .cal-day {
   border: 1px solid var(--ag-border);
@@ -719,7 +709,6 @@ select {
   font-size: 13px;
 }
 
-/* ------------------------ modal ------------------------ */
 
 .ag-overlay {
   position: fixed;
@@ -826,7 +815,6 @@ select {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ------------------------ responsivo ------------------------ */
 
 @media (max-width: 1080px) {
   .agenda-page {

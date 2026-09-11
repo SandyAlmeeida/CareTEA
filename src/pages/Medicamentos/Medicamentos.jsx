@@ -8,7 +8,6 @@ import Icon from "../../assets/Icons/Icon";
 import "./Medicamentos.css";
 import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 
-/* Exemplos de medicamentos cadastrados */
 
 const sampleMedications = [
     {
@@ -57,7 +56,6 @@ const sampleMedications = [
     },
 ];
 
-/* Histórico e Status */
 
 const sampleHistory = [
     { id: 1, medication: "Vitamina D", time: "09:00", date: "07/08", detail: "Responsável avisado — 07/08, 13:12" },
@@ -71,7 +69,6 @@ function formatHistoryDate(date) {
     return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }).format(date);
 }
 
-/* Cards de medicamentos */
 
 function MedicationCard({ medication, onTaken, onRemindLater, onEdit, onDelete }) {
     return (
@@ -111,7 +108,6 @@ function MedicationCard({ medication, onTaken, onRemindLater, onEdit, onDelete }
     );
 }
 
-/* Modal para cadastrar / editar medicamentos */
 
 function MedicationModal({ medication, onClose, onSave }) {
     const [formData, setFormData] = useState(() => ({
@@ -212,7 +208,6 @@ function MedicationModal({ medication, onClose, onSave }) {
     );
 }
 
-/* Página de medicamentos */
 
 function Medicamentos({ initialMedications = sampleMedications, initialHistory = sampleHistory, onLogout, onAddMedication, onUpdateMedication, onDeleteMedication, userName = "Evellyn" }) {
     const [medications, setMedications] = useState(initialMedications);

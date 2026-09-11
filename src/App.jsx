@@ -1,5 +1,6 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 
+import Notificacoes from "./pages/Notificacoes/Notificacoes.jsx";
 import AcessoMeuDia from "./pages/AcessoMeuDia/AcessoMeuDia.jsx";
 import DashboardAutista from "./pages/DashboardAutista/DashboardAutista.jsx";
 import Home from "./pages/Home/Home.jsx";
@@ -33,6 +34,7 @@ function App() {
       documentos: "/documentos",
       relatorios: "/relatorios",
       assistente: "/assistente",
+      notificacoes: "/notificacoes",
       configuracoes: "/configuracoes",
       "gerenciar-meu-dia": "/gerenciar-meu-dia",
       "bem-estar": "/bem-estar",
@@ -50,6 +52,13 @@ function App() {
       <TemaCareTEA />
 
       <Routes>
+       <Route
+       path="/notificacoes"element={<ProtecaoDePerfil>
+       <Notificacoes onNavigate={handleNavigate} />
+       </ProtecaoDePerfil>
+         }
+       />
+
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />

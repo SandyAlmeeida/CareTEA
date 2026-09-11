@@ -1293,9 +1293,6 @@ button {
 
 }
 
-/* =========================================================
-   AJUSTES DE LEITURA E PROPORÇÃO
-   ========================================================= */
 
 .caretea-dashboard {
   font-size: 15px;
@@ -1630,11 +1627,7 @@ button {
   }
 }
 
-/* =========================================================
-   AJUSTES DE LEITURA — IA ASSISTENTE PARA BAIXO
-   ========================================================= */
 
-/* IA Assistente */
 .assistant-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1664,7 +1657,6 @@ button {
   font-size: 13.5px;
 }
 
-/* Calendário / agenda */
 .calendar-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1705,7 +1697,6 @@ button {
   line-height: 1.45;
 }
 
-/* Humor */
 .mood-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1730,7 +1721,6 @@ button {
   line-height: 1.35;
 }
 
-/* Informações rápidas */
 .quick-info-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1773,7 +1763,6 @@ button {
   font-size: 13.5px;
 }
 
-/* Mantém boa proporção em telas menores */
 @media (max-width: 700px) {
   .assistant-panel .panel-header h2,
   .calendar-panel .panel-header h2,

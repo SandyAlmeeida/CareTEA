@@ -8,7 +8,6 @@ import Icon from "../../assets/Icons/Icon";
 import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
 import "./Consultas.css";
 
-/* Exemplos de consultas cadastradas */
 
 const sampleConsultas = [
     {
@@ -43,11 +42,9 @@ const sampleConsultas = [
     },
 ];
 
-/* Formulário vazio para novas consultas */
 
 const emptyForm = { titulo: "", especialidade: "", data: "", horario: "", local: "", observacoes: "", lembrete: true };
 
-/* Cards de consultas */
 
 function ConsultaCard({ consulta, onEdit, onDelete, onToggleReminder }) {
     return (
@@ -97,7 +94,6 @@ function ConsultaCard({ consulta, onEdit, onDelete, onToggleReminder }) {
     );
 }
 
-/* Modal para cadastrar / editar consultas */
 
 function ConsultaModal({ consulta, onClose, onSave }) {
     const [form, setForm] = useState(() => (consulta ? { ...consulta } : emptyForm));
@@ -168,7 +164,6 @@ function ConsultaModal({ consulta, onClose, onSave }) {
     );
 }
 
-/* Página de consultas */
 
 function Consultas({ userName = "Evellyn", onLogout }) {
     const [consultas, setConsultas] = useState(sampleConsultas);
