@@ -46,6 +46,16 @@ export function getCareteaProfile() {
   };
 }
 
+export function getCareteaUserId() {
+  const session = getCareteaSession();
+
+  if (session && session.userId != null) {
+    return Number(session.userId);
+  }
+
+  return Number(import.meta.env.VITE_DEFAULT_USER_ID || 1);
+}
+
 export function clearCareteaSession() {
   sessionStorage.removeItem("careteaSession");
   localStorage.removeItem("careteaSession");
