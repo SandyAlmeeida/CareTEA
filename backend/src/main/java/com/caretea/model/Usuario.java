@@ -1,5 +1,6 @@
 package com.caretea.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -64,6 +65,7 @@ public class Usuario {
 
     private String whatsapp;
 
+    @JsonIgnore
     private String senha;
 
     private String tipoUsuario;

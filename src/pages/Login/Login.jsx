@@ -1,41 +1,15 @@
+
 import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
-import "./Login.css";
-import "./LoginMeuDia.css";
-import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 
+import "./Login.css";
+import "./LoginMeuDia.css";
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function criarSessaoDeTeste(email) {
-  const normalizedEmail = email.trim().toLowerCase();
-
-  const contasDeTeste = {
-    "autista@caretea.com": {
-      accountType: "autista",
-      autismLevel: 1,
-      userName: "Lucas",
-      profileName: "Lucas",
-    },
-
-    "responsavel2@caretea.com": {
-      accountType: "responsavel",
-      autismLevel: 2,
-      userName: "Adriana",
-      profileName: "Evellyn",
-    },
-
-    "responsavel3@caretea.com": {
-      accountType: "responsavel",
-      autismLevel: 3,
-      userName: "Adriana",
-      profileName: "Evellyn",
-    },
-  };
-
-  return contasDeTeste[normalizedEmail] ?? null;
-}
 
 function Login({
   onLogin,
@@ -44,7 +18,6 @@ function Login({
   onRegister,
 }) {
   const navigate = useNavigate();
-
   const passwordInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -54,7 +27,6 @@ function Login({
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [message, setMessage] = useState({
@@ -63,54 +35,37 @@ function Login({
   });
 
   function updateField(event) {
-    const {
-      name,
-      value,
-      checked,
-      type,
-    } = event.target;
+    const { name, value, checked, type } = event.target;
 
     setFormData((current) => ({
       ...current,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     if (message.text) {
-      setMessage({
-        text: "",
-        type: "",
-      });
+      setMessage({ text: "", type: "" });
     }
   }
 
   function togglePasswordVisibility() {
-    setShowPassword(
-      (current) => !current,
-    );
+    setShowPassword((current) => !current);
 
-    requestAnimationFrame(() =>
-      passwordInputRef.current?.focus(),
-    );
+    requestAnimationFrame(() => {
+      passwordInputRef.current?.focus();
+    });
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const email =
-      formData.email.trim();
-
-    const password =
-      formData.password;
+    const email = formData.email.trim();
+    const password = formData.password;
 
     if (!email || !password) {
       setMessage({
         text: "Preencha o e-mail e a senha.",
         type: "error",
       });
-
       return;
     }
 
@@ -119,7 +74,6 @@ function Login({
         text: "Digite um endereço de e-mail válido.",
         type: "error",
       });
-
       return;
     }
 
@@ -130,67 +84,96 @@ function Login({
       });
 
       passwordInputRef.current?.focus();
-
-      return;
-    }
-
-    const session =
-      criarSessaoDeTeste(email);
-
-    if (!session) {
-      setMessage({
-        text: "Conta de teste não encontrada.",
-        type: "error",
-      });
-
       return;
     }
 
     try {
       setIsSubmitting(true);
+      setMessage({ text: "", type: "" });
 
-      setMessage({
-        text: "",
-        type: "",
-      });
+      if (typeof onLogin !== "function") {
+        throw new Error(
+          "O login ainda não está conectado ao backend."
+        );
+      }
 
-      await onLogin?.({
+      const resultado = await onLogin({
         email,
         password,
-        remember:
-          formData.remember,
+        remember: formData.remember,
       });
 
-      const storage =
-        formData.remember
-          ? localStorage
-          : sessionStorage;
+      const { token, usuario } = resultado ?? {};
 
-      const otherStorage =
-        formData.remember
-          ? sessionStorage
-          : localStorage;
+      if (!token || !usuario?.id) {
+        throw new Error(
+          "O servidor não retornou uma sessão válida."
+        );
+      }
 
-      otherStorage.removeItem(
-        "careteaSession",
+      const respostaPerfil = await fetch(
+        `http://localhost:8080/pessoas-autistas/usuario/${usuario.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
+      if (!respostaPerfil.ok) {
+        throw new Error(
+          "Não foi possível carregar o perfil da sua conta."
+        );
+      }
+
+      const perfis = await respostaPerfil.json();
+
+      const perfil = Array.isArray(perfis)
+        ? perfis[0]
+        : null;
+
+      if (!perfil) {
+        throw new Error(
+          "Esta conta ainda não possui um perfil cadastrado."
+        );
+      }
+
+      const session = {
+        accountType: usuario.tipoUsuario?.toLowerCase(),
+        autismLevel: perfil.nivelAutismo,
+        userName: usuario.nome,
+        profileName: perfil.nome,
+        userId: usuario.id,
+        profileId: perfil.id,
+        email: usuario.email,
+        token,
+      };
+
+      const storage = formData.remember
+        ? localStorage
+        : sessionStorage;
+
+      const otherStorage = formData.remember
+        ? sessionStorage
+        : localStorage;
+
+      otherStorage.removeItem("careteaSession");
 
       storage.setItem(
         "careteaSession",
-        JSON.stringify(session),
+        JSON.stringify(session)
       );
 
-      setMessage({
-        text: "Login realizado.",
-        type: "success",
-      });
-
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       console.error(error);
 
       setMessage({
-        text: "Não foi possível entrar. Tente novamente.",
+        text:
+          error instanceof TypeError
+            ? "Não foi possível conectar ao servidor. Confira se o backend está ligado."
+            : error.message ||
+              "Não foi possível entrar. Tente novamente.",
         type: "error",
       });
     } finally {
@@ -202,10 +185,7 @@ function Login({
     navigate("/acesso-meu-dia");
   }
 
-  function handleAuxiliaryAction(
-    callback,
-    fallbackMessage,
-  ) {
+  function handleAuxiliaryAction(callback, fallbackMessage) {
     if (callback) {
       callback();
       return;
@@ -220,12 +200,13 @@ function Login({
   return (
     <div className="caretea-login-page">
       <main className="page-shell">
+
         <svg
           className="decorative-puzzle puzzle-blue"
           viewBox="0 0 100 100"
           aria-hidden="true"
         >
-          <path d="M10 20a8 8 0 0 1 8-8h24c-2 4-2 8 0 12 3 7 12 9 18 5 6-3 8-11 5-17h17a8 8 0 0 1 8 8v22c-7-3-15 0-18 6-3 7 0 15 7 18 4 2 8 2 11 0v16a8 8 0 0 1-8 8H60c3-7 0-15-7-18-7-3-15 0-18 7-2 4-2 8 0 11H18a8 8 0 0 1-8-8V60c7 3 15 0 18-7 3-7 0-15-7-18-4-2-8-2-11 0V20Z" />
+          <path d="M10 20a8 8 0 0 1 8-8h24c-2 4-2 8 0 12 3 7 12 9 18 5 6-3 8-11 5-17h17a8 8 0 0 1 8 8v22c-7-3-15 0-18 6-3 7 0 15 7 18 4 2 8 2 11 0v16a8 8 0 0 1-8 8H60c3-7 0-15-7-18-7-3-15 0-18 7-2 4-2 8 0 11H18a8 8 0 0 1-8-8V60c7 3-15 0-18-7-3-7 0-15 7-18 4-2 8-2 11 0V20Z" />
         </svg>
 
         <svg
@@ -233,10 +214,11 @@ function Login({
           viewBox="0 0 100 100"
           aria-hidden="true"
         >
-          <path d="M10 20a8 8 0 0 1 8-8h24c-2 4-2 8 0 12 3 7 12 9 18 5 6-3 8-11 5-17h17a8 8 0 0 1 8 8v22c-7-3-15 0-18 6-3 7 0 15 7 18 4 2 8 2 11 0v16a8 8 0 0 1-8 8H60c3-7 0-15-7-18-7-3-15 0-18 7-2 4-2 8 0 11H18a8 8 0 0 1-8-8V60c7 3 15 0 18-7 3-7 0-15-7-18-4-2-8-2-11 0V20Z" />
+          <path d="M10 20a8 8 0 0 1 8-8h24c-2 4-2 8 0 12 3 7 12 9 18 5 6-3 8-11 5-17h17a8 8 0 0 1 8 8v22c-7-3-15 0-18 6-3 7 0 15 7 18 4 2 8 2 11 0v16a8 8 0 0 1-8 8H60c3-7 0-15-7-18-7-3-15 0-18 7-2 4-2 8 0 11H18a8 8 0 0 1-8-8V60c7 3-15 0-18-7-3-7 0-15 7-18 4-2 8-2 11 0V20Z" />
         </svg>
 
         <section className="content-grid">
+
           <section
             className="presentation"
             aria-labelledby="caretea-title"
@@ -251,17 +233,13 @@ function Login({
               <h1 id="caretea-title">
                 Organizando cuidados,
                 <br />
-                promovendo{" "}
-                <span>
-                  autonomia.
-                </span>
+                promovendo <span>autonomia.</span>
               </h1>
 
               <p className="description">
-                Uma plataforma completa para
-                apoiar pessoas autistas e seus
-                responsáveis em todas as etapas
-                do cuidado.
+                Uma plataforma completa para apoiar pessoas
+                autistas e seus responsáveis em todas as
+                etapas do cuidado.
               </p>
             </div>
 
@@ -271,10 +249,7 @@ function Login({
             >
               <article className="feature">
                 <span className="feature-icon feature-blue">
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
                   </svg>
                 </span>
@@ -288,10 +263,7 @@ function Login({
 
               <article className="feature">
                 <span className="feature-icon feature-green">
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect
                       x="3"
                       y="5"
@@ -299,7 +271,6 @@ function Login({
                       height="16"
                       rx="2"
                     />
-
                     <path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
                   </svg>
                 </span>
@@ -313,10 +284,7 @@ function Login({
 
               <article className="feature">
                 <span className="feature-icon feature-yellow">
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
                   </svg>
                 </span>
@@ -330,31 +298,18 @@ function Login({
 
               <article className="feature">
                 <span className="feature-icon feature-red">
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="9"
-                      cy="7"
-                      r="4"
-                    />
-
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="9" cy="7" r="4" />
                     <path d="M3 21v-2a6 6 0 0 1 6-6h1" />
-
-                    <circle
-                      cx="17"
-                      cy="8"
-                      r="3"
-                    />
-
+                    <circle cx="17" cy="8" r="3" />
                     <path d="M14 14h3a5 5 0 0 1 5 5v2H12v-2a5 5 0 0 1 5-5" />
                   </svg>
                 </span>
 
                 <p>
                   Autonomia
-                  <br />e inclusão
+                  <br />
+                  e inclusão
                 </p>
               </article>
             </div>
@@ -368,19 +323,17 @@ function Login({
           </section>
 
           <section className="login-side">
+
             <aside className="inclusion-note">
-              <svg
-                viewBox="0 0 64 64"
-                aria-hidden="true"
-              >
+              <svg viewBox="0 0 64 64" aria-hidden="true">
                 <path
                   fill="#1b78d1"
-                  d="M5 7h19v12a7 7 0 1 1 10 6v14H20a7 7 0 1 0-6 10H5V35h10a7 7 0 1 0 0-14H5Z"
+                  d="M5 7h19v12a7 7 0 1 1 10 6v14H20a7 7 0 1 0-6 10H5V35h10a7 7 0 1 0-6 10H5Z"
                 />
 
                 <path
                   fill="#39b86b"
-                  d="M32 7h14v10a7 7 0 1 0 10 6V7h3v24H48a7 7 0 1 0-6 10v16H32V44a7 7 0 1 0-10-6H5V32h18a7 7 0 0 0 9-9Z"
+                  d="M32 7h14v10a7 7 0 1 0 10 6V7h3v24H48a7 7 0 1 0-6 10v16H32V44a7 7 0 1 0-10-6H5V32h18a7 7 0 0 1 9-9Z"
                 />
 
                 <path
@@ -396,8 +349,7 @@ function Login({
 
               <div>
                 <strong>
-                  Inclusão. Respeito.
-                  Compreensão.
+                  Inclusão. Respeito. Compreensão.
                 </strong>
 
                 <span>
@@ -412,31 +364,21 @@ function Login({
             >
               <header className="login-header">
                 <h2 id="login-title">
-                  Bem-vindo{" "}
-                  <span>
-                    de volta!
-                  </span>
+                  Bem-vindo <span>de volta!</span>
                 </h2>
 
-                <p>
-                  Entre para acessar sua conta.
-                </p>
+                <p>Entre para acessar sua conta.</p>
               </header>
 
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-              >
+              <form onSubmit={handleSubmit} noValidate>
+
                 <div className="form-group">
                   <label htmlFor="email">
                     E-mail
                   </label>
 
                   <div className="input-box">
-                    <svg
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                       <rect
                         x="3"
                         y="5"
@@ -444,7 +386,6 @@ function Login({
                         height="14"
                         rx="2"
                       />
-
                       <path d="m3 7 9 6 9-6" />
                     </svg>
 
@@ -466,10 +407,7 @@ function Login({
                   </label>
 
                   <div className="input-box">
-                    <svg
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                       <rect
                         x="5"
                         y="10"
@@ -477,7 +415,6 @@ function Login({
                         height="10"
                         rx="2"
                       />
-
                       <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2" />
                     </svg>
 
@@ -485,11 +422,7 @@ function Login({
                       ref={passwordInputRef}
                       id="password"
                       name="password"
-                      type={
-                        showPassword
-                          ? "text"
-                          : "password"
-                      }
+                      type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
                       placeholder="Digite sua senha"
                       value={formData.password}
@@ -498,9 +431,7 @@ function Login({
 
                     <button
                       className={`password-toggle ${
-                        showPassword
-                          ? "visible"
-                          : ""
+                        showPassword ? "visible" : ""
                       }`}
                       type="button"
                       aria-label={
@@ -508,9 +439,7 @@ function Login({
                           ? "Ocultar senha"
                           : "Mostrar senha"
                       }
-                      onClick={
-                        togglePasswordVisibility
-                      }
+                      onClick={togglePasswordVisibility}
                     >
                       <svg
                         className="eye-open"
@@ -518,12 +447,7 @@ function Login({
                         aria-hidden="true"
                       >
                         <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="2.7"
-                        />
+                        <circle cx="12" cy="12" r="2.7" />
                       </svg>
 
                       <svg
@@ -531,7 +455,7 @@ function Login({
                         viewBox="0 0 24 24"
                         aria-hidden="true"
                       >
-                        <path d="m3 3 18 18M10.6 6.2A9 9 0 0 1 12 6c6 0 9.5 6 9.5 6a15 15 0 0 1-2.2 2.8M6.2 6.2C3.8 8 2.5 12 2.5 12s3.5 6 9.5 6a10 10 0 0 0 3.2-.5" />
+                        <path d="m3 3 18 18M10.6 6.2A9 9 0 0 1 12 6c6 0 9.5 6 9.5 6a15 15 0 0 0 3.2-.5" />
                       </svg>
                     </button>
                   </div>
@@ -542,36 +466,25 @@ function Login({
                     <input
                       name="remember"
                       type="checkbox"
-                      checked={
-                        formData.remember
-                      }
+                      checked={formData.remember}
                       onChange={updateField}
                     />
 
                     <span className="checkbox">
-                      <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="m5 12 4 4 10-10" />
                       </svg>
                     </span>
 
-                    <span>
-                      Lembrar de mim
-                    </span>
+                    <span>Lembrar de mim</span>
                   </label>
 
-                  <Link to="/reset-password">
-                    <button
-                      className="text-button"
-                      type="button"
-                      onClick={() =>
-                        onForgotPassword?.()
-                      }
-                    >
-                      Esqueci minha senha
-                    </button>
+                  <Link
+                    to="/reset-password"
+                    className="text-button"
+                    onClick={() => onForgotPassword?.()}
+                  >
+                    Esqueci minha senha
                   </Link>
                 </div>
 
@@ -580,10 +493,7 @@ function Login({
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect
                       x="6"
                       y="10"
@@ -591,22 +501,15 @@ function Login({
                       height="10"
                       rx="2"
                     />
-
                     <path d="M9 10V7a3 3 0 0 1 6 0v3" />
                   </svg>
 
-                  {isSubmitting
-                    ? "Entrando..."
-                    : "Entrar"}
+                  {isSubmitting ? "Entrando..." : "Entrar"}
                 </button>
 
                 <div className="separator">
                   <span />
-
-                  <p>
-                    ou continue com
-                  </p>
-
+                  <p>ou continue com</p>
                   <span />
                 </div>
 
@@ -616,29 +519,23 @@ function Login({
                   onClick={() =>
                     handleAuxiliaryAction(
                       onGoogleLogin,
-                      "Aqui será adicionada a autenticação do Google.",
+                      "Aqui será adicionada a autenticação do Google."
                     )
                   }
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       fill="#4285F4"
                       d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.4Z"
                     />
-
                     <path
                       fill="#34A853"
                       d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2.1 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2H3v2.6A10 10 0 0 0 12 22Z"
                     />
-
                     <path
                       fill="#FBBC05"
                       d="M6.4 13.9A6 6 0 0 1 6.1 12c0-.7.1-1.3.3-1.9V7.5H3A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.5l3.4-2.6Z"
                     />
-
                     <path
                       fill="#EA4335"
                       d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A9.6 9.6 0 0 0 12 2a10 10 0 0 0-9 5.5l3.4 2.6C7.2 7.7 9.4 6 12 6Z"
@@ -656,21 +553,12 @@ function Login({
                   <Link
                     to="/cadastro"
                     replace
+                    onClick={() => onRegister?.()}
                   >
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onRegister?.()
-                      }
-                    >
-                      Cadastre-se
-                    </button>
+                    Cadastre-se
                   </Link>
 
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m9 6 6 6-6 6" />
                   </svg>
                 </div>
@@ -686,58 +574,51 @@ function Login({
                   {message.text}
                 </p>
               </form>
-            </section>
 
-            <section
-              className="meu-dia-access-card"
-              aria-labelledby="meu-dia-access-title"
-            >
-              <div
-                className="meu-dia-access-icon"
-                aria-hidden="true"
+              {/* Acesso por código dentro do cartão de login */}
+
+              <section
+                className="meu-dia-access-card"
+                aria-labelledby="meu-dia-access-title"
               >
-                <svg viewBox="0 0 24 24">
-                  <rect
-                    x="7"
-                    y="2.5"
-                    width="10"
-                    height="19"
-                    rx="2.5"
-                  />
+                <div
+                  className="meu-dia-access-icon"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <rect
+                      x="7"
+                      y="2.5"
+                      width="10"
+                      height="19"
+                      rx="2.5"
+                    />
+                    <path d="M10 18.5h4" />
+                    <path d="M9.5 7.5h5M9.5 11h5M9.5 14.5h3" />
+                  </svg>
+                </div>
 
-                  <path d="M10 18.5h4" />
+                <div className="meu-dia-access-copy">
+                  <h3 id="meu-dia-access-title">
+                    Tenho um código de acesso
+                  </h3>
 
-                  <path d="M9.5 7.5h5M9.5 11h5M9.5 14.5h3" />
-                </svg>
-              </div>
+                  <p>
+                    Abra sua rotina com o código
+                    recebido do responsável.
+                  </p>
+                </div>
 
-              <div className="meu-dia-access-copy">
-                <span className="meu-dia-access-label">
-                  Acesso simplificado
-                </span>
+                <button
+                  className="meu-dia-access-button"
+                  type="button"
+                  onClick={abrirAcessoMeuDia}
+                >
+                  Acessar rotina
+                  <span aria-hidden="true">›</span>
+                </button>
+              </section>
 
-                <h3 id="meu-dia-access-title">
-                  Tenho um código de acesso
-                </h3>
-
-                <p>
-                  Use o código, link ou QR Code
-                  criado pelo responsável para
-                  abrir a Minha Rotina no celular.
-                </p>
-              </div>
-
-              <button
-                className="meu-dia-access-button"
-                type="button"
-                onClick={abrirAcessoMeuDia}
-              >
-                Acessar Minha Rotina
-
-                <span aria-hidden="true">
-                  ›
-                </span>
-              </button>
             </section>
           </section>
         </section>
