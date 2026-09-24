@@ -2,39 +2,11 @@ import { useRef, useState } from "react";
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
 import "./Login.css";
+import "./LoginMeuDia.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function criarSessaoDeTeste(email) {
-  const normalizedEmail = email.trim().toLowerCase();
-
-  if (normalizedEmail === "autista@caretea.com") {
-    return {
-      accountType: "autista",
-      autismLevel: 1,
-      userName: "Lucas",
-      profileName: "Lucas",
-    };
-  }
-
-  if (normalizedEmail === "responsavel3@caretea.com") {
-    return {
-      accountType: "responsavel",
-      autismLevel: 3,
-      userName: "Adriana",
-      profileName: "Evellyn",
-    };
-  }
-
-  return {
-    accountType: "responsavel",
-    autismLevel: 2,
-    userName: "Adriana",
-    profileName: "Evellyn",
-  };
-}
 
 function Login({
   onLogin,
@@ -106,31 +78,64 @@ function Login({
       setIsSubmitting(true);
       setMessage({ text: "", type: "" });
 
-      await onLogin?.({
+      if (typeof onLogin !== "function") {
+        throw new Error("O login ainda não está conectado ao backend.");
+      }
+
+      const resultado = await onLogin({
         email,
         password,
         remember: formData.remember,
       });
 
-      const session = criarSessaoDeTeste(email);
+      const { token, usuario } = resultado ?? {};
+
+      if (!token || !usuario?.id) {
+        throw new Error("O servidor não retornou uma sessão válida.");
+      }
+
+      const respostaPerfil = await fetch(
+        `http://localhost:8080/pessoas-autistas/usuario/${usuario.id}`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (!respostaPerfil.ok) {
+        throw new Error("Não foi possível carregar o perfil da sua conta.");
+      }
+
+      const perfis = await respostaPerfil.json();
+      const perfil = Array.isArray(perfis) ? perfis[0] : null;
+
+      if (!perfil) {
+        throw new Error("Esta conta ainda não possui um perfil cadastrado.");
+      }
+
+      const session = {
+        accountType: usuario.tipoUsuario?.toLowerCase(),
+        autismLevel: perfil.nivelAutismo,
+        userName: usuario.nome,
+        profileName: perfil.nome,
+        userId: usuario.id,
+        profileId: perfil.id,
+        email: usuario.email,
+        token,
+      };
+
       const storage = formData.remember ? localStorage : sessionStorage;
       const otherStorage = formData.remember ? sessionStorage : localStorage;
 
       otherStorage.removeItem("careteaSession");
       storage.setItem("careteaSession", JSON.stringify(session));
 
-      setMessage({
-        text: "Login realizado.",
-        type: "success",
-      });
-
-      navigate("/dashboard");
-
+      navigate("/dashboard", { replace: true });
 
     } catch (error) {
       console.error(error);
       setMessage({
-        text: "Não foi possível entrar. Tente novamente.",
+        text:
+          error instanceof TypeError
+            ? "Não foi possível conectar ao servidor. Confira se o backend está ligado."
+            : error.message || "Não foi possível entrar. Tente novamente.",
         type: "error",
       });
     } finally {
@@ -367,8 +372,8 @@ function Login({
                     <span>Lembrar de mim</span>
                   </label>
 
-                  <Link to="/reset-password">
-                    <button className="text-button" type="button">Esqueci minha senha</button>
+                  <Link className="text-button" to="/reset-password">
+                    Esqueci minha senha
                   </Link>
                 </div>
 
@@ -424,8 +429,8 @@ function Login({
                 <div className="register">
                   <span>Ainda não possui uma conta?</span>
                   <Link to="/cadastro" replace>
-                    <button type="button">Cadastre-se</button>
-                </Link>
+                    Cadastre-se
+                  </Link>
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m9 6 6 6-6 6" />
                   </svg>

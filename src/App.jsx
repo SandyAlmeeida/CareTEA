@@ -17,11 +17,77 @@ import Medicamentos from "./pages/Medicamentos/Medicamentos.jsx";
 import GerenciarMeuDia from "./pages/GerenciarMeuDia/GerenciarMeuDia.jsx";
 import BemEstar from "./pages/BemEstar/BemEstar.jsx";
 import Configuracoes from "./pages/Configuracoes/Configuracoes.jsx";
+import Assistente from "./pages/Assistente/Assistente.jsx";
 import ProtecaoDePerfil from "./components/ProtecaoDePerfil/ProtecaoDePerfil.jsx";
 import TemaCareTEA from "./components/TemaCareTEA/TemaCareTEA.jsx";
 
 function App() {
   const navigate = useNavigate();
+
+  async function handleCadastro(dados) {
+    const enviarNotificacoesResponsavel =
+      dados.accountType === "autista" &&
+      Boolean(dados.trustedWhatsapp) &&
+      Boolean(dados.notifyMedication || dados.notifyAppointments);
+
+    const resposta = await fetch("http://localhost:8080/usuarios/cadastro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: dados.fullName,
+        email: dados.email,
+        whatsapp: dados.whatsapp,
+        senha: dados.password,
+        tipoUsuario:
+          dados.accountType === "responsavel" ? "RESPONSAVEL" : "AUTISTA",
+        nivelAutismo: dados.autismLevel,
+        nomePessoaAutista: dados.autisticPersonName,
+        vinculoResponsavel:
+          dados.accountType === "responsavel"
+            ? dados.relationship
+            : dados.trustedWhatsapp
+              ? "Contato de confiança"
+              : null,
+        whatsappResponsavel:
+          dados.accountType === "responsavel"
+            ? dados.whatsapp
+            : dados.trustedWhatsapp,
+        enviarNotificacoesResponsavel,
+      }),
+    });
+
+    if (!resposta.ok) {
+      if (resposta.status === 409) {
+        throw new Error("Este e-mail já está cadastrado.");
+      }
+
+      if (resposta.status === 400) {
+        throw new Error("Confira os dados informados e tente novamente.");
+      }
+
+      throw new Error("Não foi possível concluir o cadastro.");
+    }
+
+    return resposta.json();
+  }
+
+  async function handleLogin(dados) {
+    const resposta = await fetch("http://localhost:8080/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: dados.email, senha: dados.password }),
+    });
+
+    if (resposta.status === 401) {
+      throw new Error("E-mail ou senha incorretos.");
+    }
+
+    if (!resposta.ok) {
+      throw new Error("Não foi possível realizar o login.");
+    }
+
+    return resposta.json();
+  }
 
   function handleNavigate(id) {
     const routes = {
@@ -30,6 +96,7 @@ function App() {
       medicamentos: "/medicamentos",
       consultas: "/consultas",
       documentos: "/documentos",
+      assistente: "/assistente",
       notificacoes: "/notificacoes",
       relatorios: "/relatorios",
       configuracoes: "/configuracoes",
@@ -51,8 +118,8 @@ function App() {
       <Routes>
       {/* Páginas públicas */}
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/cadastro" element={<Cadastro />} />
+      <Route path="/login" element={<Login onLogin={handleLogin} />} />
+      <Route path="/cadastro" element={<Cadastro onSubmit={handleCadastro} />} />
       <Route path="/reset-password" element={<EsqueciSenha />} />
       <Route
         path="/create-new-password"
@@ -134,6 +201,15 @@ function App() {
         element={
           <ProtecaoDePerfil>
             <Configuracoes />
+          </ProtecaoDePerfil>
+        }
+      />
+
+      <Route
+        path="/assistente"
+        element={
+          <ProtecaoDePerfil>
+            <Assistente />
           </ProtecaoDePerfil>
         }
       />
