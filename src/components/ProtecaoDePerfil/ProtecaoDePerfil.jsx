@@ -1,22 +1,5 @@
 import { Navigate } from "react-router-dom";
-
-function getCareteaSession() {
-  const rawSession =
-    sessionStorage.getItem("careteaSession") ||
-    localStorage.getItem("careteaSession");
-
-  if (!rawSession) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(rawSession);
-  } catch {
-    sessionStorage.removeItem("careteaSession");
-    localStorage.removeItem("careteaSession");
-    return null;
-  }
-}
+import { getCareteaSession } from "../../utils/careteaSession.js";
 
 function ProtecaoDePerfil({
   children,
