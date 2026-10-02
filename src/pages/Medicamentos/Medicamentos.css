@@ -476,3 +476,78 @@
         flex: 1 1 145px;
     }
 }
+/* ===== Estados e resumo adicionados na reestruturação ===== */
+.medicamentos-status-pill.danger {
+    background: #fde6e6;
+    color: #c53030;
+}
+
+.medication-card-footer .medicamentos-btn:disabled,
+.app-modal-actions .medicamentos-btn:disabled {
+    opacity: .58;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.medication-card-footer .medicamentos-btn:disabled {
+    background: #eaf8f1;
+    color: #16845a;
+    box-shadow: none;
+}
+
+.medicamentos-error,
+.medicamentos-loading,
+.medicamentos-form-error {
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.medicamentos-error,
+.medicamentos-form-error {
+    border: 1px solid #f6caca;
+    background: #fde6e6;
+    color: #b91c1c;
+}
+
+.medicamentos-loading {
+    background: #f4f2ff;
+    color: #5235d0;
+}
+
+.medicamentos-status-summary {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.medicamentos-status-summary > div {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 0;
+    border-top: 1px solid #edf0f6;
+    color: #4b5875;
+    font-size: 12px;
+}
+
+.medicamentos-status-summary > div:first-child {
+    border-top: 0;
+}
+
+.medicamentos-status-summary strong {
+    color: #17284e;
+    font-size: 14px;
+}
+
+.medicamentos-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.medicamentos-status-dot.success { background: #22a96f; }
+.medicamentos-status-dot.pending { background: #8a94aa; }
+.medicamentos-status-dot.danger { background: #ef4444; }
