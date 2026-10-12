@@ -259,6 +259,10 @@
   border-top: 1px solid #edf0f6;
 }
 
+.cadastro-section-level-2 {
+  margin-top: 30px;
+}
+
 .cadastro-section-heading {
   display: flex;
   align-items: flex-start;

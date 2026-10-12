@@ -67,18 +67,25 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
     password: "",
     confirmPassword: "",
     acceptedTerms: true,
+    autisticEmail: "",
+    autisticPassword: "",
+    autisticConfirmPassword: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAutisticPassword, setShowAutisticPassword] = useState(false);
+  const [showAutisticConfirmPassword, setShowAutisticConfirmPassword] = useState(false);
 
   const isResponsible = formData.accountType === "responsavel";
   const isAutisticLevelOne =
     formData.accountType === "autista" && formData.autismLevel === "1";
   const isResponsibleLevelTwo =
     formData.accountType === "responsavel" && formData.autismLevel === "2";
+  const isResponsibleLevelThree =
+    formData.accountType === "responsavel" && formData.autismLevel === "3";
 
   function clearMessage() {
     if (message.text) {
@@ -257,6 +264,42 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
       return;
     }
 
+    if (isResponsibleLevelTwo) {
+      const autisticEmail = formData.autisticEmail.trim();
+
+      if (!EMAIL_PATTERN.test(autisticEmail)) {
+        setMessage({
+          text: "Digite um e-mail válido para a pessoa autista.",
+          type: "error",
+        });
+        return;
+      }
+
+      if (autisticEmail.toLowerCase() === email.toLowerCase()) {
+        setMessage({
+          text: "O e-mail da pessoa autista deve ser diferente do e-mail do responsável.",
+          type: "error",
+        });
+        return;
+      }
+
+      if (formData.autisticPassword.length < 6) {
+        setMessage({
+          text: "A senha da pessoa autista deve possuir pelo menos 6 caracteres.",
+          type: "error",
+        });
+        return;
+      }
+
+      if (formData.autisticPassword !== formData.autisticConfirmPassword) {
+        setMessage({
+          text: "As senhas da pessoa autista não coincidem.",
+          type: "error",
+        });
+        return;
+      }
+    }
+
     if (!formData.acceptedTerms) {
       setMessage({
         text: "Aceite os Termos de Uso e a Política de Privacidade.",
@@ -282,8 +325,8 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
         relationship: isResponsible ? formData.relationship : null,
         autismLevel: Number(formData.autismLevel),
         interfaceType: isResponsible ? "RESPONSAVEL" : "COMPLETA",
-        assistedAccess: isResponsibleLevelTwo,
-        assistedAccessMethod: isResponsibleLevelTwo
+        assistedAccess: isResponsibleLevelThree,
+        assistedAccessMethod: isResponsibleLevelThree
           ? "LINK_CODE_QR"
           : null,
         notifyMedication:
@@ -295,14 +338,23 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
             ? formData.notifyAppointments
             : null,
         password: formData.password,
+        autisticEmail: isResponsibleLevelTwo
+          ? formData.autisticEmail.trim()
+          : null,
+
+        autisticPassword: isResponsibleLevelTwo
+          ? formData.autisticPassword
+          : null,
       });
 
       setMessage({
-        text: isResponsibleLevelTwo
+        text: isResponsibleLevelThree
           ? "Cadastro validado. Depois de salvar no backend, o CareTEA poderá gerar o acesso para a Minha Rotina."
           : "Cadastro validado. Agora conecte o formulário ao backend.",
         type: "success",
       });
+
+      console.log(formData);
     } catch (error) {
       console.error(error);
       setMessage({
@@ -427,9 +479,8 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
 
                   <div className="cadastro-account-types" aria-label="Tipo de conta">
                     <button
-                      className={`cadastro-account-card ${
-                        isResponsible ? "cadastro-account-card-active" : ""
-                      }`}
+                      className={`cadastro-account-card ${isResponsible ? "cadastro-account-card-active" : ""
+                        }`}
                       type="button"
                       aria-pressed={isResponsible}
                       onClick={() => selectAccountType("responsavel")}
@@ -445,9 +496,8 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
                     </button>
 
                     <button
-                      className={`cadastro-account-card ${
-                        !isResponsible ? "cadastro-account-card-active" : ""
-                      }`}
+                      className={`cadastro-account-card ${!isResponsible ? "cadastro-account-card-active" : ""
+                        }`}
                       type="button"
                       aria-pressed={!isResponsible}
                       onClick={() => selectAccountType("autista")}
@@ -464,9 +514,8 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
                   </div>
 
                   <div
-                    className={`cadastro-account-guidance ${
-                      !isResponsible ? "cadastro-account-guidance-autista" : ""
-                    }`}
+                    className={`cadastro-account-guidance ${!isResponsible ? "cadastro-account-guidance-autista" : ""
+                      }`}
                   >
                     <span aria-hidden="true">{isResponsible ? "✓" : "i"}</span>
                     <div>
@@ -477,7 +526,7 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
                       </strong>
                       <p>
                         {isResponsible
-                          ? "No Nível 2, você cadastra a pessoa autista e depois gera um acesso para abrir a Minha Rotina no celular dela."
+                          ? "No Nível 3, você cadastra a pessoa autista e depois gera um acesso para abrir a Minha Rotina no celular dela."
                           : "Se você precisa de suporte Nível 2 ou 3, o cadastro deve ser iniciado pelo responsável."}
                       </p>
                     </div>
@@ -496,81 +545,79 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
                   <div className="cadastro-level-options">
                     {!isResponsible ? (
 
-                    <button
-                      type="button"
-                      className={`cadastro-level-card cadastro-level-one ${
-                        formData.autismLevel === "1"
+                      <button
+                        type="button"
+                        className={`cadastro-level-card cadastro-level-one ${formData.autismLevel === "1"
                           ? "cadastro-level-card-active"
                           : ""
-                      }`}
-                      aria-pressed={formData.autismLevel === "1"}
-                      onClick={() => selectAutismLevel("1")}
-                    >
-                      <span className="cadastro-level-number">1</span>
-                      <span className="cadastro-level-copy">
-                        <strong>Nível 1</strong>
-                        <small>Mais autonomia</small>
-                        <p>Acesso ao CareTEA completo.</p>
-                      </span>
-                    </button>
+                          }`}
+                        aria-pressed={formData.autismLevel === "1"}
+                        onClick={() => selectAutismLevel("1")}
+                      >
+                        <span className="cadastro-level-number">1</span>
+                        <span className="cadastro-level-copy">
+                          <strong>Nível 1</strong>
+                          <small>Mais autonomia</small>
+                          <p>Acesso ao CareTEA completo.</p>
+                        </span>
+                      </button>
                     ) : null}
 
                     {isResponsible ? (
                       <>
-                    <button
-                      type="button"
-                      className={`cadastro-level-card cadastro-level-two ${
-                        formData.autismLevel === "2"
-                          ? "cadastro-level-card-active"
-                          : ""
-                      }`}
-                      aria-pressed={formData.autismLevel === "2"}
-                      onClick={() => selectAutismLevel("2")}
-                    >
-                      <span className="cadastro-level-number">2</span>
-                      <span className="cadastro-level-copy">
-                        <strong>Nível 2</strong>
-                        <small>{isResponsible ? "Autonomia assistida" : "Cadastro pelo responsável"}</small>
-                        <p>
-                          {isResponsible
-                            ? "Responsável gerencia; Minha Rotina funciona no celular da pessoa autista."
-                            : "O responsável precisa criar este perfil."}
-                        </p>
-                      </span>
-                    </button>
+                        <button
+                          type="button"
+                          className={`cadastro-level-card cadastro-level-two ${formData.autismLevel === "2"
+                            ? "cadastro-level-card-active"
+                            : ""
+                            }`}
+                          aria-pressed={formData.autismLevel === "2"}
+                          onClick={() => selectAutismLevel("2")}
+                        >
+                          <span className="cadastro-level-number">2</span>
+                          <span className="cadastro-level-copy">
+                            <strong>Nível 2</strong>
+                            <small>{isResponsible ? "Autonomia assistida" : "Cadastro pelo responsável"}</small>
+                            <p>
+                              {isResponsible
+                                ? "Perfil e cuidados gerenciados pelo responsável."
+                                : "O responsável precisa criar este perfil."}
+                            </p>
+                          </span>
+                        </button>
 
-                    <button
-                      type="button"
-                      className={`cadastro-level-card cadastro-level-three ${
-                        formData.autismLevel === "3"
-                          ? "cadastro-level-card-active"
-                          : ""
-                      }`}
-                      aria-pressed={formData.autismLevel === "3"}
-                      onClick={() => selectAutismLevel("3")}
-                    >
-                      <span className="cadastro-level-number">3</span>
-                      <span className="cadastro-level-copy">
-                        <strong>Nível 3</strong>
-                        <small>{isResponsible ? "Maior suporte" : "Cadastro pelo responsável"}</small>
-                        <p>
-                          {isResponsible
-                            ? "Perfil e cuidados gerenciados pelo responsável."
-                            : "O responsável precisa criar este perfil."}
-                        </p>
-                      </span>
-                    </button>
+                        <button
+                          type="button"
+                          className={`cadastro-level-card cadastro-level-three ${formData.autismLevel === "3"
+                            ? "cadastro-level-card-active"
+                            : ""
+                            }`}
+                          aria-pressed={formData.autismLevel === "3"}
+                          onClick={() => selectAutismLevel("3")}
+                        >
+                          <span className="cadastro-level-number">3</span>
+                          <span className="cadastro-level-copy">
+                            <strong>Nível 3</strong>
+                            <small>{isResponsible ? "Maior suporte" : "Cadastro pelo responsável"}</small>
+                            <p>
+                              {isResponsible
+                                ? "Responsável gerencia; Minha Rotina funciona no celular da pessoa autista."
+                                : "O responsável precisa criar este perfil."}
+                            </p>
+                          </span>
+                        </button>
                       </>
                     ) : null}
                   </div>
                 </section>
 
-                {isResponsibleLevelTwo ? (
+
+                {isResponsibleLevelThree ? (
                   <section className="cadastro-meu-dia-info">
                     <div className="cadastro-meu-dia-header">
                       <span className="cadastro-meu-dia-icon">✦</span>
                       <div>
-                        <strong>Nível 2: o cadastro fica com o responsável</strong>
+                        <strong>Nível 3: o cadastro fica com o responsável</strong>
                         <p>
                           A pessoa autista não precisa criar outra conta completa.
                           Depois, você libera a Minha Rotina no celular dela.
@@ -731,7 +778,89 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
                       </div>
                     </div>
 
-                    {isResponsibleLevelTwo ? (
+                    {isResponsibleLevelTwo && (
+                      <div className="cadastro-section-level-2">
+                        <div className="cadastro-section-heading">
+                          <div>
+                            <strong>Dados de acesso da pessoa autista</strong>
+                            <p>
+                              A pessoa autista utilizará estas credenciais
+                              para acessar sua própria conta no CareTEA.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="cadastro-fields-grid cadastro-fields-grid-two">
+                          <div className="cadastro-form-group">
+                            <label htmlFor="autisticEmail">E-mail da pessoa autista</label>
+                            <input
+                              id="autisticEmail"
+                              name="autisticEmail"
+                              type="email"
+                              autoComplete="off"
+                              placeholder="email@exemplo.com"
+                              value={formData.autisticEmail}
+                              onChange={updateField}
+                              required
+                            />
+                          </div>
+
+                          <div className="cadastro-form-group">
+                            <label htmlFor="autisticPassword">Senha da pessoa autista</label>
+                            <div className="cadastro-password-box">
+                              <input
+                                id="autisticPassword"
+                                name="autisticPassword"
+                                type={showAutisticPassword ? "text" : "password"}
+                                autoComplete="new-password"
+                                placeholder="Mínimo de 6 caracteres"
+                                value={formData.autisticPassword}
+                                onChange={updateField}
+                                required
+                              />
+                              <button
+                                type="button"
+                                aria-label={showAutisticPassword ? "Ocultar senha" : "Mostrar senha"}
+                                onClick={() => setShowAutisticPassword((current) => !current)}
+                              >
+                                <EyeIcon closed={showAutisticPassword} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="cadastro-form-group">
+                            <label htmlFor="autisticConfirmPassword">Confirmar senha</label>
+                            <div className="cadastro-password-box">
+                              <input
+                                id="autisticConfirmPassword"
+                                name="autisticConfirmPassword"
+                                type={showAutisticConfirmPassword ? "text" : "password"}
+                                autoComplete="new-password"
+                                placeholder="Digite a senha novamente"
+                                value={formData.autisticConfirmPassword}
+                                onChange={updateField}
+                                required
+                              />
+                              <button
+                                type="button"
+                                aria-label={
+                                  showAutisticConfirmPassword
+                                    ? "Ocultar confirmação da senha"
+                                    : "Mostrar confirmação da senha"
+                                }
+                                onClick={() =>
+                                  setShowAutisticConfirmPassword((current) => !current)
+                                }
+                              >
+                                <EyeIcon closed={showAutisticConfirmPassword} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {isResponsibleLevelThree ? (
                       <div className="cadastro-access-reminder">
                         <span>📱</span>
                         <p>
@@ -928,11 +1057,10 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
                     </div>
 
                     <p
-                      className={`cadastro-form-message ${
-                        message.type === "success"
-                          ? "cadastro-form-message-success"
-                          : ""
-                      }`}
+                      className={`cadastro-form-message ${message.type === "success"
+                        ? "cadastro-form-message-success"
+                        : ""
+                        }`}
                       aria-live="polite"
                     >
                       {message.text}

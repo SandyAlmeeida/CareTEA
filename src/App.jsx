@@ -52,12 +52,12 @@ function App() {
       <TemaCareTEA />
 
       <Routes>
-       <Route
-       path="/notificacoes"element={<ProtecaoDePerfil>
-       <Notificacoes onNavigate={handleNavigate} />
-       </ProtecaoDePerfil>
-         }
-       />
+        <Route
+          path="/notificacoes" element={<ProtecaoDePerfil>
+            <Notificacoes onNavigate={handleNavigate} />
+          </ProtecaoDePerfil>
+          }
+        />
 
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
