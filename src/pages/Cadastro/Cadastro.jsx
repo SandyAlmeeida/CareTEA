@@ -269,7 +269,11 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
       setIsSubmitting(true);
       setMessage({ text: "", type: "" });
 
-      await onSubmit?.({
+      if (typeof onSubmit !== "function") {
+        throw new Error("O cadastro ainda não está conectado ao backend.");
+      }
+
+      await onSubmit({
         accountType: formData.accountType,
         fullName,
         autisticPersonName: isResponsible ? autisticPersonName : fullName,
@@ -298,15 +302,16 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
       });
 
       setMessage({
-        text: isResponsibleLevelTwo
-          ? "Cadastro validado. Depois de salvar no backend, o CareTEA poderá gerar o acesso para a Minha Rotina."
-          : "Cadastro validado. Agora conecte o formulário ao backend.",
+        text: "Cadastro realizado com sucesso! Agora você pode fazer login.",
         type: "success",
       });
     } catch (error) {
       console.error(error);
       setMessage({
-        text: "Não foi possível finalizar o cadastro. Tente novamente.",
+        text:
+          error instanceof TypeError
+            ? "Não foi possível conectar ao servidor. Confira se o backend está ligado."
+            : error?.message || "Não foi possível finalizar o cadastro. Tente novamente.",
         type: "error",
       });
     } finally {

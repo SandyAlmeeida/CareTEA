@@ -1,30 +1,25 @@
 import { useMemo, useState } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
-import Topbar from "../../components/Topbar/Topbar.jsx";
+import logoCaretea from "../../assets/logo-caretea.png";
 import "./Notificacoes.css";
 
-
-const CORES_RODAPE = [
-  "#2e70db",
-  "#765bd9",
-  "#ffbf2d",
-  "#7cc66d",
-  "#fa5d61",
-  "#2e70db",
-  "#765bd9",
-  "#ffbf2d",
-  "#7cc66d",
-  "#fa5d61",
-  "#2e70db",
-  "#765bd9",
-  "#ffbf2d",
-  "#7cc66d",
-  "#fa5d61",
-  "#2e70db",
-  "#765bd9",
-  "#ffbf2d",
+/* Menu lateral (mesmo do restante do app, com "notificacoes" ativo). */
+const menu = [
+  ["dashboard", "⌂", "Dashboard"],
+  ["agenda", "▣", "Agenda"],
+  ["medicamentos", "◊", "Medicamentos"],
+  ["consultas", "♧", "Consultas"],
+  ["exames", "△", "Exames"],
+  ["terapias", "♡", "Terapias"],
+  ["assistente", "◉", "IA Assistente"],
+  ["notificacoes", "♢", "Notificações"],
+  ["documentos", "▤", "Documentos"],
+  ["relatorios", "▥", "Relatórios"],
+  ["perfil", "♙", "Perfil"],
+  ["responsaveis", "♧", "Responsáveis"],
+  ["configuracoes", "⚙", "Configurações"],
 ];
 
+/* Tipos de notificação, cada um com rótulo, ícone e cor. */
 const TIPOS = {
   medicamento: { label: "Medicamentos", icon: "💊", cor: "purple" },
   consulta: { label: "Consultas", icon: "🩺", cor: "blue" },
@@ -33,12 +28,14 @@ const TIPOS = {
   sistema: { label: "Sistema", icon: "⚙️", cor: "slate" },
 };
 
+/* Base de tempo para ancorar os exemplos em relação a agora. */
 const AGORA = Date.now();
 const MIN = 60 * 1000;
 const HORA = 60 * MIN;
 const DIA = 24 * HORA;
 const em = (offset) => new Date(AGORA - offset).toISOString();
 
+/* Notificações de exemplo (serão substituídas pela API do backend). */
 const NOTIFICACOES_INICIAIS = [
   { id: 1, tipo: "medicamento", titulo: "Hora do medicamento", texto: "Risperidona 1mg às 08:00.", quando: em(10 * MIN), lida: false },
   { id: 2, tipo: "consulta", titulo: "Consulta amanhã", texto: "Neurologista - Dr. Almeida às 15:00.", quando: em(2 * HORA), lida: false },
@@ -53,6 +50,7 @@ const NOTIFICACOES_INICIAIS = [
 const fmtHora = new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit" });
 const fmtDataCompleta = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
 
+/* Data e horário amigáveis: "Hoje, 08:00" / "Ontem, 14:30" / "12/05/2025, 15:00". */
 function formatarQuando(iso) {
   const d = new Date(iso);
   const hoje = new Date();
@@ -64,7 +62,7 @@ function formatarQuando(iso) {
   return `${fmtDataCompleta.format(d)}, ${hora}`;
 }
 
-function Notificacoes({ onNavigate, onLogout }) {
+function Notificacoes({ userName = "Sandy", onNavigate, onLogout }) {
   const [notificacoes, setNotificacoes] = useState(NOTIFICACOES_INICIAIS);
   const [filtroTipo, setFiltroTipo] = useState("todas");
   const [somenteNaoLidas, setSomenteNaoLidas] = useState(false);
@@ -92,16 +90,64 @@ function Notificacoes({ onNavigate, onLogout }) {
 
   return (
     <div className="notif-page">
-      <Sidebar />
+      <aside className="notif-sidebar">
+        <img className="notif-logo" src={logoCaretea} alt="CareTEA" />
+
+        <nav className="notif-menu" aria-label="Menu principal">
+          {menu.map(([id, icon, label]) => (
+            <button
+              key={id}
+              type="button"
+              className={id === "notificacoes" ? "active" : ""}
+              onClick={() => onNavigate?.(id)}
+            >
+              <span className="menu-icon">{icon}</span>
+              <span>{label}</span>
+              {id === "notificacoes" && naoLidas > 0 && <b>{naoLidas}</b>}
+            </button>
+          ))}
+        </nav>
+
+        <div className="notif-help">
+          <div className="help-title">
+            <span>🧩</span>
+            <div>
+              <strong>Precisa de ajuda?</strong>
+              <p>A IA pode organizar seus lembretes e avisar você na hora certa.</p>
+            </div>
+          </div>
+          <button type="button">Conversar com IA</button>
+        </div>
+      </aside>
 
       <main className="notif-main">
-        <Topbar
-          title="Notificações"
-          subtitle="Acompanhe lembretes de medicamentos, consultas, exames e agenda."
-          notifications={naoLidas}
-          onLogout={onLogout}
-        />
+        <header className="notif-topbar">
+          <div>
+            <h1>Notificações</h1>
+            <p>Acompanhe lembretes de medicamentos, consultas, exames e agenda.</p>
+          </div>
 
+          <div className="profile-area">
+            <button className="bell" type="button" aria-label="Notificações">
+              ♢ {naoLidas > 0 && <span>{naoLidas}</span>}
+            </button>
+            <button className="profile" type="button">
+              <span className="avatar">👩🏻</span>
+              <span>
+                <strong>{userName}</strong>
+                <small>Nível 2 - Assistida</small>
+              </span>
+              <i>⌄</i>
+            </button>
+            {onLogout && (
+              <button className="logout" type="button" onClick={onLogout}>
+                Sair
+              </button>
+            )}
+          </div>
+        </header>
+
+        {/* Cabeçalho da lista: resumo + ações globais. */}
         <section className="notif-head">
           <div className="notif-head-copy">
             <h2>Central de notificações</h2>
@@ -126,6 +172,7 @@ function Notificacoes({ onNavigate, onLogout }) {
           </div>
         </section>
 
+        {/* Filtros: por tipo + somente não lidas. */}
         <section className="notif-filters">
           <div className="filter-chips" role="group" aria-label="Filtrar por tipo">
             <button
@@ -161,6 +208,7 @@ function Notificacoes({ onNavigate, onLogout }) {
           </label>
         </section>
 
+        {/* Lista de notificações ou estado vazio. */}
         {lista.length === 0 ? (
           <section className="notif-empty">
             <span className="empty-icon">🔔</span>
@@ -203,55 +251,14 @@ function Notificacoes({ onNavigate, onLogout }) {
             })}
           </section>
         )}
-
-
-        <div
-          aria-hidden="true"
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${CORES_RODAPE.length}, 1fr)`,
-            width: "100%",
-            height: "24px",
-            marginTop: "28px",
-            overflow: "hidden",
-            borderRadius: "8px",
-          }}
-        >
-          {CORES_RODAPE.map((cor, index) => (
-            <span
-              key={`${cor}-${index}`}
-              style={{
-                position: "relative",
-                display: "block",
-                height: "24px",
-                background: cor,
-              }}
-            >
-              {index < CORES_RODAPE.length - 1 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-6px",
-                    zIndex: 2,
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "50%",
-                    background: cor,
-                    transform: "translateY(-50%)",
-                  }}
-                />
-              )}
-            </span>
-          ))}
-        </div>
-
       </main>
 
       {abrirPrefs && <ModalPreferencias onFechar={() => setAbrirPrefs(false)} />}
     </div>
   );
 }
+
+/* ------------------------ modal: preferências ------------------------ */
 
 function ModalPreferencias({ onFechar }) {
   const [canais, setCanais] = useState({ push: true, email: false, whatsapp: true });

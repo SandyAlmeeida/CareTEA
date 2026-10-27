@@ -1,9 +1,9 @@
-
 * {
   box-sizing: border-box;
 }
 
 .notif-page {
+  /* Cores base alinhadas ao index.css do projeto. */
   --nt-bg: #f6f7fc;
   --nt-card: #ffffff;
   --nt-text: #111936;
@@ -12,6 +12,7 @@
   --nt-purple: #6947e7;
   --nt-purple-dark: #5235d0;
 
+  /* Cores por tipo (strong = destaque, soft = fundo). */
   --blue: #3485e8;
   --blue-soft: #e8f1fd;
   --green: #22a96f;
@@ -41,6 +42,7 @@ select {
   cursor: pointer;
 }
 
+/* ------------------------ sidebar ------------------------ */
 
 .notif-sidebar {
   position: sticky;
@@ -155,6 +157,7 @@ select {
   font-weight: 600;
 }
 
+/* ------------------------ main / topbar ------------------------ */
 
 .notif-main {
   min-width: 0;
@@ -239,6 +242,7 @@ select {
   background: #e2e5f2;
 }
 
+/* ------------------------ cabeçalho da lista ------------------------ */
 
 .notif-head {
   display: flex;
@@ -297,6 +301,7 @@ select {
   color: var(--nt-purple-dark);
 }
 
+/* ------------------------ filtros ------------------------ */
 
 .notif-filters {
   display: flex;
@@ -337,6 +342,7 @@ select {
   box-shadow: 0 6px 14px rgba(104, 70, 232, 0.2);
 }
 
+/* Toggle "somente não lidas" (usa switch compartilhado). */
 .only-unread {
   display: inline-flex;
   align-items: center;
@@ -351,6 +357,7 @@ select {
   display: none;
 }
 
+/* ------------------------ switch reutilizável ------------------------ */
 
 .switch {
   position: relative;
@@ -381,6 +388,7 @@ input:checked + .switch::after {
   transform: translateX(18px);
 }
 
+/* ------------------------ lista de notificações ------------------------ */
 
 .notif-list {
   display: flex;
@@ -404,6 +412,7 @@ input:checked + .switch::after {
   box-shadow: 0 10px 22px rgba(21, 30, 62, 0.08);
 }
 
+/* Estado NÃO LIDA: barra colorida, fundo vivo, título forte. */
 .notif-item.nao-lida {
   background: #fbfaff;
 }
@@ -413,6 +422,7 @@ input:checked + .switch::after {
 .notif-item.item-orange.nao-lida { border-left-color: var(--orange); }
 .notif-item.item-slate.nao-lida { border-left-color: var(--slate); }
 
+/* Estado LIDA: neutro e levemente apagado. */
 .notif-item.lida {
   background: var(--nt-card);
   opacity: 0.82;
@@ -513,6 +523,7 @@ input:checked + .switch::after {
   color: #ef3e5d;
 }
 
+/* ------------------------ estado vazio ------------------------ */
 
 .notif-empty {
   display: flex;
@@ -540,6 +551,7 @@ input:checked + .switch::after {
   line-height: 1.55;
 }
 
+/* ------------------------ modal de preferências ------------------------ */
 
 .notif-overlay {
   position: fixed;
@@ -662,6 +674,7 @@ input:checked + .switch::after {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* ------------------------ responsivo ------------------------ */
 
 @media (max-width: 1080px) {
   .notif-page {
@@ -713,173 +726,4 @@ input:checked + .switch::after {
     justify-content: flex-start;
     padding-top: 4px;
   }
-}
-
-
-html[data-caretea-theme="dark"] .notif-page {
-  --nt-bg: #111521;
-  --nt-card: #1b2130;
-  --nt-text: #f3f5fb;
-  --nt-muted: #a7afc2;
-  --nt-border: #30384b;
-  --nt-purple: #927cf5;
-  --nt-purple-dark: #b4a6ff;
-
-  --blue-soft: #1d3150;
-  --green-soft: #173b31;
-  --purple-soft: #302a4d;
-  --orange-soft: #47341d;
-  --slate-soft: #29313f;
-
-  background: var(--nt-bg);
-  color: var(--nt-text);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-main {
-  background: var(--nt-bg);
-  color: var(--nt-text);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-head-copy h2,
-html[data-caretea-theme="dark"] .notif-page .notif-line strong,
-html[data-caretea-theme="dark"] .notif-page .notif-empty strong {
-  color: var(--nt-text);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-head-copy p,
-html[data-caretea-theme="dark"] .notif-page .notif-body time,
-html[data-caretea-theme="dark"] .notif-page .notif-empty p {
-  color: var(--nt-muted);
-}
-
-html[data-caretea-theme="dark"] .notif-page .prefs-btn,
-html[data-caretea-theme="dark"] .notif-page .filter-chip {
-  border-color: var(--nt-border);
-  background: var(--nt-card);
-  color: #dfe4f2;
-}
-
-html[data-caretea-theme="dark"] .notif-page .filter-chip.active {
-  border-color: transparent;
-  background: var(--nt-purple);
-  color: #ffffff;
-}
-
-html[data-caretea-theme="dark"] .notif-page .only-unread {
-  color: #dfe4f2;
-}
-
-html[data-caretea-theme="dark"] .notif-page .switch {
-  background: #3a4256;
-}
-
-html[data-caretea-theme="dark"] .notif-page input:checked + .switch {
-  background: var(--nt-purple);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-item {
-  border-color: var(--nt-border);
-  background: var(--nt-card);
-  color: var(--nt-text);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-item.nao-lida {
-  background: #202636;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-item.lida {
-  background: var(--nt-card);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-body p {
-  color: #cbd1df;
-}
-
-html[data-caretea-theme="dark"] .notif-page .tag-blue {
-  color: #89b9f6;
-}
-
-html[data-caretea-theme="dark"] .notif-page .tag-green {
-  color: #7dd7ad;
-}
-
-html[data-caretea-theme="dark"] .notif-page .tag-purple {
-  color: #c0b4ff;
-}
-
-html[data-caretea-theme="dark"] .notif-page .tag-orange {
-  color: #f6c26f;
-}
-
-html[data-caretea-theme="dark"] .notif-page .tag-slate {
-  color: #b8c0ce;
-}
-
-html[data-caretea-theme="dark"] .notif-page .read-btn {
-  background: #202636;
-  color: #c0b4ff;
-}
-
-html[data-caretea-theme="dark"] .notif-page .dismiss-btn {
-  color: #a7afc2;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-empty {
-  border-color: var(--nt-border);
-  background: var(--nt-card);
-  color: var(--nt-text);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-overlay {
-  background: rgba(3, 6, 12, 0.72);
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal {
-  background: #1b2130;
-  color: #f3f5fb;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .modal-head {
-  border-color: #30384b;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .modal-head h3 {
-  color: #f3f5fb;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .modal-close {
-  background: #202636;
-  color: #dfe4f2;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .prefs-group {
-  border-color: #30384b;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .prefs-group h4 {
-  color: #a7afc2;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .pref-label {
-  color: #f3f5fb;
-}
-
-html[data-caretea-theme="dark"] .notif-page .notif-modal .btn-ghost {
-  border-color: #3a4256;
-  background: #202636;
-  color: #dfe4f2;
-}
-
-.notif-puzzle-strip {
-  width: 100%;
-  margin-top: 28px;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.notif-puzzle-strip .puzzle-strip {
-  position: relative !important;
-  inset: auto !important;
-  width: 100% !important;
-  margin: 0;
 }
