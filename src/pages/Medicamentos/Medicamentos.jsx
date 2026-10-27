@@ -209,7 +209,7 @@ function MedicationModal({ medication, onClose, onSave }) {
 }
 
 
-function Medicamentos({ initialMedications = sampleMedications, initialHistory = sampleHistory, onLogout, onAddMedication, onUpdateMedication, onDeleteMedication, userName = "Evellyn" }) {
+function Medicamentos({ initialMedications = sampleMedications, initialHistory = sampleHistory, onLogout, onAddMedication, onUpdateMedication, onDeleteMedication, userName = "Sandy" }) {
     const [medications, setMedications] = useState(initialMedications);
     const [history, setHistory] = useState(initialHistory);
     const [modalMedication, setModalMedication] = useState(null);
