@@ -146,11 +146,6 @@ function Sidebar() {
                 {item.label}
               </span>
 
-              {item.id === "notificacoes" && (
-                <span className="sidebar-badge">
-                  3
-                </span>
-              )}
             </button>
           );
         })}

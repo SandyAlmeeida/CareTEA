@@ -1,6 +1,6 @@
-
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
@@ -14,7 +14,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function Login({
   onLogin,
   onForgotPassword,
-  onGoogleLogin,
   onRegister,
 }) {
   const navigate = useNavigate();
@@ -55,6 +54,69 @@ function Login({
     });
   }
 
+  async function criarSessaoCaretea(token, usuario) {
+    if (!token || !usuario?.id) {
+      throw new Error(
+        "O servidor não retornou uma sessão válida."
+      );
+    }
+
+    const respostaPerfil = await fetch(
+      `http://localhost:8080/pessoas-autistas/usuario/${usuario.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!respostaPerfil.ok) {
+      throw new Error(
+        "Não foi possível carregar o perfil da sua conta."
+      );
+    }
+
+    const perfis = await respostaPerfil.json();
+
+    const perfil = Array.isArray(perfis)
+      ? perfis[0]
+      : null;
+
+    if (!perfil) {
+      throw new Error(
+        "Esta conta ainda não possui um perfil cadastrado."
+      );
+    }
+
+    const session = {
+      accountType: usuario.tipoUsuario?.toLowerCase(),
+      autismLevel: perfil.nivelAutismo,
+      userName: usuario.nome,
+      profileName: perfil.nome,
+      userId: usuario.id,
+      profileId: perfil.id,
+      email: usuario.email,
+      token,
+    };
+
+    const storage = formData.remember
+      ? localStorage
+      : sessionStorage;
+
+    const otherStorage = formData.remember
+      ? sessionStorage
+      : localStorage;
+
+    otherStorage.removeItem("careteaSession");
+
+    storage.setItem(
+      "careteaSession",
+      JSON.stringify(session)
+    );
+
+    navigate("/dashboard", { replace: true });
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -66,6 +128,7 @@ function Login({
         text: "Preencha o e-mail e a senha.",
         type: "error",
       });
+
       return;
     }
 
@@ -74,6 +137,7 @@ function Login({
         text: "Digite um endereço de e-mail válido.",
         type: "error",
       });
+
       return;
     }
 
@@ -105,66 +169,7 @@ function Login({
 
       const { token, usuario } = resultado ?? {};
 
-      if (!token || !usuario?.id) {
-        throw new Error(
-          "O servidor não retornou uma sessão válida."
-        );
-      }
-
-      const respostaPerfil = await fetch(
-        `http://localhost:8080/pessoas-autistas/usuario/${usuario.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!respostaPerfil.ok) {
-        throw new Error(
-          "Não foi possível carregar o perfil da sua conta."
-        );
-      }
-
-      const perfis = await respostaPerfil.json();
-
-      const perfil = Array.isArray(perfis)
-        ? perfis[0]
-        : null;
-
-      if (!perfil) {
-        throw new Error(
-          "Esta conta ainda não possui um perfil cadastrado."
-        );
-      }
-
-      const session = {
-        accountType: usuario.tipoUsuario?.toLowerCase(),
-        autismLevel: perfil.nivelAutismo,
-        userName: usuario.nome,
-        profileName: perfil.nome,
-        userId: usuario.id,
-        profileId: perfil.id,
-        email: usuario.email,
-        token,
-      };
-
-      const storage = formData.remember
-        ? localStorage
-        : sessionStorage;
-
-      const otherStorage = formData.remember
-        ? sessionStorage
-        : localStorage;
-
-      otherStorage.removeItem("careteaSession");
-
-      storage.setItem(
-        "careteaSession",
-        JSON.stringify(session)
-      );
-
-      navigate("/dashboard", { replace: true });
+      await criarSessaoCaretea(token, usuario);
     } catch (error) {
       console.error(error);
 
@@ -181,20 +186,77 @@ function Login({
     }
   }
 
-  function abrirAcessoMeuDia() {
-    navigate("/acesso-meu-dia");
+  async function handleGoogleSuccess(credentialResponse) {
+    try {
+      setIsSubmitting(true);
+      setMessage({ text: "", type: "" });
+
+      const idToken = credentialResponse?.credential;
+
+      if (!idToken) {
+        throw new Error(
+          "O Google não retornou uma credencial válida."
+        );
+      }
+
+      const response = await fetch(
+        "http://localhost:8080/usuarios/login/google",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idToken,
+          }),
+        }
+      );
+
+      let resultado = null;
+
+      try {
+        resultado = await response.json();
+      } catch {
+        resultado = null;
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          resultado?.detail ||
+            resultado?.message ||
+            resultado?.error ||
+            "Não foi possível entrar com o Google."
+        );
+      }
+
+      const { token, usuario } = resultado ?? {};
+
+      await criarSessaoCaretea(token, usuario);
+    } catch (error) {
+      console.error(error);
+
+      setMessage({
+        text:
+          error instanceof TypeError
+            ? "Não foi possível conectar ao servidor. Confira se o backend está ligado."
+            : error.message ||
+              "Não foi possível entrar com o Google.",
+        type: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-  function handleAuxiliaryAction(callback, fallbackMessage) {
-    if (callback) {
-      callback();
-      return;
-    }
-
+  function handleGoogleError() {
     setMessage({
-      text: fallbackMessage,
-      type: "success",
+      text: "Não foi possível entrar com o Google.",
+      type: "error",
     });
+  }
+
+  function abrirAcessoMeuDia() {
+    navigate("/acesso-meu-dia");
   }
 
   return (
@@ -513,37 +575,25 @@ function Login({
                   <span />
                 </div>
 
-                <button
-                  className="google-button"
-                  type="button"
-                  onClick={() =>
-                    handleAuxiliaryAction(
-                      onGoogleLogin,
-                      "Aqui será adicionada a autenticação do Google."
-                    )
-                  }
+                <div
+                  className="google-login-wrapper"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      fill="#4285F4"
-                      d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.4Z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2.1 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2H3v2.6A10 10 0 0 0 12 22Z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M6.4 13.9A6 6 0 0 1 6.1 12c0-.7.1-1.3.3-1.9V7.5H3A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.5l3.4-2.6Z"
-                    />
-                    <path
-                      fill="#EA4335"
-                      d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A9.6 9.6 0 0 0 12 2a10 10 0 0 0-9 5.5l3.4 2.6C7.2 7.7 9.4 6 12 6Z"
-                    />
-                  </svg>
-
-                  Entrar com Google
-                </button>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    text="signin_with"
+                    shape="rectangular"
+                    size="large"
+                    theme="outline"
+                    locale="pt-BR"
+                    width="340"
+                  />
+                </div>
 
                 <div className="register">
                   <span>

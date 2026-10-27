@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
@@ -9,6 +9,7 @@ import ModalPerfil from "../../components/ModalPerfil/ModalPerfil.jsx";
 
 import {
   getCareteaProfile,
+  getCareteaSession,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
 
@@ -17,64 +18,48 @@ import "./Relatorios.css";
 const cards = [
   [
     "◊",
-    "92%",
+    "—",
     "Adesão aos medicamentos",
-    "23 de 25 doses registradas",
+    "Aguardando integração do módulo de medicamentos",
     "purple",
   ],
   [
     "▣",
-    "2",
+    "—",
     "Consultas realizadas",
-    "1 próxima consulta agendada",
+    "Aguardando integração do módulo de agenda",
     "blue",
   ],
   [
     "♡",
-    "6",
+    "—",
     "Terapias realizadas",
-    "1 falta registrada",
+    "Aguardando integração do módulo de agenda",
     "pink",
   ],
   [
     "△",
-    "3",
+    "0",
     "Exames",
-    "2 realizados e 1 pendente",
+    "Nenhum exame registrado no período",
     "green",
   ],
 ];
 
 const history = [
   [
-    "12/05/2025",
+    "—",
     "▣",
-    "Consulta - Neurologista",
-    "Clínica Neuro • Realizada",
-    "Consulta",
+    "Agenda ainda não integrada",
+    "Consultas e terapias aparecerão aqui após a integração",
+    "Agenda",
     "blue",
   ],
   [
-    "13/05/2025",
-    "♡",
-    "Fonoaudiologia",
-    "Sessão online • Realizada",
-    "Terapia",
-    "pink",
-  ],
-  [
-    "15/05/2025",
-    "△",
-    "Exame de sangue",
-    "Laboratório Vida • Realizado",
-    "Exame",
-    "green",
-  ],
-  [
-    "18/05/2025",
+    "—",
     "◊",
-    "Metilfenidato 10mg",
-    "Dose das 12:00 • Não registrada",
+    "Medicamentos ainda não integrados",
+    "O histórico de doses aparecerá aqui após a integração",
     "Medicamento",
     "orange",
   ],
@@ -94,25 +79,88 @@ const routeMap = {
   configuracoes: "/configuracoes",
 };
 
+const API_URL = "http://localhost:8080";
+
+function formatarData(data) {
+  const ano = data.getFullYear();
+
+  const mes = String(
+    data.getMonth() + 1,
+  ).padStart(2, "0");
+
+  const dia = String(
+    data.getDate(),
+  ).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
+}
+
+function calcularPeriodo(dias) {
+  const fim = new Date();
+  const inicio = new Date();
+
+  inicio.setDate(
+    fim.getDate() - (dias - 1),
+  );
+
+  return {
+    inicio: formatarData(inicio),
+    fim: formatarData(fim),
+  };
+}
+
+function formatarHumor(humor) {
+  const nomes = {
+    MUITO_BEM: "Muito bem",
+    OTIMO: "Ótimo",
+    BEM: "Bem",
+    MAIS_OU_MENOS: "Mais ou menos",
+    NEUTRO: "Mais ou menos",
+    MAL: "Mal",
+    MUITO_MAL: "Muito mal",
+  };
+
+  return nomes[humor] || "Bem";
+}
+
 function Relatorios({
   onNavigate,
   onLogout,
 }) {
   const navigate = useNavigate();
 
-  const profile = getCareteaProfile();
+  const profile =
+    getCareteaProfile();
+
+  const session =
+    getCareteaSession();
+
+  const userId =
+    session?.userId;
+
+  const profileId =
+    session?.profileId;
+
+  const token =
+    session?.token;
 
   const userName =
-    profile?.userName || "Usuário";
+    profile?.userName ||
+    "Usuário";
 
   const userLevel =
-    profile?.userLevel || "";
+    profile?.userLevel ||
+    "";
 
-  const [periodo, setPeriodo] =
-    useState("30");
+  const [
+    periodo,
+    setPeriodo,
+  ] = useState("30");
 
-  const [tipo, setTipo] =
-    useState("geral");
+  const [
+    tipo,
+    setTipo,
+  ] = useState("geral");
 
   const [
     notificacoesAbertas,
@@ -129,25 +177,475 @@ function Relatorios({
     setQuantidadeNotificacoes,
   ] = useState(3);
 
+  const [
+    relatorio,
+    setRelatorio,
+  ] = useState(null);
+
+  const [
+    dataInicioPersonalizada,
+    setDataInicioPersonalizada,
+  ] = useState("");
+
+  const [
+    dataFimPersonalizada,
+    setDataFimPersonalizada,
+  ] = useState("");
+
+  const [
+    gerandoPdf,
+    setGerandoPdf,
+  ] = useState(false);
+
   const periodoTexto =
     periodo === "7"
       ? "Últimos 7 dias"
       : periodo === "90"
         ? "Últimos 90 dias"
         : periodo === "personalizado"
-          ? "Período personalizado"
+          ? dataInicioPersonalizada &&
+            dataFimPersonalizada
+            ? `${dataInicioPersonalizada} até ${dataFimPersonalizada}`
+            : "Período personalizado"
           : "Últimos 30 dias";
 
-  function navegarPagina(id) {
-    setPerfilAberto(false);
-    setNotificacoesAbertas(false);
-
-    if (onNavigate) {
-      onNavigate(id);
+  useEffect(() => {
+    if (
+      !userId ||
+      !profileId ||
+      !token
+    ) {
       return;
     }
 
-    const path = routeMap[id];
+    if (
+      periodo === "personalizado" &&
+      (
+        !dataInicioPersonalizada ||
+        !dataFimPersonalizada
+      )
+    ) {
+      return;
+    }
+
+    let ativo = true;
+
+    async function carregarRelatorio() {
+      const datas =
+        periodo === "personalizado"
+          ? {
+              inicio:
+                dataInicioPersonalizada,
+
+              fim:
+                dataFimPersonalizada,
+            }
+          : calcularPeriodo(
+              Number(periodo),
+            );
+
+      try {
+        const parametros =
+          new URLSearchParams({
+            usuarioId:
+              String(userId),
+
+            pessoaAutistaId:
+              String(profileId),
+
+            inicio:
+              datas.inicio,
+
+            fim:
+              datas.fim,
+          });
+
+        const resposta =
+          await fetch(
+            `${API_URL}/relatorios/geral?${parametros.toString()}`,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            },
+          );
+
+        if (!resposta.ok) {
+          throw new Error(
+            "Não foi possível carregar o relatório.",
+          );
+        }
+
+        const dados =
+          await resposta.json();
+
+        if (ativo) {
+          setRelatorio(
+            dados,
+          );
+        }
+      } catch (erro) {
+        console.error(
+          "Erro ao carregar relatório:",
+          erro,
+        );
+      }
+    }
+
+    carregarRelatorio();
+
+    return () => {
+      ativo = false;
+    };
+  }, [
+    periodo,
+    dataInicioPersonalizada,
+    dataFimPersonalizada,
+    userId,
+    profileId,
+    token,
+  ]);
+
+  const cardsExibidos =
+    cards.map(
+      (
+        card,
+        index,
+      ) => {
+        if (
+          index === 3 &&
+          relatorio?.documentos
+        ) {
+          const totalExames =
+            relatorio
+              .documentos
+              .exames ?? 0;
+
+          return [
+            card[0],
+
+            String(
+              totalExames,
+            ),
+
+            card[2],
+
+            `${totalExames} exame${
+              totalExames === 1
+                ? ""
+                : "s"
+            } registrado${
+              totalExames === 1
+                ? ""
+                : "s"
+            } no período`,
+
+            card[4],
+          ];
+        }
+
+        return card;
+      },
+    );
+
+  const humorMaisRegistrado =
+    relatorio?.bemEstar
+      ?.humorMaisRegistrado
+      ? formatarHumor(
+          relatorio
+            .bemEstar
+            .humorMaisRegistrado,
+        )
+      : "Bem";
+
+  const bemEstar =
+    relatorio?.bemEstar;
+
+  const barrasBemEstar = [
+    [
+      "Ansiedade",
+
+      (
+        bemEstar
+          ?.mediaAnsiedade ??
+        0
+      ) * 10,
+
+      "orange",
+    ],
+
+    [
+      "Energia",
+
+      (
+        bemEstar
+          ?.mediaEnergia ??
+        0
+      ) * 10,
+
+      "green",
+    ],
+
+    [
+      "Qualidade sono",
+
+      (
+        bemEstar
+          ?.mediaQualidadeSono ??
+        0
+      ) * 10,
+
+      "yellow",
+    ],
+
+    [
+      "Horas de sono",
+
+      Math.min(
+        (
+          (
+            bemEstar
+              ?.mediaHorasSono ??
+            0
+          ) /
+          12
+        ) * 100,
+
+        100,
+      ),
+
+      "blue",
+    ],
+
+    [
+      "Sobrecarga",
+
+      (
+        bemEstar
+          ?.mediaSobrecargaSensorial ??
+        0
+      ) * 10,
+
+      "purple",
+    ],
+  ];
+
+  function alterarPeriodo(
+    valor,
+  ) {
+    if (
+      valor !==
+      "personalizado"
+    ) {
+      setPeriodo(valor);
+
+      return;
+    }
+
+    const inicio =
+      window.prompt(
+        "Digite a data inicial (AAAA-MM-DD):",
+        dataInicioPersonalizada,
+      );
+
+    if (!inicio) {
+      return;
+    }
+
+    const fim =
+      window.prompt(
+        "Digite a data final (AAAA-MM-DD):",
+        dataFimPersonalizada ||
+          formatarData(
+            new Date(),
+          ),
+      );
+
+    if (!fim) {
+      return;
+    }
+
+    const formatoData =
+      /^\d{4}-\d{2}-\d{2}$/;
+
+    if (
+      !formatoData.test(
+        inicio,
+      ) ||
+      !formatoData.test(
+        fim,
+      )
+    ) {
+      window.alert(
+        "Use o formato AAAA-MM-DD.",
+      );
+
+      return;
+    }
+
+    if (inicio > fim) {
+      window.alert(
+        "A data inicial não pode ser posterior à data final.",
+      );
+
+      return;
+    }
+
+    setDataInicioPersonalizada(
+      inicio,
+    );
+
+    setDataFimPersonalizada(
+      fim,
+    );
+
+    setPeriodo(
+      "personalizado",
+    );
+  }
+
+  async function gerarPdf() {
+    if (
+      !userId ||
+      !profileId ||
+      !token
+    ) {
+      window.alert(
+        "Não foi possível identificar o usuário.",
+      );
+
+      return;
+    }
+
+    if (
+      periodo === "personalizado" &&
+      (
+        !dataInicioPersonalizada ||
+        !dataFimPersonalizada
+      )
+    ) {
+      window.alert(
+        "Selecione o período personalizado primeiro.",
+      );
+
+      return;
+    }
+
+    const datas =
+      periodo === "personalizado"
+        ? {
+            inicio:
+              dataInicioPersonalizada,
+
+            fim:
+              dataFimPersonalizada,
+          }
+        : calcularPeriodo(
+            Number(periodo),
+          );
+
+    setGerandoPdf(true);
+
+    try {
+      const parametros =
+        new URLSearchParams({
+          usuarioId:
+            String(userId),
+
+          pessoaAutistaId:
+            String(profileId),
+
+          inicio:
+            datas.inicio,
+
+          fim:
+            datas.fim,
+        });
+
+      const resposta =
+        await fetch(
+          `${API_URL}/relatorios/pdf?${parametros.toString()}`,
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          },
+        );
+
+      if (!resposta.ok) {
+        throw new Error(
+          "Não foi possível gerar o PDF.",
+        );
+      }
+
+      const arquivo =
+        await resposta.blob();
+
+      const url =
+        URL.createObjectURL(
+          arquivo,
+        );
+
+      const link =
+        document.createElement(
+          "a",
+        );
+
+      link.href = url;
+
+      link.download =
+        `relatorio-caretea-${datas.inicio}-${datas.fim}.pdf`;
+
+      document.body.appendChild(
+        link,
+      );
+
+      link.click();
+
+      document.body.removeChild(
+        link,
+      );
+
+      URL.revokeObjectURL(
+        url,
+      );
+    } catch (erro) {
+      console.error(
+        "Erro ao gerar PDF:",
+        erro,
+      );
+
+      window.alert(
+        "Não foi possível gerar o PDF.",
+      );
+    } finally {
+      setGerandoPdf(
+        false,
+      );
+    }
+  }
+
+  function navegarPagina(
+    id,
+  ) {
+    setPerfilAberto(
+      false,
+    );
+
+    setNotificacoesAbertas(
+      false,
+    );
+
+    if (onNavigate) {
+      onNavigate(id);
+
+      return;
+    }
+
+    const path =
+      routeMap[id];
 
     if (path) {
       navigate(path);
@@ -157,30 +655,44 @@ function Relatorios({
   function handleLogout() {
     clearCareteaSession();
 
-    setPerfilAberto(false);
-    setNotificacoesAbertas(false);
+    setPerfilAberto(
+      false,
+    );
+
+    setNotificacoesAbertas(
+      false,
+    );
 
     if (onLogout) {
       onLogout();
+
       return;
     }
 
-    navigate("/login");
+    navigate(
+      "/login",
+    );
   }
 
   function abrirNotificacoes() {
-    setPerfilAberto(false);
+    setPerfilAberto(
+      false,
+    );
 
     setNotificacoesAbertas(
-      (aberto) => !aberto,
+      (aberto) =>
+        !aberto,
     );
   }
 
   function abrirPerfil() {
-    setNotificacoesAbertas(false);
+    setNotificacoesAbertas(
+      false,
+    );
 
     setPerfilAberto(
-      (aberto) => !aberto,
+      (aberto) =>
+        !aberto,
     );
   }
 
@@ -191,7 +703,9 @@ function Relatorios({
       <main className="reports-main">
         <header className="reports-topbar">
           <div>
-            <h1>Relatórios</h1>
+            <h1>
+              Relatórios
+            </h1>
 
             <p>
               Acompanhe a evolução dos cuidados
@@ -213,9 +727,12 @@ function Relatorios({
             >
               ♢
 
-              {quantidadeNotificacoes > 0 && (
+              {quantidadeNotificacoes >
+                0 && (
                 <span>
-                  {quantidadeNotificacoes}
+                  {
+                    quantidadeNotificacoes
+                  }
                 </span>
               )}
             </button>
@@ -224,8 +741,12 @@ function Relatorios({
               className="profile"
               type="button"
               aria-label="Abrir menu do perfil"
-              aria-expanded={perfilAberto}
-              onClick={abrirPerfil}
+              aria-expanded={
+                perfilAberto
+              }
+              onClick={
+                abrirPerfil
+              }
             >
               <PerfilAvatar />
 
@@ -236,7 +757,9 @@ function Relatorios({
 
                 {userLevel && (
                   <small>
-                    {userLevel}
+                    {
+                      userLevel
+                    }
                   </small>
                 )}
               </span>
@@ -270,13 +793,21 @@ function Relatorios({
 
           <div className="filter-controls">
             <label>
-              <span>Período</span>
+              <span>
+                Período
+              </span>
 
               <select
-                value={periodo}
-                onChange={(event) =>
-                  setPeriodo(
-                    event.target.value,
+                value={
+                  periodo
+                }
+                onChange={(
+                  event,
+                ) =>
+                  alterarPeriodo(
+                    event
+                      .target
+                      .value,
                   )
                 }
               >
@@ -304,10 +835,16 @@ function Relatorios({
               </span>
 
               <select
-                value={tipo}
-                onChange={(event) =>
+                value={
+                  tipo
+                }
+                onChange={(
+                  event,
+                ) =>
                   setTipo(
-                    event.target.value,
+                    event
+                      .target
+                      .value,
                   )
                 }
               >
@@ -336,11 +873,16 @@ function Relatorios({
             <button
               className="pdf-button"
               type="button"
-              onClick={() =>
-                window.print()
+              onClick={
+                gerarPdf
+              }
+              disabled={
+                gerandoPdf
               }
             >
-              ⇩ Gerar PDF
+              {gerandoPdf
+                ? "Gerando PDF..."
+                : "⇩ Gerar PDF"}
             </button>
           </div>
         </section>
@@ -362,7 +904,7 @@ function Relatorios({
         </div>
 
         <section className="summary-grid">
-          {cards.map(
+          {cardsExibidos.map(
             ([
               icon,
               value,
@@ -432,18 +974,19 @@ function Relatorios({
               <div className="adherence-highlight">
                 <div className="progress-ring">
                   <span>
-                    92%
+                    —
                   </span>
                 </div>
 
                 <div>
                   <strong>
-                    Excelente adesão
+                    Dados ainda não integrados
                   </strong>
 
                   <p>
-                    23 de 25 doses previstas foram
-                    registradas no período.
+                    A adesão será calculada quando o
+                    módulo de medicamentos estiver
+                    disponível no backend.
                   </p>
                 </div>
               </div>
@@ -476,74 +1019,9 @@ function Relatorios({
 
                   <tbody>
                     <tr>
-                      <td>
-                        Risperidona 1mg
-                      </td>
-
-                      <td>
-                        14
-                      </td>
-
-                      <td>
-                        14
-                      </td>
-
-                      <td>
-                        0
-                      </td>
-
-                      <td>
-                        <span className="pill green">
-                          100%
-                        </span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        Metilfenidato 10mg
-                      </td>
-
-                      <td>
-                        7
-                      </td>
-
-                      <td>
-                        6
-                      </td>
-
-                      <td>
-                        1
-                      </td>
-
-                      <td>
-                        <span className="pill yellow">
-                          86%
-                        </span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        Melatonina 3mg
-                      </td>
-
-                      <td>
-                        4
-                      </td>
-
-                      <td>
-                        3
-                      </td>
-
-                      <td>
-                        1
-                      </td>
-
-                      <td>
-                        <span className="pill orange">
-                          75%
-                        </span>
+                      <td colSpan="5">
+                        Dados de medicamentos ainda
+                        não integrados.
                       </td>
                     </tr>
                   </tbody>
@@ -564,32 +1042,20 @@ function Relatorios({
                   </p>
                 </div>
 
-                <button type="button">
+                <button
+                  type="button"
+                >
                   Comparar período
                 </button>
               </div>
 
               <div className="chart">
                 <div className="y-axis">
-                  <span>
-                    100%
-                  </span>
-
-                  <span>
-                    75%
-                  </span>
-
-                  <span>
-                    50%
-                  </span>
-
-                  <span>
-                    25%
-                  </span>
-
-                  <span>
-                    0%
-                  </span>
+                  <span>100%</span>
+                  <span>75%</span>
+                  <span>50%</span>
+                  <span>25%</span>
+                  <span>0%</span>
                 </div>
 
                 <div className="chart-area">
@@ -602,41 +1068,22 @@ function Relatorios({
                     viewBox="0 0 600 180"
                     preserveAspectRatio="none"
                   >
-                    <polyline
-                      points="0,120 90,90 180,98 270,55 360,68 450,35 540,42 600,22"
-                      fill="none"
-                      stroke="#6a46e8"
-                      strokeWidth="5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-
-                    <polyline
-                      points="0,142 90,128 180,112 270,98 360,82 450,80 540,63 600,58"
-                      fill="none"
-                      stroke="#35b675"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <text
+                      x="300"
+                      y="90"
+                      textAnchor="middle"
+                      fill="#717996"
+                      fontSize="15"
+                    >
+                      Dados de evolução ainda não integrados
+                    </text>
                   </svg>
 
                   <div className="x-axis">
-                    <span>
-                      Semana 1
-                    </span>
-
-                    <span>
-                      Semana 2
-                    </span>
-
-                    <span>
-                      Semana 3
-                    </span>
-
-                    <span>
-                      Semana 4
-                    </span>
+                    <span>Semana 1</span>
+                    <span>Semana 2</span>
+                    <span>Semana 3</span>
+                    <span>Semana 4</span>
                   </div>
                 </div>
               </div>
@@ -667,7 +1114,9 @@ function Relatorios({
                   </p>
                 </div>
 
-                <button type="button">
+                <button
+                  type="button"
+                >
                   Ver histórico completo
                 </button>
               </div>
@@ -739,7 +1188,7 @@ function Relatorios({
 
                 <div>
                   <strong>
-                    Bem
+                    {humorMaisRegistrado}
                   </strong>
 
                   <p>
@@ -749,33 +1198,7 @@ function Relatorios({
               </div>
 
               <div className="mood-bars">
-                {[
-                  [
-                    "Ótimo",
-                    48,
-                    "green",
-                  ],
-                  [
-                    "Bem",
-                    78,
-                    "yellow",
-                  ],
-                  [
-                    "Mais ou menos",
-                    43,
-                    "orange",
-                  ],
-                  [
-                    "Mal",
-                    28,
-                    "red",
-                  ],
-                  [
-                    "Muito mal",
-                    15,
-                    "purple",
-                  ],
-                ].map(
+                {barrasBemEstar.map(
                   ([
                     label,
                     width,
@@ -791,9 +1214,17 @@ function Relatorios({
 
                       <div>
                         <b
-                          className={tone}
+                          className={
+                            tone
+                          }
                           style={{
-                            width: `${width}%`,
+                            width: `${Math.min(
+                              Math.max(
+                                width,
+                                0,
+                              ),
+                              100,
+                            )}%`,
                           }}
                         />
                       </div>
@@ -824,11 +1255,12 @@ function Relatorios({
 
                 <div>
                   <strong>
-                    2 consultas realizadas
+                    Consultas ainda não integradas
                   </strong>
 
                   <small>
-                    100% das consultas agendadas
+                    Os dados aparecerão após a integração
+                    do módulo de agenda.
                   </small>
                 </div>
               </div>
@@ -840,11 +1272,12 @@ function Relatorios({
 
                 <div>
                   <strong>
-                    6 terapias realizadas
+                    Terapias ainda não integradas
                   </strong>
 
                   <small>
-                    1 falta registrada
+                    Os dados aparecerão após a integração
+                    do módulo de agenda.
                   </small>
                 </div>
               </div>
@@ -856,11 +1289,12 @@ function Relatorios({
 
                 <div>
                   <strong>
-                    2 exames realizados
+                    {relatorio?.documentos?.exames ?? 0} exames registrados
                   </strong>
 
                   <small>
-                    1 exame ainda está pendente
+                    Contagem baseada nos documentos
+                    cadastrados no período.
                   </small>
                 </div>
               </div>
@@ -892,25 +1326,39 @@ function Relatorios({
         </div>
 
         <ModalNotificacoes
-          aberto={notificacoesAbertas}
+          aberto={
+            notificacoesAbertas
+          }
           onClose={() =>
-            setNotificacoesAbertas(false)
+            setNotificacoesAbertas(
+              false,
+            )
           }
           onQuantidadeAlterada={
             setQuantidadeNotificacoes
           }
           onVerTodas={() =>
-            navegarPagina("notificacoes")
+            navegarPagina(
+              "notificacoes",
+            )
           }
         />
 
         <ModalPerfil
-          aberto={perfilAberto}
-          onClose={() =>
-            setPerfilAberto(false)
+          aberto={
+            perfilAberto
           }
-          onNavigate={navegarPagina}
-          onLogout={handleLogout}
+          onClose={() =>
+            setPerfilAberto(
+              false,
+            )
+          }
+          onNavigate={
+            navegarPagina
+          }
+          onLogout={
+            handleLogout
+          }
         />
       </main>
     </div>

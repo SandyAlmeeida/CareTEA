@@ -214,6 +214,8 @@ function Medicamentos({ initialMedications = sampleMedications, initialHistory =
     const [history, setHistory] = useState(initialHistory);
     const [modalMedication, setModalMedication] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [medicationToDelete, setMedicationToDelete] = useState(null);
+    const [deletingMedication, setDeletingMedication] = useState(false);
     const [toast, setToast] = useState(null);
     const [whatsappPatient, setWhatsappPatient] = useState("+55 11 99999-0000");
     const [whatsappResponsible, setWhatsappResponsible] = useState("+55 11 98888-0000");
@@ -256,14 +258,36 @@ function Medicamentos({ initialMedications = sampleMedications, initialHistory =
         setModalMedication(null);
     }
 
-    async function deleteMedication(id) {
+    function requestDeleteMedication(id) {
         const medication = medications.find((item) => item.id === id);
-        if (!medication) return;
-        if (!window.confirm(`Excluir ${medication.name} das doses de hoje?`)) return;
+        if (medication) setMedicationToDelete(medication);
+    }
 
-        setMedications((current) => current.filter((item) => item.id !== id));
-        await onDeleteMedication?.(id);
-        showToast("Medicamento removido da lista.");
+    async function deleteMedication() {
+        if (!medicationToDelete || deletingMedication) return;
+
+        const medication = medicationToDelete;
+        const medicationIndex = medications.findIndex((item) => item.id === medication.id);
+        setDeletingMedication(true);
+        setMedications((current) => current.filter((item) => item.id !== medication.id));
+
+        try {
+            await onDeleteMedication?.(medication.id);
+            setMedicationToDelete(null);
+            showToast("Medicamento excluído com sucesso.");
+        } catch {
+            setMedications((current) => {
+                if (current.some((item) => item.id === medication.id)) return current;
+
+                const restored = [...current];
+                restored.splice(Math.max(medicationIndex, 0), 0, medication);
+                return restored;
+            });
+            setMedicationToDelete(null);
+            showToast("Não foi possível excluir o medicamento. Tente novamente.", "warning");
+        } finally {
+            setDeletingMedication(false);
+        }
     }
 
     function clearEscalationTimer(id) {
@@ -348,7 +372,7 @@ function Medicamentos({ initialMedications = sampleMedications, initialHistory =
                                     onTaken={handleTaken}
                                     onRemindLater={(item) => { handleRemindLater(item); startEscalationDemo(item); }}
                                     onEdit={openEditModal}
-                                    onDelete={deleteMedication}
+                                    onDelete={requestDeleteMedication}
                                 />
                             ))}
 
@@ -413,6 +437,35 @@ function Medicamentos({ initialMedications = sampleMedications, initialHistory =
                     onClose={() => { setIsModalOpen(false); setModalMedication(null); }}
                     onSave={saveMedication}
                 />
+            )}
+            {medicationToDelete && (
+                <Modal
+                    kicker="Medicamentos"
+                    title="Excluir medicamento?"
+                    description="Tem certeza de que deseja excluir este medicamento?"
+                    onClose={() => {
+                        if (!deletingMedication) setMedicationToDelete(null);
+                    }}
+                >
+                    <div className="app-modal-actions">
+                        <button
+                            className="medicamentos-btn medicamentos-btn-secondary"
+                            type="button"
+                            onClick={() => setMedicationToDelete(null)}
+                            disabled={deletingMedication}
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            className="medicamentos-btn medicamentos-btn-primary"
+                            type="button"
+                            onClick={deleteMedication}
+                            disabled={deletingMedication}
+                        >
+                            {deletingMedication ? "Excluindo..." : "Excluir"}
+                        </button>
+                    </div>
+                </Modal>
             )}
             <Toast toast={toast} />
         </div>

@@ -1,20 +1,39 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import logoCaretea from "../../assets/logo-caretea.png";
 import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip.jsx";
 import PerfilAvatar from "../../components/PerfilAvatar/PerfilAvatar.jsx";
 import ModalNotificacoes from "../../components/ModalNotificacoes/ModalNotificacoes.jsx";
 import ModalPerfil from "../../components/ModalPerfil/ModalPerfil.jsx";
-
 import {
+  getCareteaSession,
   getCareteaProfile,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
-
 import "./Dashboard.css";
 
+const API_URL = "http://localhost:8080";
+
+function formatLocalDateTime(date) {
+  const pad = (value) => String(value).padStart(2, "0");
+
+  return (
+    `${date.getFullYear()}-` +
+    `${pad(date.getMonth() + 1)}-` +
+    `${pad(date.getDate())}T` +
+    `${pad(date.getHours())}:` +
+    `${pad(date.getMinutes())}:` +
+    `${pad(date.getSeconds())}`
+  );
+}
+
+const humorBackendParaFrontend = {
+  MUITO_BEM: "otimo",
+  BEM: "bem",
+  NEUTRO: "medio",
+  MAL: "mal",
+  MUITO_MAL: "muito-mal",
+};
 const menuItems = [
   {
     id: "dashboard",
@@ -74,7 +93,6 @@ const menuItems = [
     label: "Configurações",
   },
 ];
-
 const routeMap = {
   dashboard: "/dashboard",
   agenda: "/agenda",
@@ -88,80 +106,37 @@ const routeMap = {
   relatorios: "/relatorios",
   configuracoes: "/configuracoes",
 };
-
 const stats = [
-  {
-    icon: "◊",
-    value: "3",
-    title: "Medicamentos",
-    subtitle: "Hoje",
-    tone: "purple",
-    route: "medicamentos",
-  },
-  {
-    icon: "▣",
-    value: "1",
-    title: "Consulta",
-    subtitle: "Hoje",
-    tone: "blue",
-    route: "consultas",
-  },
-  {
-    icon: "△",
-    value: "1",
-    title: "Exame",
-    subtitle: "Próximo",
-    tone: "green",
-    route: "consultas",
-  },
-  {
-    icon: "♡",
-    value: "1",
-    title: "Terapia",
-    subtitle: "Esta semana",
-    tone: "orange",
-    route: "consultas",
-  },
+  { icon: "◇", title: "Medicamentos", tone: "purple", route: "medicamentos" },
+  { icon: "▣", title: "Consulta", tone: "blue", route: "consultas" },
+  { icon: "△", title: "Exame", tone: "green", route: "consultas" },
+  { icon: "♡", title: "Terapia", tone: "orange", route: "consultas" },
 ];
+const reminderTypes = {
+  MEDICAMENTO: { label: "Lembrete de medicamento", icon: "◇", tone: "purple" },
+  CONSULTA: { label: "Lembrete de consulta", icon: "♧", tone: "blue" },
+  EXAME: { label: "Lembrete de exame", icon: "△", tone: "green" },
+  LEMBRETE: { label: "Lembrete geral", icon: "▣", tone: "orange" },
+  SISTEMA: { label: "Aviso do sistema", icon: "♢", tone: "purple" },
+};
 
-const schedule = [
-  {
-    time: "08:00",
-    icon: "◊",
-    title: "Risperidona 1mg",
-    subtitle: "1 comprimido",
-    status: "Tomado",
-    tone: "green",
-    dot: "purple",
-  },
-  {
-    time: "12:00",
-    icon: "◇",
-    title: "Metilfenidato 10mg",
-    subtitle: "1 comprimido",
-    status: "Pendente",
-    tone: "orange",
-    dot: "yellow",
-  },
-  {
-    time: "15:00",
-    icon: "♧",
-    title: "Consulta - Neurologista",
-    subtitle: "Clínica Neuro",
-    status: "Em 2h",
-    tone: "blue",
-    dot: "blue",
-  },
-  {
-    time: "18:30",
-    icon: "♡",
-    title: "Terapia - Fonoaudiologia",
-    subtitle: "Sessão online",
-    status: "Em 5h 30min",
-    tone: "purple",
-    dot: "pink",
-  },
-];
+function reminderPresentation(item) {
+  return reminderTypes[item.tipo] || {
+    label: "Lembrete", icon: "▣", tone: "blue",
+  };
+}
+
+function sameDay(first, second) {
+  return first.getFullYear() === second.getFullYear()
+    && first.getMonth() === second.getMonth()
+    && first.getDate() === second.getDate();
+}
+
+function reminderTime(item) {
+  return new Date(item.dataHora).toLocaleTimeString("pt-BR", {
+    hour: "2-digit", minute: "2-digit",
+  });
+}
 
 const moods = [
   ["🙂", "Ótimo", "otimo", "green"],
@@ -170,69 +145,207 @@ const moods = [
   ["🙁", "Mal", "mal", "red"],
   ["😣", "Muito mal", "muito-mal", "purple"],
 ];
-
 function Dashboard({
   onNavigate,
   onLogout,
 }) {
   const routerNavigate = useNavigate();
-
   const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [selectedMood, setSelectedMood] = useState("bem");
+  const [selectedMood, setSelectedMood] = useState(null);
   const [notificacoesAbertas, setNotificacoesAbertas] =
     useState(false);
-
   const [perfilAberto, setPerfilAberto] =
     useState(false);
-
   const [
     quantidadeNotificacoes,
     setQuantidadeNotificacoes,
-  ] = useState(3);
-
+  ] = useState(0);
+  const session = getCareteaSession();
+  const [wellbeingSummary, setWellbeingSummary] = useState(null);
+  const [loadingWellbeing, setLoadingWellbeing] = useState(true);
+  const [wellbeingError, setWellbeingError] = useState("");
+  const [reminders, setReminders] = useState([]);
+  const [loadingReminders, setLoadingReminders] = useState(true);
+  const [remindersError, setRemindersError] = useState("");
+  const [calendarDate, setCalendarDate] = useState(() => new Date());
+  const today = new Date();
+  const weekStart = new Date(calendarDate);
+  weekStart.setDate(weekStart.getDate() - (weekStart.getDay() + 6) % 7);
+  const calendarDays = Array.from({ length: 7 }, (_, index) => {
+    const day = new Date(weekStart);
+    day.setDate(day.getDate() + index);
+    return day;
+  });
+  const schedule = reminders.filter((item) => sameDay(new Date(item.dataHora), today));
+  const agenda = reminders.filter((item) => sameDay(new Date(item.dataHora), calendarDate));
+  const upcomingReminders = reminders
+    .filter((item) => new Date(item.dataHora) >= today)
+    .slice(0, 3);
+  const reminderState = loadingReminders
+    ? "Carregando lembretes..."
+    : remindersError;
   const profile = getCareteaProfile();
-
   const accountType = profile?.accountType;
   const autismLevel = profile?.autismLevel;
   const isResponsible = profile?.isResponsible === true;
-
   const userName =
     profile?.userName || "Usuário";
-
   const profileName =
     profile?.profileName || "";
-
   const userLevel =
     profile?.userLevel || "";
 
+  useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+
+    async function carregarLembretes() {
+      setLoadingReminders(true);
+      setRemindersError("");
+      setReminders([]);
+
+      try {
+        if (!session?.token || !session?.userId) {
+          throw new Error("Sessão não encontrada.");
+        }
+
+        const response = await fetch(
+          `${API_URL}/lembretes/usuario/${session.userId}`,
+          {
+            headers: { Authorization: `Bearer ${session.token}` },
+            signal: controller.signal,
+          },
+        );
+        if (!response.ok) {
+          throw new Error("Não foi possível carregar os lembretes.");
+        }
+
+        const data = await response.json();
+        if (!Array.isArray(data) || data.some((item) =>
+          !item || !item.dataHora || Number.isNaN(new Date(item.dataHora).getTime())
+        )) {
+          throw new Error("Resposta de lembretes inválida.");
+        }
+
+        if (active) {
+          setReminders(data
+            .filter((item) => item.ativo)
+            .sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora)));
+        }
+      } catch (error) {
+        if (active) {
+          setRemindersError("Não foi possível carregar os lembretes.");
+          console.error("Erro ao carregar lembretes:", error);
+        }
+      } finally {
+        if (active) setLoadingReminders(false);
+      }
+    }
+
+    carregarLembretes();
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [session?.token, session?.userId]);
+
+  useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+
+    async function carregarBemEstar() {
+      setLoadingWellbeing(true);
+      setWellbeingError("");
+      setWellbeingSummary(null);
+      setSelectedMood(null);
+      if (!session?.token || !session?.userId) {
+        setWellbeingError("Não foi possível carregar o bem-estar.");
+        setLoadingWellbeing(false);
+        return;
+      }
+
+      try {
+        const fim = new Date();
+        const inicio = new Date();
+
+        inicio.setDate(inicio.getDate() - 7);
+
+        const response = await fetch(
+          `${API_URL}/dashboard/bem-estar/usuario/${session.userId}` +
+            `?inicio=${encodeURIComponent(formatLocalDateTime(inicio))}` +
+            `&fim=${encodeURIComponent(formatLocalDateTime(fim))}`,
+          {
+            headers: {
+              Authorization: `Bearer ${session.token}`,
+            },
+            signal: controller.signal,
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "Não foi possível carregar o bem-estar.",
+          );
+        }
+
+        const dados = await response.json();
+
+        if (!dados || !Number.isInteger(dados.totalRegistros) || dados.totalRegistros < 0) {
+          throw new Error("Resposta de bem-estar inválida.");
+        }
+        if (!active) return;
+        setWellbeingSummary(dados);
+
+        const humorConvertido =
+          humorBackendParaFrontend[dados.humorPredominante];
+
+        if (humorConvertido) {
+          setSelectedMood(humorConvertido);
+        }
+      } catch (error) {
+        if (!active) return;
+        setWellbeingError("Não foi possível carregar o bem-estar.");
+        console.error(
+          "Erro ao carregar bem-estar:",
+          error,
+        );
+      } finally {
+        if (active) setLoadingWellbeing(false);
+      }
+    }
+
+    carregarBemEstar();
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [session?.token, session?.userId]);
   const dashboardSubtitle =
     isResponsible && profileName
       ? `Acompanhando a rotina de ${profileName}.`
       : isResponsible
         ? "Acompanhe a rotina e os cuidados em um só lugar."
         : "Sua rotina, cuidados e compromissos em um só lugar.";
-
   const organizedDayTitle =
     isResponsible && profileName
       ? `Rotina de ${profileName}`
       : isResponsible
         ? "Rotina acompanhada"
         : "Seu dia, organizado";
-
   const agendaTitle =
     isResponsible && profileName
       ? `Agenda de ${profileName}`
       : isResponsible
         ? "Agenda acompanhada"
         : "Agenda do dia";
-
-  const moodTitle =
-    isResponsible && profileName
-      ? `Como ${profileName} está hoje?`
-      : isResponsible
-        ? "Como está a pessoa acompanhada hoje?"
-        : "Como você está hoje?";
-
+  const moodTitle = "Bem-estar nos últimos 7 dias";
+  function changeCalendarWeek(offset) {
+    setCalendarDate((current) => {
+      const next = new Date(current);
+      next.setDate(next.getDate() + offset * 7);
+      return next;
+    });
+  }
   const visibleMenuItems =
     menuItems.filter((item) => {
       if (
@@ -244,7 +357,6 @@ function Dashboard({
       ) {
         return false;
       }
-
       if (
         item.onlyFor === "responsavel-nivel-2" &&
         !(
@@ -254,57 +366,43 @@ function Dashboard({
       ) {
         return false;
       }
-
       return true;
     });
-
   function navigateTo(id) {
     setActiveMenu(id);
     setNotificacoesAbertas(false);
     setPerfilAberto(false);
-
     if (onNavigate) {
       onNavigate(id);
       return;
     }
-
     const path = routeMap[id];
-
     if (path) {
       routerNavigate(path);
     }
   }
-
   function handleLogout() {
     clearCareteaSession();
-
     setPerfilAberto(false);
     setNotificacoesAbertas(false);
-
     if (onLogout) {
       onLogout();
       return;
     }
-
     routerNavigate("/login");
   }
-
   function toggleNotifications() {
     setPerfilAberto(false);
-
     setNotificacoesAbertas(
       (aberto) => !aberto,
     );
   }
-
   function toggleProfile() {
     setNotificacoesAbertas(false);
-
     setPerfilAberto(
       (aberto) => !aberto,
     );
   }
-
   return (
     <div className="caretea-dashboard">
       <aside className="dashboard-sidebar">
@@ -313,7 +411,6 @@ function Dashboard({
           alt="CareTEA"
           className="sidebar-logo"
         />
-
         <nav
           className="sidebar-nav"
           aria-label="Menu principal"
@@ -334,9 +431,7 @@ function Dashboard({
               <span className="sidebar-icon">
                 {item.icon}
               </span>
-
               <span>{item.label}</span>
-
               {item.id === "notificacoes" &&
                 quantidadeNotificacoes > 0 && (
                   <span className="sidebar-badge">
@@ -346,21 +441,17 @@ function Dashboard({
             </button>
           ))}
         </nav>
-
         <div className="sidebar-help-card">
           <div className="help-illustration">
             🧩
           </div>
-
           <strong>
             Precisa de ajuda?
           </strong>
-
           <p>
             Nossa IA está aqui para te apoiar
             sempre que precisar.
           </p>
-
           <button
             type="button"
             onClick={() =>
@@ -370,7 +461,6 @@ function Dashboard({
             Conversar com IA
           </button>
         </div>
-
         <button
           className="sidebar-item"
           type="button"
@@ -379,23 +469,19 @@ function Dashboard({
           <span className="sidebar-icon">
             ↪
           </span>
-
           <span>Sair</span>
         </button>
       </aside>
-
       <main className="dashboard-main">
         <header className="dashboard-topbar">
           <div>
             <h1>
               Olá, {userName}! 👋
             </h1>
-
             <p>
               {dashboardSubtitle}
             </p>
           </div>
-
           <div className="topbar-actions">
             <button
               className="notification-button"
@@ -405,14 +491,12 @@ function Dashboard({
               onClick={toggleNotifications}
             >
               ♢
-
               {quantidadeNotificacoes > 0 && (
                 <span>
                   {quantidadeNotificacoes}
                 </span>
               )}
             </button>
-
             <button
               className="profile-button"
               type="button"
@@ -421,19 +505,16 @@ function Dashboard({
               onClick={toggleProfile}
             >
               <PerfilAvatar />
-
               <span className="profile-copy">
                 <strong>
                   {userName}
                 </strong>
-
                 {userLevel && (
                   <small>
                     {userLevel}
                   </small>
                 )}
               </span>
-
               <span>
                 {perfilAberto
                   ? "⌃"
@@ -442,7 +523,6 @@ function Dashboard({
             </button>
           </div>
         </header>
-
         <section className="quick-actions">
           <button
             type="button"
@@ -453,7 +533,6 @@ function Dashboard({
             <span>＋</span>
             Novo lembrete
           </button>
-
           <button
             type="button"
             onClick={() =>
@@ -463,7 +542,6 @@ function Dashboard({
             <span>▣</span>
             Nova consulta
           </button>
-
           <button
             type="button"
             onClick={() =>
@@ -474,7 +552,6 @@ function Dashboard({
             Enviar documento
           </button>
         </section>
-
         <section className="dashboard-layout">
           <div className="dashboard-center">
             <section className="stats-grid">
@@ -488,21 +565,17 @@ function Dashboard({
                   >
                     {stat.icon}
                   </span>
-
                   <div className="stat-copy">
                     <strong>
-                      {stat.value}
+                      —
                     </strong>
-
                     <span>
                       {stat.title}
                     </span>
-
                     <small>
-                      {stat.subtitle}
+                      Dados indisponíveis
                     </small>
                   </div>
-
                   <button
                     type="button"
                     onClick={() =>
@@ -514,13 +587,11 @@ function Dashboard({
                 </article>
               ))}
             </section>
-
             <section className="dashboard-panel organized-day-panel">
               <div className="panel-header">
                 <h2>
                   {organizedDayTitle}
                 </h2>
-
                 <button
                   type="button"
                   onClick={() =>
@@ -530,64 +601,41 @@ function Dashboard({
                   Ver agenda completa
                 </button>
               </div>
-
               <div className="timeline">
-                {schedule.map((item) => (
-                  <article
-                    className="timeline-row"
-                    key={`${item.time}-${item.title}`}
-                  >
-                    <div className="timeline-time">
-                      <span
-                        className={`timeline-dot timeline-dot-${item.dot}`}
-                      />
-
-                      <time>
-                        {item.time}
-                      </time>
-                    </div>
-
-                    <div
-                      className={`timeline-icon timeline-icon-${item.dot}`}
-                    >
-                      {item.icon}
-                    </div>
-
-                    <div className="timeline-copy">
-                      <strong>
-                        {item.title}
-                      </strong>
-
-                      <small>
-                        {item.subtitle}
-                      </small>
-                    </div>
-
-                    <span
-                      className={`status-pill status-pill-${item.tone}`}
-                    >
-                      {item.status}
-
-                      <b>
-                        {item.tone === "green"
-                          ? "✓"
-                          : "◷"}
-                      </b>
-                    </span>
-                  </article>
-                ))}
+                {reminderState ? (
+                  <p role={remindersError ? "alert" : undefined}>{reminderState}</p>
+                ) : schedule.length === 0 ? (
+                  <p>Nenhum lembrete para hoje.</p>
+                ) : schedule.map((item) => {
+                  const presentation = reminderPresentation(item);
+                  return (
+                    <article className="timeline-row" key={item.id}>
+                      <div className="timeline-time">
+                        <span className={`timeline-dot timeline-dot-${presentation.tone}`} />
+                        <time dateTime={item.dataHora}>{reminderTime(item)}</time>
+                      </div>
+                      <div className={`timeline-icon timeline-icon-${presentation.tone}`}>
+                        {presentation.icon}
+                      </div>
+                      <div className="timeline-copy">
+                        <strong>{item.titulo}</strong>
+                        <small>{item.mensagem}</small>
+                      </div>
+                      <span className={`status-pill status-pill-${presentation.tone}`}>
+                        {presentation.label}
+                      </span>
+                    </article>
+                  );
+                })}
               </div>
             </section>
-
           </div>
-
           <aside className="dashboard-right">
             <section className="dashboard-panel calendar-panel">
               <div className="panel-header">
                 <h2>
                   {agendaTitle}
                 </h2>
-
                 <button
                   type="button"
                   onClick={() =>
@@ -597,21 +645,17 @@ function Dashboard({
                   Ver calendário
                 </button>
               </div>
-
               <div className="calendar-toolbar">
-                <button type="button">
+                <button type="button" aria-label="Semana anterior" onClick={() => changeCalendarWeek(-1)}>
                   ‹
                 </button>
-
                 <strong>
-                  Maio 2025
+                  {calendarDate.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })}
                 </strong>
-
-                <button type="button">
+                <button type="button" aria-label="Próxima semana" onClick={() => changeCalendarWeek(1)}>
                   ›
                 </button>
               </div>
-
               <div className="calendar-week">
                 {[
                   "Seg",
@@ -626,92 +670,110 @@ function Dashboard({
                     {day}
                   </span>
                 ))}
-
-                {[
-                  12,
-                  13,
-                  14,
-                  15,
-                  16,
-                  17,
-                  18,
-                ].map((date) => (
+                {calendarDays.map((date) => (
                   <button
                     type="button"
-                    key={date}
-                    className={
-                      date === 12
-                        ? "calendar-selected"
-                        : ""
-                    }
+                    key={formatLocalDateTime(date).slice(0, 10)}
+                    className={sameDay(date, calendarDate) ? "calendar-selected" : ""}
+                    onClick={() => setCalendarDate(date)}
+                    aria-label={date.toLocaleDateString("pt-BR")}
+                    aria-pressed={sameDay(date, calendarDate)}
                   >
-                    {date}
+                    {date.getDate()}
                   </button>
                 ))}
               </div>
-
               <div className="agenda-list">
-                {[
-                  [
-                    "08:00",
-                    "Risperidona 1mg",
-                    "1 comprimido",
-                    "green",
-                    "✓",
-                  ],
-                  [
-                    "15:00",
-                    "Consulta - Neurologista",
-                    "Clínica Neuro",
-                    "purple",
-                    "›",
-                  ],
-                  [
-                    "18:30",
-                    "Terapia - Fonoaudiologia",
-                    "Sessão online",
-                    "orange",
-                    "›",
-                  ],
-                ].map(
-                  ([
-                    time,
-                    title,
-                    subtitle,
-                    tone,
-                    action,
-                  ]) => (
-                    <article
-                      key={`${time}-${title}`}
-                    >
-                      <time>
-                        {time}
-                      </time>
-
-                      <span
-                        className={`agenda-line agenda-line-${tone}`}
-                      />
-
+                {reminderState ? (
+                  <p role={remindersError ? "alert" : undefined}>{reminderState}</p>
+                ) : agenda.length === 0 ? (
+                  <p>Nenhum lembrete para esta data.</p>
+                ) : agenda.map((item) => {
+                  const presentation = reminderPresentation(item);
+                  return (
+                    <article key={item.id}>
+                      <time dateTime={item.dataHora}>{reminderTime(item)}</time>
+                      <span className={`agenda-line agenda-line-${presentation.tone}`} />
                       <div>
-                        <strong>
-                          {title}
-                        </strong>
-
-                        <small>
-                          {subtitle}
-                        </small>
+                        <strong>{item.titulo}</strong>
+                        <small>{presentation.label} · {item.mensagem}</small>
                       </div>
-
-                      <b
-                        className={`agenda-action agenda-action-${tone}`}
-                      >
-                        {action}
-                      </b>
                     </article>
-                  ),
-                )}
+                  );
+                })}
               </div>
             </section>
+            {accountType === "autista" && autismLevel === 1 && (
+              <section className="dashboard-panel mood-panel">
+                <div className="panel-header">
+                  <h2>{moodTitle}</h2>
+
+                  <button
+                    type="button"
+                    onClick={() => navigateTo("bem-estar")}
+                  >
+                    Ver detalhes
+                  </button>
+                </div>
+
+                {loadingWellbeing ? (
+                  <p className="streak-caption">
+                    Carregando bem-estar...
+                  </p>
+                ) : wellbeingError ? (
+                  <p className="streak-caption" role="alert">{wellbeingError}</p>
+                ) : wellbeingSummary?.totalRegistros > 0 ? (
+                  <>
+                    <div className="mood-options">
+                      {moods.map(
+                        ([emoji, label, value, tone]) => (
+                          <button
+                            key={value}
+                            type="button"
+                            className={
+                              selectedMood === value
+                                ? "mood-selected"
+                                : ""
+                            }
+                            onClick={() =>
+                              navigateTo("bem-estar")
+                            }
+                          >
+                            <span
+                              className={`mood-face mood-face-${tone}`}
+                            >
+                              {emoji}
+                            </span>
+
+                            <small>{label}</small>
+                          </button>
+                        ),
+                      )}
+                    </div>
+
+                    <p className="streak-caption">
+                      Baseado em {wellbeingSummary.totalRegistros}{" "}
+                      registro(s) dos últimos 7 dias.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="streak-caption">
+                      Você ainda não possui registros de bem-estar
+                      nos últimos 7 dias.
+                    </p>
+
+                    <button
+                      className="view-all-button"
+                      type="button"
+                      onClick={() => navigateTo("bem-estar")}
+                    >
+                      Registrar como estou →
+                    </button>
+                  </>
+                )}
+              </section>
+            )}
 
             <section className="dashboard-panel quick-info-panel">
               <div className="panel-header compact">
@@ -719,69 +781,32 @@ function Dashboard({
                   Informações rápidas
                 </h2>
               </div>
-
               <div className="quick-info-list">
-                {[
-                  [
-                    "▣",
-                    "Próxima consulta",
-                    "20/05/2025 - Terça, 15:00",
-                    "Neurologista",
-                    "purple",
-                  ],
-                  [
-                    "△",
-                    "Próximo exame",
-                    "22/05/2025 - 07:30",
-                    "Exame de Sangue",
-                    "blue",
-                  ],
-                  [
-                    "♡",
-                    "Próxima terapia",
-                    "13/05/2025 - 18:30",
-                    "Fonoaudiologia",
-                    "pink",
-                  ],
-                ].map(
-                  ([
-                    icon,
-                    title,
-                    detail,
-                    tag,
-                    tone,
-                  ]) => (
-                    <article
-                      key={title}
-                    >
-                      <span
-                        className={`quick-info-icon quick-info-${tone}`}
-                      >
-                        {icon}
+                {reminderState ? (
+                  <p role={remindersError ? "alert" : undefined}>{reminderState}</p>
+                ) : upcomingReminders.length === 0 ? (
+                  <p>Nenhum próximo lembrete.</p>
+                ) : upcomingReminders.map((item) => {
+                  const presentation = reminderPresentation(item);
+                  return (
+                    <article key={item.id}>
+                      <span className={`quick-info-icon quick-info-${presentation.tone}`}>
+                        {presentation.icon}
                       </span>
-
                       <div>
-                        <strong>
-                          {title}
-                        </strong>
-
+                        <strong>{item.titulo}</strong>
                         <small>
-                          {detail}
+                          {new Date(item.dataHora).toLocaleString("pt-BR", {
+                            day: "2-digit", month: "2-digit", year: "numeric",
+                            hour: "2-digit", minute: "2-digit",
+                          })}
                         </small>
                       </div>
-
-                      <span>
-                        {tag}
-                      </span>
-
-                      <b>
-                        ♙
-                      </b>
+                      <span>{presentation.label}</span>
                     </article>
-                  ),
-                )}
+                  );
+                })}
               </div>
-
               <button
                 className="view-all-button"
                 type="button"
@@ -794,11 +819,9 @@ function Dashboard({
             </section>
           </aside>
         </section>
-
         <div className="dashboard-puzzle-strip">
           <PuzzleStrip />
         </div>
-
         <ModalNotificacoes
           aberto={notificacoesAbertas}
           onClose={() =>
@@ -811,7 +834,6 @@ function Dashboard({
             navigateTo("notificacoes")
           }
         />
-
         <ModalPerfil
           aberto={perfilAberto}
           onClose={() =>
@@ -821,9 +843,7 @@ function Dashboard({
           onLogout={handleLogout}
         />
       </main>
-
     </div>
   );
 }
-
 export default Dashboard;
