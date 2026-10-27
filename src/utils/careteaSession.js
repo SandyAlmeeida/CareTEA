@@ -26,6 +26,10 @@ export function getCareteaSession() {
   }
 }
 
+export function getCareteaUserId() {
+  return getCareteaSession()?.userId ?? null;
+}
+
 function tokenEstaValido(token, usuarioId) {
   if (typeof token !== "string" || !token) {
     return false;

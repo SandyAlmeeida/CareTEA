@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Topbar from "../../components/Topbar/Topbar";
 import PageToolbar from "../../components/Pagetoolbar/Pagetoolbar";
@@ -6,44 +6,56 @@ import Modal from "../../components/Modal/Modal";
 import Toast from "../../components/Toast/Toast";
 import Icon from "../../assets/Icons/Icon";
 import PuzzleStrip from "../../components/PuzzleStrip/PuzzleStrip";
+
+import { getCareteaUserId } from "../../utils/careteaSession";
+import {
+    listarCompromissos,
+    criarCompromisso,
+    atualizarCompromisso,
+    excluirCompromisso,
+    horaCurta,
+} from "../../services/compromissos";
+
 import "./Consultas.css";
 
 
-const sampleConsultas = [
-    {
-        id: 1,
-        titulo: "Consulta - Neurologista",
-        especialidade: "Neurologia",
-        data: "20/05/2025",
-        horario: "15:00",
-        local: "Clínica Neuro",
-        observacoes: "Levar exames anteriores e lista atualizada de medicamentos.",
-        lembrete: true,
-    },
-    {
-        id: 2,
-        titulo: "Consulta - Psicólogo",
-        especialidade: "Psicologia",
-        data: "27/05/2025",
-        horario: "10:30",
-        local: "Espaço Cuidar",
-        observacoes: "Sessão de acompanhamento e avaliação da rotina.",
-        lembrete: true,
-    },
-    {
-        id: 3,
-        titulo: "Consulta - Nutricionista",
-        especialidade: "Nutrição",
-        data: "03/06/2025",
-        horario: "14:00",
-        local: "Clínica Bem-Estar",
-        observacoes: "Levar registro alimentar da última semana.",
-        lembrete: false,
-    },
-];
+const emptyForm = { titulo: "", especialidade: "", dataISO: "", horario: "", local: "", observacoes: "", lembrete: true };
 
 
-const emptyForm = { titulo: "", especialidade: "", data: "", horario: "", local: "", observacoes: "", lembrete: true };
+function formatarDataBR(iso) {
+    if (!iso) return "";
+    const [ano, mes, dia] = iso.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
+
+
+function paraConsulta(compromisso) {
+    return {
+        id: compromisso.id,
+        titulo: compromisso.titulo,
+        especialidade: compromisso.especialidade || "",
+        dataISO: compromisso.data,
+        horario: horaCurta(compromisso.horarioInicio),
+        local: compromisso.local || "",
+        observacoes: compromisso.observacoes || "",
+        lembrete: compromisso.lembrete,
+    };
+}
+
+
+function paraPayload(consulta) {
+    return {
+        tipo: "consulta",
+        titulo: consulta.titulo.trim(),
+        especialidade: consulta.especialidade.trim() || null,
+        data: consulta.dataISO,
+        horarioInicio: consulta.horario,
+        horarioFim: null,
+        local: consulta.local.trim() || null,
+        observacoes: consulta.observacoes.trim() || null,
+        lembrete: consulta.lembrete,
+    };
+}
 
 
 function ConsultaCard({ consulta, onEdit, onDelete, onToggleReminder }) {
@@ -68,7 +80,7 @@ function ConsultaCard({ consulta, onEdit, onDelete, onToggleReminder }) {
             </div>
 
             <div className="consulta-details">
-                <div><Icon name="calendar" size={17} /><div><small>Data</small><strong>{consulta.data}</strong></div></div>
+                <div><Icon name="calendar" size={17} /><div><small>Data</small><strong>{formatarDataBR(consulta.dataISO)}</strong></div></div>
                 <div><Icon name="clock" size={17} /><div><small>Horário</small><strong>{consulta.horario}</strong></div></div>
                 <div className="consulta-detail-wide"><Icon name="pin" size={17} /><div><small>Local</small><strong>{consulta.local || "Não informado"}</strong></div></div>
             </div>
@@ -85,7 +97,7 @@ function ConsultaCard({ consulta, onEdit, onDelete, onToggleReminder }) {
                 <button
                     type="button"
                     className={`reminder-button ${consulta.lembrete ? "enabled" : ""}`}
-                    onClick={() => onToggleReminder(consulta.id)}
+                    onClick={() => onToggleReminder(consulta)}
                 >
                     <Icon name="bell" size={16} /> {consulta.lembrete ? "Lembrete ativado" : "Ativar lembrete"}
                 </button>
@@ -98,19 +110,27 @@ function ConsultaCard({ consulta, onEdit, onDelete, onToggleReminder }) {
 function ConsultaModal({ consulta, onClose, onSave }) {
     const [form, setForm] = useState(() => (consulta ? { ...consulta } : emptyForm));
     const [error, setError] = useState("");
+    const [salvando, setSalvando] = useState(false);
 
     function updateField(event) {
         const { name, value, type, checked } = event.target;
         setForm((current) => ({ ...current, [name]: type === "checkbox" ? checked : value }));
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        if (!form.titulo || !form.especialidade || !form.data || !form.horario) {
+        if (!form.titulo || !form.especialidade || !form.dataISO || !form.horario) {
             setError("Preencha título, especialidade, data e horário.");
             return;
         }
-        onSave(form);
+        setError("");
+        setSalvando(true);
+        try {
+            await onSave(form);
+        } catch (e) {
+            setError(e.message || "Não foi possível salvar a consulta.");
+            setSalvando(false);
+        }
     }
 
     return (
@@ -132,11 +152,11 @@ function ConsultaModal({ consulta, onClose, onSave }) {
                     </label>
                     <label className="consultas-field">
                         <span>Data *</span>
-                        <input name="data" value={form.data} onChange={updateField} placeholder="20/05/2025" />
+                        <input type="date" name="dataISO" value={form.dataISO} onChange={updateField} />
                     </label>
                     <label className="consultas-field">
                         <span>Horário *</span>
-                        <input name="horario" value={form.horario} onChange={updateField} placeholder="15:00" />
+                        <input type="time" name="horario" value={form.horario} onChange={updateField} />
                     </label>
                     <label className="consultas-field consultas-field-full">
                         <span>Local</span>
@@ -157,7 +177,9 @@ function ConsultaModal({ consulta, onClose, onSave }) {
 
                 <div className="app-modal-actions">
                     <button type="button" className="consultas-btn consultas-btn-secondary" onClick={onClose}>Cancelar</button>
-                    <button type="submit" className="consultas-btn consultas-btn-primary">{consulta ? "Salvar alterações" : "Cadastrar consulta"}</button>
+                    <button type="submit" className="consultas-btn consultas-btn-primary" disabled={salvando}>
+                        {salvando ? "Salvando..." : consulta ? "Salvar alterações" : "Cadastrar consulta"}
+                    </button>
                 </div>
             </form>
         </Modal>
@@ -166,12 +188,38 @@ function ConsultaModal({ consulta, onClose, onSave }) {
 
 
 function Consultas({ userName = "Evellyn", onLogout }) {
-    const [consultas, setConsultas] = useState(sampleConsultas);
+    const usuarioId = getCareteaUserId();
+
+    const [consultas, setConsultas] = useState([]);
+    const [carregando, setCarregando] = useState(false);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("todas");
     const [modalOpen, setModalOpen] = useState(false);
     const [editingConsulta, setEditingConsulta] = useState(null);
     const [toast, setToast] = useState(null);
+
+    function showToast(message, type = "success") {
+        setToast({ message, type });
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => setToast(null), 2800);
+    }
+
+    const carregar = useCallback(async () => {
+        setCarregando(true);
+        try {
+            const dados = await listarCompromissos(usuarioId, { tipo: "consulta" });
+            setConsultas(dados.map(paraConsulta));
+        } catch (e) {
+            showToast(e.message || "Não foi possível carregar as consultas.", "error");
+            setConsultas([]);
+        } finally {
+            setCarregando(false);
+        }
+    }, [usuarioId]);
+
+    useEffect(() => {
+        carregar();
+    }, [carregar]);
 
     const filteredConsultas = useMemo(() => {
         const term = search.trim().toLowerCase();
@@ -182,37 +230,42 @@ function Consultas({ userName = "Evellyn", onLogout }) {
         });
     }, [consultas, search, filter]);
 
-    function showToast(message, type = "success") {
-        setToast({ message, type });
-        window.clearTimeout(showToast.timer);
-        showToast.timer = window.setTimeout(() => setToast(null), 2800);
-    }
-
     function openCreate() { setEditingConsulta(null); setModalOpen(true); }
     function openEdit(consulta) { setEditingConsulta(consulta); setModalOpen(true); }
     function closeModal() { setModalOpen(false); setEditingConsulta(null); }
 
-    function saveConsulta(form) {
+    async function saveConsulta(form) {
         if (editingConsulta) {
-            setConsultas((current) => current.map((c) => (c.id === editingConsulta.id ? { ...form, id: editingConsulta.id } : c)));
+            await atualizarCompromisso(usuarioId, editingConsulta.id, paraPayload(form));
             showToast("Consulta atualizada com sucesso.");
         } else {
-            setConsultas((current) => [...current, { ...form, id: Date.now() }]);
+            await criarCompromisso(usuarioId, paraPayload(form));
             showToast("Consulta cadastrada com sucesso.");
         }
         closeModal();
+        await carregar();
     }
 
-    function deleteConsulta(id) {
+    async function deleteConsulta(id) {
         const consulta = consultas.find((item) => item.id === id);
         if (!consulta || !window.confirm(`Excluir "${consulta.titulo}"?`)) return;
-        setConsultas((current) => current.filter((item) => item.id !== id));
-        showToast("Consulta excluída.");
+        try {
+            await excluirCompromisso(usuarioId, id);
+            showToast("Consulta excluída.");
+            await carregar();
+        } catch (e) {
+            showToast(e.message || "Não foi possível excluir.", "error");
+        }
     }
 
-    function toggleReminder(id) {
-        setConsultas((current) => current.map((c) => (c.id === id ? { ...c, lembrete: !c.lembrete } : c)));
-        showToast("Configuração de lembrete atualizada.");
+    async function toggleReminder(consulta) {
+        try {
+            await atualizarCompromisso(usuarioId, consulta.id, paraPayload({ ...consulta, lembrete: !consulta.lembrete }));
+            showToast("Configuração de lembrete atualizada.");
+            await carregar();
+        } catch (e) {
+            showToast(e.message || "Não foi possível atualizar o lembrete.", "error");
+        }
     }
 
     return (
@@ -257,7 +310,12 @@ function Consultas({ userName = "Evellyn", onLogout }) {
                         <span>Atualizado hoje</span>
                     </div>
 
-                    {filteredConsultas.length === 0 ? (
+                    {carregando ? (
+                        <div className="consultas-empty">
+                            <Icon name="inbox" size={32} />
+                            <strong>Carregando consultas...</strong>
+                        </div>
+                    ) : filteredConsultas.length === 0 ? (
                         <div className="consultas-empty">
                             <Icon name="inbox" size={32} />
                             <strong>Nenhuma consulta encontrada</strong>
