@@ -1,8 +1,4 @@
 
-/* =========================================================
-   CARETEA — MINHA ROTINA / DASHBOARD AUTISTA
-   Arquivo: DashboardMeuDia.css
-   ========================================================= */
 
 .autista-page {
   min-height: 100vh;
@@ -20,7 +16,6 @@
   padding: 28px 0 52px;
 }
 
-/* ------------------------- marca ------------------------- */
 
 .autista-brand {
   display: inline-flex;
@@ -57,7 +52,6 @@
   color: #765bd9;
 }
 
-/* ------------------------- boas-vindas ------------------------- */
 
 .welcome-card {
   position: relative;
@@ -152,7 +146,6 @@
   background: rgba(46, 112, 219, 0.08);
 }
 
-/* ------------------------- cards gerais ------------------------- */
 
 .care-section {
   position: relative;
@@ -231,7 +224,6 @@
   letter-spacing: 0.6px;
 }
 
-/* ------------------------- humor ------------------------- */
 
 .mood-options {
   display: grid;
@@ -319,7 +311,6 @@
   font-size: 12px;
 }
 
-/* ------------------------- medicamentos ------------------------- */
 
 .medication-list {
   display: grid;
@@ -454,7 +445,6 @@
   font-size: 11px;
 }
 
-/* ------------------------- consulta ------------------------- */
 
 .appointment-info {
   display: flex;
@@ -508,7 +498,6 @@
   font-size: 13px;
 }
 
-/* ------------------------- ações rápidas ------------------------- */
 
 .quick-actions {
   display: grid;
@@ -579,7 +568,6 @@
   font-size: 28px;
 }
 
-/* ------------------------- rodapé ------------------------- */
 
 .autista-footer {
   width: 100%;
@@ -616,9 +604,6 @@
 .autista-puzzle-color-3 { background: #7cc66d; }
 .autista-puzzle-color-4 { background: #fa5d61; }
 
-/* =========================================================
-   TEMA ESCURO
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .autista-page {
   background:
@@ -728,7 +713,6 @@ html[data-caretea-theme="dark"] .help-icon {
   color: #ff8c9b;
 }
 
-/* ------------------------- responsivo ------------------------- */
 
 @media (max-width: 760px) {
   .autista-main {
@@ -837,9 +821,6 @@ html[data-caretea-theme="dark"] .help-icon {
 }
 
 
-/* =========================================================
-   CHAT DA CARE DENTRO DA MINHA ROTINA
-   ========================================================= */
 
 .care-chat {
   overflow: hidden;
@@ -1008,7 +989,6 @@ html[data-caretea-theme="dark"] .help-icon {
   cursor: default;
 }
 
-/* Chat no tema escuro */
 html[data-caretea-theme="dark"] .care-chat {
   border-color: #30384b;
   background: #1b2130;

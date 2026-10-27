@@ -1,7 +1,3 @@
-/* =========================================================
-   BOTÃO GLOBAL DE TEMA
-   ========================================================= */
-
 .caretea-theme-toggle {
   position: fixed;
   right: 20px;
@@ -45,10 +41,6 @@
   outline-offset: 3px;
 }
 
-/* =========================================================
-   VARIÁVEIS GLOBAIS DO TEMA ESCURO
-   ========================================================= */
-
 html[data-caretea-theme="dark"] {
   color-scheme: dark;
 
@@ -79,10 +71,6 @@ html[data-caretea-theme="dark"] #root {
   color: #f3f5fb;
 }
 
-/* =========================================================
-   ESTRUTURAS PRINCIPAIS
-   ========================================================= */
-
 html[data-caretea-theme="dark"] .caretea-dashboard,
 html[data-caretea-theme="dark"] .configuracoes-page,
 html[data-caretea-theme="dark"] .bem-estar-page,
@@ -101,10 +89,6 @@ html[data-caretea-theme="dark"] .gerenciar-meu-dia-main,
 html[data-caretea-theme="dark"] .acesso-meu-dia-main {
   color: #f3f5fb;
 }
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .sidebar,
 html[data-caretea-theme="dark"] .dashboard-sidebar {
@@ -154,10 +138,6 @@ html[data-caretea-theme="dark"] .sidebar-help-card button {
   color: #b7a9ff !important;
 }
 
-/* =========================================================
-   TOPBAR
-   ========================================================= */
-
 html[data-caretea-theme="dark"] .dashboard-topbar h1 {
   color: #f3f5fb !important;
 }
@@ -182,10 +162,6 @@ html[data-caretea-theme="dark"] .logout-button {
   background: #28243c !important;
   color: #b7a9ff !important;
 }
-
-/* =========================================================
-   DASHBOARD E PAINÉIS
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .dashboard-panel,
 html[data-caretea-theme="dark"] .stat-card,
@@ -233,10 +209,6 @@ html[data-caretea-theme="dark"] .quick-actions button {
   background: #1b2130 !important;
   color: #b7a9ff !important;
 }
-
-/* =========================================================
-   CONFIGURAÇÕES
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .configuracoes-hero,
 html[data-caretea-theme="dark"] .config-card,
@@ -312,10 +284,6 @@ html[data-caretea-theme="dark"] .config-page-footer {
   color: #a7afc2 !important;
 }
 
-/* =========================================================
-   BEM-ESTAR
-   ========================================================= */
-
 html[data-caretea-theme="dark"] .bem-estar-hero,
 html[data-caretea-theme="dark"] .bem-estar-card,
 html[data-caretea-theme="dark"] .bem-estar-history,
@@ -352,10 +320,6 @@ html[data-caretea-theme="dark"] .bem-estar-form textarea {
   color: #eef1f8 !important;
 }
 
-/* =========================================================
-   ACESSO DA PESSOA AUTISTA / MINHA ROTINA
-   ========================================================= */
-
 html[data-caretea-theme="dark"] .gerenciar-intro,
 html[data-caretea-theme="dark"] .gerenciar-access-card,
 html[data-caretea-theme="dark"] .gerenciar-generate-card,
@@ -382,10 +346,6 @@ html[data-caretea-theme="dark"] .acesso-meu-dia-card input {
   background: #151a26 !important;
   color: #eef1f8 !important;
 }
-
-/* =========================================================
-   DOCUMENTOS
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .docs-page,
 html[data-caretea-theme="dark"] .docs-main {
@@ -414,10 +374,6 @@ html[data-caretea-theme="dark"] .docs-card p,
 html[data-caretea-theme="dark"] .docs-empty p {
   color: #a7afc2 !important;
 }
-
-/* =========================================================
-   LOGIN E CADASTRO
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .page-shell,
 html[data-caretea-theme="dark"] .cadastro-shell {
@@ -464,10 +420,6 @@ html[data-caretea-theme="dark"] .cadastro-notification-option {
   color: #eef1f8 !important;
 }
 
-/* =========================================================
-   CAMPOS E TEXTOS GENÉRICOS DENTRO DA ÁREA LOGADA
-   ========================================================= */
-
 html[data-caretea-theme="dark"] .caretea-dashboard input,
 html[data-caretea-theme="dark"] .caretea-dashboard textarea,
 html[data-caretea-theme="dark"] .caretea-dashboard select {
@@ -480,7 +432,6 @@ html[data-caretea-theme="dark"] ::placeholder {
   color: #727d95;
 }
 
-/* O botão também muda de aparência */
 html[data-caretea-theme="dark"] .caretea-theme-toggle {
   border-color: #3b4358;
   background: #202636;
@@ -501,14 +452,12 @@ html[data-caretea-theme="dark"] .caretea-theme-toggle {
 }
 
 
-/* Logo sempre nítido nos dois temas */
 .sidebar-logo {
   mix-blend-mode: normal !important;
   opacity: 1 !important;
   filter: none !important;
 }
 
-/* Botão do tema mais fácil de enxergar no modo claro */
 html:not([data-caretea-theme="dark"]) .caretea-theme-toggle {
   background: #eee9ff;
   color: #5135cf;
@@ -523,12 +472,6 @@ html:not([data-caretea-theme="dark"]) .caretea-theme-toggle:hover {
 }
 
 
-/* =========================================================
-   CORREÇÃO 2 — TELAS QUE AINDA FICAVAM CLARAS
-   Agenda, Medicamentos, Consultas e Relatórios
-   ========================================================= */
-
-/* Variáveis extras usadas/possivelmente usadas pelas páginas antigas */
 html[data-caretea-theme="dark"] {
   --agenda-bg: #111521;
   --agenda-card: #1b2130;
@@ -567,7 +510,6 @@ html[data-caretea-theme="dark"] {
   --consult-border: #30384b;
 }
 
-/* ---------- fundos principais ---------- */
 
 html[data-caretea-theme="dark"] .agenda-page,
 html[data-caretea-theme="dark"] .agenda-main,
@@ -591,7 +533,6 @@ html[data-caretea-theme="dark"] [class*="consultas-main"] {
   color: #f3f5fb !important;
 }
 
-/* ---------- cabeçalhos / perfil ---------- */
 
 html[data-caretea-theme="dark"] .agenda-topbar h1,
 html[data-caretea-theme="dark"] .reports-topbar h1,
@@ -636,9 +577,6 @@ html[data-caretea-theme="dark"] .consultations-page .avatar {
   box-shadow: 0 0 0 1px #41495e !important;
 }
 
-/* =========================================================
-   AGENDA
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .agenda-toolbar,
 html[data-caretea-theme="dark"] .agenda-legend,
@@ -697,9 +635,6 @@ html[data-caretea-theme="dark"] .agenda-page .view-switch button.active {
   color: #ffffff !important;
 }
 
-/* =========================================================
-   RELATÓRIOS
-   ========================================================= */
 
 html[data-caretea-theme="dark"] .reports-page .report-filter,
 html[data-caretea-theme="dark"] .reports-page .summary-card,
@@ -752,10 +687,6 @@ html[data-caretea-theme="dark"] .reports-page .progress-ring::before {
   background: #1b2130 !important;
 }
 
-/* =========================================================
-   MEDICAMENTOS
-   Compatível com as nomenclaturas antigas mais comuns do projeto.
-   ========================================================= */
 
 html[data-caretea-theme="dark"] :is(
   .medicamentos-page,
@@ -814,10 +745,6 @@ html[data-caretea-theme="dark"] :is(
   color: #eef1f8 !important;
 }
 
-/* =========================================================
-   CONSULTAS
-   Compatível com as nomenclaturas antigas mais comuns do projeto.
-   ========================================================= */
 
 html[data-caretea-theme="dark"] :is(
   .consultas-page,
@@ -873,7 +800,6 @@ html[data-caretea-theme="dark"] :is(
   color: #eef1f8 !important;
 }
 
-/* Fallback seguro para páginas cujo nome da classe inclui "medicamento" ou "consulta" */
 html[data-caretea-theme="dark"] :is(
   [class*="medicamento"][class*="page"],
   [class*="medicamento"][class*="main"],

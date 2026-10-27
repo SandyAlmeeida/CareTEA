@@ -96,97 +96,97 @@ function Documentos({ userName = "Sandy", onNavigate, onLogout }) {
     link.remove();
   }
 
-  function excluirDocumento(documento) { 
-    if (!window.confirm(`Deseja excluir "${documento.descricao}"?`)) return; 
+  function excluirDocumento(documento) {
+    if (!window.confirm(`Deseja excluir "${documento.descricao}"?`)) return;
 
-    if (documento.arquivoUrl) URL.revokeObjectURL(documento.arquivoUrl); 
-    setDocumentos((documentosAtuais) => documentosAtuais.filter((item) => item.id !== documento.id)); 
-    setDocumentoVisualizado(null); 
-  } 
+    if (documento.arquivoUrl) URL.revokeObjectURL(documento.arquivoUrl);
+    setDocumentos((documentosAtuais) => documentosAtuais.filter((item) => item.id !== documento.id));
+    setDocumentoVisualizado(null);
+  }
 
-  return ( 
+  return (
     <div className="docs-page">
       <Sidebar />
 
-<main className="docs-main"> 
-        <header className="docs-topbar"> 
-          <div> 
-            <h1>Documentos</h1> 
-            <p>Receitas, laudos, exames e atestados reunidos e seguros.</p> 
-          </div> 
+<main className="docs-main">
+        <header className="docs-topbar">
+          <div>
+            <h1>Documentos</h1>
+            <p>Receitas, laudos, exames e atestados reunidos e seguros.</p>
+          </div>
 
-          <div className="profile-area"> 
-            <button className="bell" type="button" aria-label="Notificações"> 
-              ♢ <span>3</span> 
-            </button> 
-            <button className="profile" type="button"> 
-              <span className="avatar">👩🏻</span> 
-              <span> 
-                <strong>{userName}</strong> 
-                <small>Nível 2 - Assistida</small> 
-              </span> 
-              <i>⌄</i> 
-            </button> 
-            {onLogout && ( 
-              <button className="logout" type="button" onClick={onLogout}> 
-                Sair 
-              </button> 
-            )} 
-          </div> 
-        </header> 
+          <div className="profile-area">
+            <button className="bell" type="button" aria-label="Notificações">
+              ♢ <span>3</span>
+            </button>
+            <button className="profile" type="button">
+              <span className="avatar">👩🏻</span>
+              <span>
+                <strong>{userName}</strong>
+                <small>Nível 2 - Assistida</small>
+              </span>
+              <i>⌄</i>
+            </button>
+            {onLogout && (
+              <button className="logout" type="button" onClick={onLogout}>
+                Sair
+              </button>
+            )}
+          </div>
+        </header>
 
-        <section className="docs-head"> 
-          <div className="docs-head-copy"> 
-            <h2>Meus documentos</h2> 
-            <p>Centralize os arquivos importantes de saúde em um só lugar.</p> 
-            <span className="docs-count"> 
-              <span className="docs-count-dot" aria-hidden="true" /> 
-              {documentos.length} {documentos.length === 1 ? "documento salvo" : "documentos salvos"} 
-            </span> 
-          </div> 
-          <button className="add-btn" type="button" onClick={abrirModal}> 
-            ＋ Adicionar documento 
-          </button> 
-        </section> 
+        <section className="docs-head">
+          <div className="docs-head-copy">
+            <h2>Meus documentos</h2>
+            <p>Centralize os arquivos importantes de saúde em um só lugar.</p>
+            <span className="docs-count">
+              <span className="docs-count-dot" aria-hidden="true" />
+              {documentos.length} {documentos.length === 1 ? "documento salvo" : "documentos salvos"}
+            </span>
+          </div>
+          <button className="add-btn" type="button" onClick={abrirModal}>
+            ＋ Adicionar documento
+          </button>
+        </section>
 
-        {documentos.length === 0 ? ( 
-          <section className="docs-empty"> 
-            <span className="empty-icon">🗂️</span> 
-            <strong>Nenhum documento por aqui ainda</strong> 
-            <p>Adicione receitas, laudos, exames e atestados para manter tudo organizado e acessível.</p> 
-            <button className="empty-btn" type="button" onClick={abrirModal}> 
-              ＋ Adicionar primeiro documento 
-            </button> 
-          </section> 
-        ) : ( 
-          <section className="docs-list" aria-label="Documentos adicionados"> 
-            {documentos.map((documento) => ( 
-              <article className="docs-card" key={documento.id}> 
-                {documento.tipoArquivo.startsWith("image/") ? ( 
-                  <img className="docs-card-image" src={documento.arquivoUrl} alt={documento.descricao} /> 
-                ) : ( 
-                  <span className="docs-card-icon">📄</span> 
-                )} 
-                <div className="docs-card-content"> 
-                  <button 
-                    className="docs-card-name" 
-                    type="button" 
-                    onClick={() => setDocumentoVisualizado(documento)} 
-                    aria-label={`Visualizar ${documento.nomeArquivo}`} 
-                  > 
-                    <strong>{documento.nomeArquivo}</strong> 
-                  </button> 
-                  <p>{documento.descricao}</p> 
-                </div> 
-              </article> 
-            ))} 
-          </section> 
-        )} 
+        {documentos.length === 0 ? (
+          <section className="docs-empty">
+            <span className="empty-icon">🗂️</span>
+            <strong>Nenhum documento por aqui ainda</strong>
+            <p>Adicione receitas, laudos, exames e atestados para manter tudo organizado e acessível.</p>
+            <button className="empty-btn" type="button" onClick={abrirModal}>
+              ＋ Adicionar primeiro documento
+            </button>
+          </section>
+        ) : (
+          <section className="docs-list" aria-label="Documentos adicionados">
+            {documentos.map((documento) => (
+              <article className="docs-card" key={documento.id}>
+                {documento.tipoArquivo.startsWith("image/") ? (
+                  <img className="docs-card-image" src={documento.arquivoUrl} alt={documento.descricao} />
+                ) : (
+                  <span className="docs-card-icon">📄</span>
+                )}
+                <div className="docs-card-content">
+                  <button
+                    className="docs-card-name"
+                    type="button"
+                    onClick={() => setDocumentoVisualizado(documento)}
+                    aria-label={`Visualizar ${documento.nomeArquivo}`}
+                  >
+                    <strong>{documento.nomeArquivo}</strong>
+                  </button>
+                  <p>{documento.descricao}</p>
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
 
-        <div className="docs-ribbon" aria-hidden="true"> 
-          <span /> 
-          <span /> 
-          <span /> 
+        <div className="docs-ribbon" aria-hidden="true">
+          <span />
+          <span />
+          <span />
         </div>
 
         {/* Acrescentado: mesmo padrão de rodapé com peças coloridas usado no CareTEA. */}
@@ -205,6 +205,8 @@ function Documentos({ userName = "Sandy", onNavigate, onLogout }) {
               </svg>
               Seus dados estão protegidos conosco.
             </span>
+          </footer>
+        </div>
 
         <section className="docs-head">
           <div className="docs-head-copy">
@@ -495,5 +497,3 @@ function ModalConfirmar({ doc, onCancelar, onConfirmar }) {
 }
 
 export default Documentos;
-
-feat: adiciona ações de documento (upload simulado, visualizar, baixar, excluir)

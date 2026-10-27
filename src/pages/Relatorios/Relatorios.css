@@ -1067,9 +1067,6 @@ button {
   }
 }
 
-/* =========================================================
-   AJUSTES DE LEITURA — HISTÓRICO RECENTE PARA BAIXO
-   ========================================================= */
 
 .history-panel .panel-header h2,
 .wellbeing-panel .panel-header h2,
@@ -1235,9 +1232,6 @@ button {
   }
 }
 
-/* =========================================================
-   SEGUNDO AJUSTE — LETRAS BEM MAIORES
-   ========================================================= */
 
 .history-panel .panel-header h2,
 .wellbeing-panel .panel-header h2,
@@ -1372,8 +1366,6 @@ button {
   line-height: 1.6;
 }
 
-/* Deixa também os textos imediatamente acima dessa área
-   mais proporcionais ao restante da página */
 
 .evolution-panel .panel-header h2 {
   font-size: 20px;

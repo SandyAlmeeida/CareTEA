@@ -1,0 +1,46 @@
+.caretea-profile-avatar {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #7c62e8,
+    #9b84f4
+  );
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow:
+    0 3px 10px rgba(89, 67, 180, 0.18);
+}
+
+.caretea-profile-avatar-normal {
+  width: 42px;
+  height: 42px;
+
+  font-size: 15px;
+}
+
+.caretea-profile-avatar-small {
+  width: 36px;
+  height: 36px;
+
+  font-size: 13px;
+}
+
+.caretea-profile-avatar-large {
+  width: 54px;
+  height: 54px;
+
+  font-size: 18px;
+}

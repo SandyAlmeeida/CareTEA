@@ -3,6 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import Topbar from "../../components/Topbar/Topbar.jsx";
+import PerfilAvatar from "../../components/PerfilAvatar/PerfilAvatar.jsx";
+
+import {
+  getCareteaSession,
+  getCareteaProfile,
+  clearCareteaSession,
+} from "../../utils/careteaSession.js";
+
 import "./Configuracoes.css";
 
 const puzzleColors = [
@@ -10,22 +18,6 @@ const puzzleColors = [
   "purple", "yellow", "green", "red", "blue", "purple",
   "yellow", "green", "red", "blue", "purple", "yellow",
 ];
-
-function readCareteaSession() {
-  const rawSession =
-    sessionStorage.getItem("careteaSession") ||
-    localStorage.getItem("careteaSession");
-
-  if (!rawSession) return null;
-
-  try {
-    return JSON.parse(rawSession);
-  } catch {
-    sessionStorage.removeItem("careteaSession");
-    localStorage.removeItem("careteaSession");
-    return null;
-  }
-}
 
 function Switch({ checked, onChange, label }) {
   return (
@@ -70,25 +62,29 @@ function Field({
 
 function Configuracoes() {
   const navigate = useNavigate();
-  const session = readCareteaSession();
 
-  const accountType = session?.accountType ?? "responsavel";
+  const session = getCareteaSession();
+  const sessionProfile = getCareteaProfile();
+
+  const accountType =
+    sessionProfile?.accountType || session?.accountType || "";
+
   const autismLevel =
-    Number(session?.autismLevel) || (accountType === "autista" ? 1 : 2);
+    sessionProfile?.autismLevel || Number(session?.autismLevel) || 0;
 
-  const isResponsible = accountType === "responsavel";
+  const isResponsible =
+    sessionProfile?.isResponsible === true;
 
   const defaultUserName =
-    session?.userName ?? (isResponsible ? "Adriana" : "Lucas");
+    sessionProfile?.userName || session?.userName || "Usuário";
 
   const defaultProfileName =
-    session?.profileName ?? (isResponsible ? "Evellyn" : defaultUserName);
+    sessionProfile?.profileName ||
+    session?.profileName ||
+    (isResponsible ? "" : defaultUserName);
 
   const defaultEmail =
-    session?.email ??
-    (isResponsible
-      ? `responsavel${autismLevel}@caretea.com`
-      : "autista@caretea.com");
+    session?.email || "";
 
   const profileStorageKey =
     `careteaProfile:${accountType}:${autismLevel}:${defaultUserName}`;
@@ -109,9 +105,19 @@ function Configuracoes() {
   const [profile, setProfile] = useState(() => {
     try {
       const saved = localStorage.getItem(profileStorageKey);
-      return saved
-        ? { ...defaultProfile, ...JSON.parse(saved) }
-        : defaultProfile;
+
+      if (!saved) {
+        return defaultProfile;
+      }
+
+      const savedProfile = JSON.parse(saved);
+
+      return {
+        ...defaultProfile,
+        ...savedProfile,
+        userName: defaultUserName,
+        autisticPersonName: defaultProfileName,
+      };
     } catch {
       return defaultProfile;
     }
@@ -199,7 +205,7 @@ function Configuracoes() {
   function saveProfile() {
     localStorage.setItem(profileStorageKey, JSON.stringify(profile));
 
-    const currentSession = readCareteaSession() ?? {};
+    const currentSession = getCareteaSession() ?? {};
     const updatedSession = {
       ...currentSession,
       userName: profile.userName,
@@ -249,8 +255,7 @@ function Configuracoes() {
   }
 
   function handleLogout() {
-    sessionStorage.removeItem("careteaSession");
-    localStorage.removeItem("careteaSession");
+    clearCareteaSession();
     navigate("/login");
   }
 
@@ -269,10 +274,7 @@ function Configuracoes() {
           <Topbar
             title="Configurações"
             subtitle={subtitle}
-            userName={userName}
-            userLevel={userLevel}
             notifications={3}
-            onLogout={handleLogout}
           />
 
           <section className="configuracoes-hero">
@@ -317,9 +319,7 @@ function Configuracoes() {
             </header>
 
             <div className="config-profile-summary">
-              <div className="config-profile-avatar" aria-hidden="true">
-                {isResponsible ? "👩🏻" : "🙂"}
-              </div>
+              <PerfilAvatar size="large" />
 
               <div>
                 <strong>{userName}</strong>

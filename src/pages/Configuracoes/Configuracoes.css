@@ -500,7 +500,6 @@
   font-weight: 700;
 }
 
-/* Rodapé local para manter o alinhamento correto com a Sidebar */
 .config-caretea-footer {
   width: calc(100% + 60px);
   margin: 46px -30px -48px;

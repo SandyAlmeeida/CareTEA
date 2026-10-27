@@ -1122,20 +1122,17 @@ button {
 }
 
 .dashboard-puzzle-strip {
-  position:absolute;
-  right:20px;
-  bottom:10px;
-  left:20px;
+  width:100%;
+  margin-top:28px;
   overflow:hidden;
   border-radius:8px;
-  opacity:.9
 }
 
 .dashboard-puzzle-strip .puzzle-strip {
   position:relative !important;
   inset:auto !important;
   width:100% !important;
-  height:28px !important;
+  margin:0;
 }
 
 .puzzle-color-0 {
@@ -1296,9 +1293,6 @@ button {
 
 }
 
-/* =========================================================
-   AJUSTES DE LEITURA E PROPORÇÃO
-   ========================================================= */
 
 .caretea-dashboard {
   font-size: 15px;
@@ -1633,11 +1627,7 @@ button {
   }
 }
 
-/* =========================================================
-   AJUSTES DE LEITURA — IA ASSISTENTE PARA BAIXO
-   ========================================================= */
 
-/* IA Assistente */
 .assistant-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1667,7 +1657,6 @@ button {
   font-size: 13.5px;
 }
 
-/* Calendário / agenda */
 .calendar-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1708,7 +1697,6 @@ button {
   line-height: 1.45;
 }
 
-/* Humor */
 .mood-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1733,7 +1721,6 @@ button {
   line-height: 1.35;
 }
 
-/* Informações rápidas */
 .quick-info-panel .panel-header h2 {
   font-size: 21px;
 }
@@ -1776,7 +1763,6 @@ button {
   font-size: 13.5px;
 }
 
-/* Mantém boa proporção em telas menores */
 @media (max-width: 700px) {
   .assistant-panel .panel-header h2,
   .calendar-panel .panel-header h2,
