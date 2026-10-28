@@ -1,3 +1,4 @@
+
 import { Navigate } from "react-router-dom";
 import { getCareteaSession } from "../../utils/careteaSession.js";
 
@@ -17,7 +18,10 @@ function ProtecaoDePerfil({
     return children;
   }
 
-  if (accountType && session.accountType !== accountType) {
+  if (
+    accountType &&
+    session.accountType !== accountType
+  ) {
     return <Navigate to="/dashboard" replace />;
   }
 

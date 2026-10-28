@@ -69,17 +69,21 @@ export function getCareteaProfile() {
 
   const accountType = session.accountType;
   const autismLevel = Number(session.autismLevel);
+
   const isResponsible = accountType === "responsavel";
 
   return {
     accountType,
     autismLevel,
     isResponsible,
+
     userName: session.userName,
     profileName: session.profileName,
+
     userLevel: isResponsible
       ? `Responsável · Nível ${autismLevel}`
       : `Nível ${autismLevel} · Autonomia`,
+
     dashboardSubtitle: isResponsible
       ? `Acompanhando a rotina de ${session.profileName}.`
       : "Sua rotina, cuidados e compromissos em um só lugar.",

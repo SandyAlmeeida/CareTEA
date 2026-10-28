@@ -269,10 +269,6 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
       setIsSubmitting(true);
       setMessage({ text: "", type: "" });
 
-      if (typeof onSubmit !== "function") {
-        throw new Error("O cadastro ainda não está conectado ao backend.");
-      }
-
       await onSubmit({
         accountType: formData.accountType,
         fullName,
@@ -309,9 +305,10 @@ function Cadastro({ onSubmit, onGoogleRegister }) {
       console.error(error);
       setMessage({
         text:
-          error instanceof TypeError
+          error instanceof TypeError && onSubmit
             ? "Não foi possível conectar ao servidor. Confira se o backend está ligado."
-            : error?.message || "Não foi possível finalizar o cadastro. Tente novamente.",
+            : error?.message ||
+              "Não foi possível finalizar o cadastro. Tente novamente.",
         type: "error",
       });
     } finally {
