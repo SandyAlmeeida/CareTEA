@@ -11,10 +11,9 @@ import Footer from "../../components/Footer/Footer";
 import {
   setMeuDiaSession,
 } from "../../utils/meuDiaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./AcessoMeuDia.css";
-
-const API_URL = "http://localhost:8080";
 
 function AcessoMeuDia() {
   const navigate = useNavigate();

@@ -11,11 +11,9 @@ import {
 import {
   getCareteaSession,
 } from "../../utils/careteaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./ModalNotificacoes.css";
-
-const API_URL =
-  "http://localhost:8080";
 
 function formatarTempo(
   solicitadoEm,

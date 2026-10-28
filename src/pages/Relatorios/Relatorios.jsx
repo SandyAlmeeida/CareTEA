@@ -12,6 +12,7 @@ import {
   getCareteaSession,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./Relatorios.css";
 
@@ -78,8 +79,6 @@ const routeMap = {
   relatorios: "/relatorios",
   configuracoes: "/configuracoes",
 };
-
-const API_URL = "http://localhost:8080";
 
 function formatarData(data) {
   const ano = data.getFullYear();

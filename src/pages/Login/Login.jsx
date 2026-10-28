@@ -5,6 +5,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import logoCaretea from "../../assets/logo-caretea.png";
 import familiaCaretea from "../../assets/familia-caretea.png";
 import Footer from "../../components/Footer/Footer";
+import { API_URL } from "../../services/api.js";
 
 import "./Login.css";
 import "./LoginMeuDia.css";
@@ -62,7 +63,7 @@ function Login({
     }
 
     const respostaPerfil = await fetch(
-      `http://localhost:8080/pessoas-autistas/usuario/${usuario.id}`,
+      `${API_URL}/pessoas-autistas/usuario/${usuario.id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -200,7 +201,7 @@ function Login({
       }
 
       const response = await fetch(
-        "http://localhost:8080/usuarios/login/google",
+        `${API_URL}/usuarios/login/google`,
         {
           method: "POST",
           headers: {
