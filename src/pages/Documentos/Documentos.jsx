@@ -25,14 +25,11 @@ import {
   clearCareteaSession,
 
 } from "../../utils/careteaSession.js";
+import { API_URL } from "../../services/api.js";
 
 
 
 import "./Documentos.css";
-
-
-
-const API_URL = "http://localhost:8080";
 
 
 

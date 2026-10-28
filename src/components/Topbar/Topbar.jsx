@@ -16,11 +16,9 @@ import {
   getCareteaSession,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./Topbar.css";
-
-const API_URL =
-  "http://localhost:8080";
 
 const routeMap = {
   dashboard: "/dashboard",

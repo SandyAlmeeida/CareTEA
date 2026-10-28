@@ -10,11 +10,9 @@ import Topbar from "../../components/Topbar/Topbar.jsx";
 import {
   getCareteaSession,
 } from "../../utils/careteaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./Notificacoes.css";
-
-const API_URL =
-  "http://localhost:8080";
 
 const CORES_RODAPE = [
   "#2e70db",

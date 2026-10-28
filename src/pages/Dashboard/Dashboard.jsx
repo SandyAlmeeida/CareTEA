@@ -10,9 +10,9 @@ import {
   getCareteaProfile,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
-import "./Dashboard.css";
+import { API_URL } from "../../services/api.js";
 
-const API_URL = "http://localhost:8080";
+import "./Dashboard.css";
 
 function formatLocalDateTime(date) {
   const pad = (value) => String(value).padStart(2, "0");

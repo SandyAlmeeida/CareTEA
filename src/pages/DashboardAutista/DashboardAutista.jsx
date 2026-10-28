@@ -5,10 +5,9 @@ import {
   clearMeuDiaSession,
   getMeuDiaSession,
 } from "../../utils/meuDiaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./DashboardMeuDia.css";
-
-const API_URL = "http://localhost:8080";
 
 function periodoDoHorario(horario) {
   if (!horario) return "";
