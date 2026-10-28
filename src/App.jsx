@@ -1,5 +1,6 @@
 
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { API_URL } from "./services/api.js";
 
 import Notificacoes from "./pages/Notificacoes/Notificacoes.jsx";
 import AcessoMeuDia from "./pages/AcessoMeuDia/AcessoMeuDia.jsx";
@@ -63,7 +64,7 @@ function App() {
     };
 
     const resposta = await fetch(
-      "http://localhost:8080/usuarios/cadastro",
+      `${API_URL}/usuarios/cadastro`,
       {
         method: "POST",
         headers: {
@@ -94,7 +95,7 @@ function App() {
 
   async function handleLogin(dados) {
     const resposta = await fetch(
-      "http://localhost:8080/usuarios/login",
+      `${API_URL}/usuarios/login`,
       {
         method: "POST",
         headers: {

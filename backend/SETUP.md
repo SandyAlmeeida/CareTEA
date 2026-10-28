@@ -8,11 +8,11 @@ Execute os comandos abaixo no PowerShell, dentro da pasta `backend/`.
 | Variavel | Uso |
 | --- | --- |
 | `DB_URL` | URL JDBC completa: `jdbc:postgresql://HOST:PORTA/NOME_DO_BANCO`. Nao inclua credenciais na URL. |
-| `DB_USER` | Usuario do PostgreSQL. |
+| `DB_USERNAME` | Usuario do PostgreSQL. |
 | `DB_PASSWORD` | Senha do PostgreSQL. |
 | `JWT_SECRET` | Chave em Base64 que, decodificada, tenha pelo menos 32 bytes. |
 
-`src/main/resources/application.properties` mapeia `DB_URL`, `DB_USER` e `DB_PASSWORD` para o datasource do Spring Boot. `JwtConfig.java` le `JWT_SECRET` diretamente do ambiente.
+`src/main/resources/application.properties` mapeia `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` para o datasource do Spring Boot. `JwtConfig.java` le `JWT_SECRET` diretamente do ambiente.
 
 **O Spring Boot nao carrega `.env.example` nem `.env` automaticamente neste projeto.** O exemplo apenas documenta os nomes: copiar ou renomear o arquivo nao configura o processo. Configure as variaveis no terminal que executara o Maven, na configuracao de execucao da IDE ou no gerenciador de segredos do ambiente. Nao preencha arquivos do repositorio com valores reais.
 
@@ -30,7 +30,7 @@ Defina os valores por entrada interativa, sem escreve-los em comandos ou arquivo
 
 ```powershell
 $env:DB_URL = Read-Host 'URL JDBC do PostgreSQL'
-$env:DB_USER = Read-Host 'Usuario do PostgreSQL'
+$env:DB_USERNAME = Read-Host 'Usuario do PostgreSQL'
 
 $dbPasswordInput = Read-Host 'Senha do PostgreSQL' -AsSecureString
 $env:DB_PASSWORD = [System.Net.NetworkCredential]::new('', $dbPasswordInput).Password

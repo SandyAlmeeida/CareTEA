@@ -13,10 +13,9 @@ import {
   getCareteaProfile,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
+import { API_URL } from "../../services/api.js";
 
 import "./BemEstar.css";
-
-const API_URL = "http://localhost:8080";
 
 const moods = [
   {

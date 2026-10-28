@@ -1,5 +1,6 @@
 package com.caretea.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,8 @@ import java.util.List;
 public class CorsConfig {
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter() {
+    public FilterRegistrationBean<CorsFilter> corsFilter(
+            @Value("${FRONTEND_URL:}") String frontendUrl) {
 
         CorsConfiguration configuration =
                 new CorsConfiguration();
@@ -24,6 +26,9 @@ public class CorsConfig {
                         "http://localhost:5173"
                 )
         );
+        if (frontendUrl != null && !frontendUrl.isBlank()) {
+            configuration.addAllowedOrigin(frontendUrl.trim());
+        }
 
         configuration.setAllowedMethods(
                 List.of(

@@ -3,10 +3,9 @@ import { QRCodeSVG } from "qrcode.react";
 
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import Topbar from "../../components/Topbar/Topbar.jsx";
+import { API_URL } from "../../services/api.js";
 
 import "./GerenciarMeuDia.css";
-
-const API_URL = "http://localhost:8080";
 
 function GerenciarMeuDia({
   userName = "Adriana",
