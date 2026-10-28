@@ -43,8 +43,16 @@
   border: 1px solid #dce8ff;
   border-radius: 24px;
   background:
-    radial-gradient(circle at 88% 18%, rgba(118, 91, 217, 0.12), transparent 28%),
-    linear-gradient(135deg, #f3f8ff 0%, #f9f7ff 100%);
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(118, 91, 217, 0.12),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #f3f8ff 0%,
+      #f9f7ff 100%
+    );
   box-shadow: 0 12px 30px rgba(54, 71, 117, 0.06);
 }
 
@@ -116,6 +124,10 @@
   box-shadow: 0 8px 24px rgba(54, 65, 102, 0.045);
 }
 
+.bem-estar-main > .bem-estar-card {
+  margin-top: 20px;
+}
+
 .bem-estar-card > header {
   display: flex;
   align-items: flex-start;
@@ -145,6 +157,7 @@
   margin: 4px 0 0;
   color: #8792a8;
   font-size: 11px;
+  line-height: 1.5;
 }
 
 .bem-estar-moods {
@@ -205,6 +218,11 @@
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.bem-estar-tags button:hover {
+  border-color: #c9d4e9;
 }
 
 .bem-estar-tags button.selected {
@@ -238,6 +256,12 @@
   font-size: 12px;
   font-weight: 900;
   cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.bem-estar-energy button:hover {
+  transform: translateY(-1px);
+  border-color: #b9cfb4;
 }
 
 .bem-estar-energy button.selected {
@@ -261,11 +285,16 @@
   font: inherit;
   font-size: 12px;
   line-height: 1.55;
+  box-sizing: border-box;
 }
 
 .bem-estar-card textarea:focus {
   border-color: #8e7ce6;
   box-shadow: 0 0 0 4px rgba(118, 91, 217, 0.08);
+}
+
+.bem-estar-card textarea::placeholder {
+  color: #a2aabc;
 }
 
 .bem-estar-counter {
@@ -278,6 +307,7 @@
 
 .bem-estar-save {
   min-height: 50px;
+  padding: 0 22px;
   border: 0;
   border-radius: 15px;
   background: linear-gradient(100deg, #2e70db, #765bd9);
@@ -286,6 +316,25 @@
   font-weight: 900;
   cursor: pointer;
   box-shadow: 0 9px 20px rgba(75, 84, 190, 0.17);
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.bem-estar-save:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(75, 84, 190, 0.22);
+}
+
+.bem-estar-save:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.bem-estar-card > .bem-estar-save {
+  width: 100%;
+  margin-top: 20px;
 }
 
 .bem-estar-saved {
@@ -296,6 +345,10 @@
   border: 1px solid #d2ead0;
   border-radius: 15px;
   background: #f4fbf3;
+}
+
+.bem-estar-card > .bem-estar-saved {
+  margin-top: 15px;
 }
 
 .bem-estar-saved > span {
@@ -328,6 +381,7 @@
   border: 1px solid #e2e5ed;
   border-radius: 20px;
   background: #fff;
+  box-shadow: 0 8px 24px rgba(54, 65, 102, 0.035);
 }
 
 .bem-estar-history > header {
@@ -360,11 +414,26 @@
   cursor: pointer;
 }
 
+.bem-estar-history header button:hover {
+  text-decoration: underline;
+}
+
 .bem-estar-days {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-top: 17px;
+}
+
+.bem-estar-days > p {
+  grid-column: 1 / -1;
+  margin: 4px 0;
+  padding: 18px;
+  border-radius: 14px;
+  background: #fafbfc;
+  color: #8a94aa;
+  font-size: 11px;
+  text-align: center;
 }
 
 .bem-estar-days article {
@@ -376,6 +445,14 @@
   border: 1px solid #eceef3;
   border-radius: 14px;
   background: #fbfcfd;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.bem-estar-days article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 16px rgba(58, 68, 101, 0.06);
 }
 
 .bem-estar-days article span {
@@ -385,6 +462,69 @@
 .bem-estar-days article strong {
   color: #66718a;
   font-size: 10.5px;
+  text-transform: capitalize;
+}
+
+.bem-estar-analysis {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #ded9f7;
+  border-radius: 17px;
+  background: linear-gradient(
+    135deg,
+    #faf9ff 0%,
+    #f6f8ff 100%
+  );
+}
+
+.bem-estar-analysis-block {
+  padding: 15px 16px;
+  border: 1px solid rgba(119, 98, 202, 0.13);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.bem-estar-analysis-block strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #4f468d;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.bem-estar-analysis-block p {
+  margin: 0;
+  color: #66718a;
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.bem-estar-analysis-block ul {
+  margin: 7px 0 0;
+  padding-left: 18px;
+}
+
+.bem-estar-analysis-block li {
+  margin: 6px 0;
+  color: #66718a;
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.bem-estar-analysis-block li::marker {
+  color: #806cdd;
+}
+
+.bem-estar-analysis-warning {
+  display: block;
+  padding: 11px 13px;
+  border-radius: 11px;
+  background: #f1f3f8;
+  color: #8992a5;
+  font-size: 9.5px;
+  line-height: 1.5;
 }
 
 @media (max-width: 850px) {
@@ -406,6 +546,10 @@
 }
 
 @media (max-width: 650px) {
+  .bem-estar-page {
+    grid-template-columns: 1fr;
+  }
+
   .bem-estar-main {
     padding: 18px 14px 44px;
   }
@@ -416,8 +560,13 @@
     padding: 22px;
   }
 
+  .bem-estar-hero h1 {
+    font-size: 24px;
+  }
+
   .bem-estar-current {
     width: 100%;
+    box-sizing: border-box;
     flex-direction: row;
     justify-content: center;
     gap: 9px;
@@ -443,6 +592,7 @@
 
   .bem-estar-energy button {
     width: 100%;
+    height: 43px;
   }
 
   .bem-estar-history > header {
@@ -453,5 +603,55 @@
   .bem-estar-days {
     grid-template-columns: repeat(5, minmax(58px, 1fr));
     overflow-x: auto;
+    padding-bottom: 4px;
   }
+
+  .bem-estar-card {
+    padding: 18px;
+  }
+
+  .bem-estar-analysis {
+    padding: 13px;
+  }
+
+  .bem-estar-analysis-block {
+    padding: 13px;
+  }
+
+  .bem-estar-save {
+    width: 100%;
+  }
+}
+
+html[data-caretea-theme="dark"] .bem-estar-analysis {
+  border-color: #3b3658;
+  background: linear-gradient(
+    135deg,
+    #211f31 0%,
+    #1c2231 100%
+  );
+}
+
+html[data-caretea-theme="dark"] .bem-estar-analysis-block {
+  border-color: #3a3d54;
+  background: #202636;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-analysis-block strong {
+  color: #c7baff;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-analysis-block p,
+html[data-caretea-theme="dark"] .bem-estar-analysis-block li {
+  color: #b1b9ca;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-analysis-warning {
+  background: #252b3b;
+  color: #9fa8ba;
+}
+
+html[data-caretea-theme="dark"] .bem-estar-days > p {
+  background: #202636;
+  color: #a7afc2;
 }

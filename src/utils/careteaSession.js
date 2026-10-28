@@ -8,11 +8,55 @@ export function getCareteaSession() {
   }
 
   try {
-    return JSON.parse(rawSession);
+    const session = JSON.parse(rawSession);
+
+    if (
+      !session ||
+      session.userId == null ||
+      !tokenEstaValido(session.token, session.userId)
+    ) {
+      clearCareteaSession();
+      return null;
+    }
+
+    return session;
   } catch {
-    sessionStorage.removeItem("careteaSession");
-    localStorage.removeItem("careteaSession");
+    clearCareteaSession();
     return null;
+  }
+}
+
+export function getCareteaUserId() {
+  return getCareteaSession()?.userId ?? null;
+}
+
+function tokenEstaValido(token, usuarioId) {
+  if (typeof token !== "string" || !token) {
+    return false;
+  }
+
+  try {
+    const partes = token.split(".");
+
+    if (partes.length !== 3) {
+      return false;
+    }
+
+    const payloadBase64 = partes[1]
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+    const padding = (4 - (payloadBase64.length % 4)) % 4;
+    const payload = JSON.parse(
+      atob(`${payloadBase64}${"=".repeat(padding)}`)
+    );
+
+    return (
+      typeof payload.exp === "number" &&
+      Date.now() < payload.exp * 1000 &&
+      String(payload.sub) === String(usuarioId)
+    );
+  } catch {
+    return false;
   }
 }
 
@@ -44,16 +88,6 @@ export function getCareteaProfile() {
       ? `Acompanhando a rotina de ${session.profileName}.`
       : "Sua rotina, cuidados e compromissos em um só lugar.",
   };
-}
-
-export function getCareteaUserId() {
-  const session = getCareteaSession();
-
-  if (session && session.userId != null) {
-    return Number(session.userId);
-  }
-
-  return Number(import.meta.env.VITE_DEFAULT_USER_ID || 1);
 }
 
 export function clearCareteaSession() {

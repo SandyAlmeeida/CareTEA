@@ -1,6 +1,11 @@
+import {
+  useEffect,
+  useState,
+} from "react";
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+} from "react-router-dom";
 
 import PerfilAvatar from "../PerfilAvatar/PerfilAvatar.jsx";
 import ModalNotificacoes from "../ModalNotificacoes/ModalNotificacoes.jsx";
@@ -8,10 +13,14 @@ import ModalPerfil from "../ModalPerfil/ModalPerfil.jsx";
 
 import {
   getCareteaProfile,
+  getCareteaSession,
   clearCareteaSession,
 } from "../../utils/careteaSession.js";
 
 import "./Topbar.css";
+
+const API_URL =
+  "http://localhost:8080";
 
 const routeMap = {
   dashboard: "/dashboard",
@@ -19,7 +28,8 @@ const routeMap = {
   medicamentos: "/medicamentos",
   consultas: "/consultas",
   "bem-estar": "/bem-estar",
-  "gerenciar-meu-dia": "/gerenciar-meu-dia",
+  "gerenciar-meu-dia":
+    "/gerenciar-meu-dia",
   assistente: "/assistente",
   notificacoes: "/notificacoes",
   documentos: "/documentos",
@@ -29,36 +39,151 @@ const routeMap = {
 
 function Topbar({
   title,
-  subtitle = "Vamos juntos tornar o dia de hoje mais leve e organizado.",
-  notifications = 3,
+  subtitle =
+    "Vamos juntos tornar o dia de hoje mais leve e organizado.",
+  notifications = 0,
   onLogout,
 }) {
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const profile = getCareteaProfile();
+  const profile =
+    getCareteaProfile();
 
-  const userName = profile?.userName || "Usuário";
-  const userLevel = profile?.userLevel || "";
+  const session =
+    getCareteaSession();
 
-  const [notificacoesAbertas, setNotificacoesAbertas] =
-    useState(false);
+  const userName =
+    profile?.userName ||
+    session?.userName ||
+    "Usuário";
 
-  const [perfilAberto, setPerfilAberto] =
-    useState(false);
+  const userLevel =
+    profile?.userLevel || "";
+
+  const accountType =
+    profile?.accountType ||
+    session?.accountType;
+
+  const autismLevel =
+    profile?.autismLevel ??
+    session?.autismLevel;
+
+  const profileId =
+    session?.profileId;
+
+  const token =
+    session?.token;
+
+  const [
+    notificacoesAbertas,
+    setNotificacoesAbertas,
+  ] = useState(false);
+
+  const [
+    perfilAberto,
+    setPerfilAberto,
+  ] = useState(false);
 
   const [
     quantidadeNotificacoes,
     setQuantidadeNotificacoes,
   ] = useState(notifications);
 
+  const [
+    pedidosAjuda,
+    setPedidosAjuda,
+  ] = useState([]);
+
   const resolvedTitle =
-    title || `Olá, ${userName}! 👋`;
+    title ||
+    `Olá, ${userName}! 👋`;
+
+  const responsavelNivel2 =
+    accountType === "responsavel" &&
+    Number(autismLevel) === 2;
+
+  useEffect(() => {
+    if (!responsavelNivel2) {
+      return;
+    }
+
+    if (
+      !token ||
+      !profileId
+    ) {
+      return;
+    }
+
+    let ativo = true;
+
+    async function carregarPedidosAjuda() {
+      try {
+        const response =
+          await fetch(
+            `${API_URL}/responsavel/meu-dia/ajuda/pendentes?pessoaAutistaId=${profileId}`,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            },
+          );
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data =
+          await response.json();
+
+        if (
+          !ativo ||
+          !Array.isArray(data)
+        ) {
+          return;
+        }
+
+        setPedidosAjuda(data);
+
+        /*
+         * Para responsável nível 2,
+         * o número do sininho passa
+         * a refletir os pedidos de
+         * ajuda reais.
+         */
+        setQuantidadeNotificacoes(
+          data.length,
+        );
+      } catch {
+        /*
+         * Não derruba a página caso
+         * a consulta de notificações
+         * falhe.
+         */
+      }
+    }
+
+    carregarPedidosAjuda();
+
+    return () => {
+      ativo = false;
+    };
+  }, [
+    responsavelNivel2,
+    token,
+    profileId,
+  ]);
 
   function navegar(id) {
     setPerfilAberto(false);
-    setNotificacoesAbertas(false);
 
-    const path = routeMap[id];
+    setNotificacoesAbertas(
+      false,
+    );
+
+    const path =
+      routeMap[id];
 
     if (path) {
       navigate(path);
@@ -85,7 +210,9 @@ function Topbar({
   }
 
   function abrirPerfil() {
-    setNotificacoesAbertas(false);
+    setNotificacoesAbertas(
+      false,
+    );
 
     setPerfilAberto(
       (aberto) => !aberto,
@@ -96,8 +223,13 @@ function Topbar({
     <>
       <header className="app-topbar">
         <div className="app-topbar-heading">
-          <h1>{resolvedTitle}</h1>
-          <p>{subtitle}</p>
+          <h1>
+            {resolvedTitle}
+          </h1>
+
+          <p>
+            {subtitle}
+          </p>
         </div>
 
         <div className="app-topbar-actions">
@@ -105,16 +237,23 @@ function Topbar({
             className="app-notification-button"
             type="button"
             aria-label="Notificações"
-            aria-expanded={notificacoesAbertas}
-            onClick={abrirNotificacoes}
+            aria-expanded={
+              notificacoesAbertas
+            }
+            onClick={
+              abrirNotificacoes
+            }
           >
             <span className="app-notification-icon">
               ♢
             </span>
 
-            {quantidadeNotificacoes > 0 && (
+            {quantidadeNotificacoes >
+              0 && (
               <span className="app-notification-badge">
-                {quantidadeNotificacoes}
+                {
+                  quantidadeNotificacoes
+                }
               </span>
             )}
           </button>
@@ -123,21 +262,31 @@ function Topbar({
             className="app-profile-button"
             type="button"
             aria-label="Abrir menu do perfil"
-            aria-expanded={perfilAberto}
-            onClick={abrirPerfil}
+            aria-expanded={
+              perfilAberto
+            }
+            onClick={
+              abrirPerfil
+            }
           >
             <PerfilAvatar />
 
             <span className="app-profile-copy">
-              <strong>{userName}</strong>
+              <strong>
+                {userName}
+              </strong>
 
               {userLevel && (
-                <small>{userLevel}</small>
+                <small>
+                  {userLevel}
+                </small>
               )}
             </span>
 
             <span className="app-profile-arrow">
-              {perfilAberto ? "⌃" : "⌄"}
+              {perfilAberto
+                ? "⌃"
+                : "⌄"}
             </span>
           </button>
 
@@ -154,22 +303,33 @@ function Topbar({
       </header>
 
       <ModalNotificacoes
-        aberto={notificacoesAbertas}
+        aberto={
+          notificacoesAbertas
+        }
         onClose={() =>
-          setNotificacoesAbertas(false)
+          setNotificacoesAbertas(
+            false,
+          )
         }
         onQuantidadeAlterada={
           setQuantidadeNotificacoes
         }
         onVerTodas={() =>
-          navegar("notificacoes")
+          navegar(
+            "notificacoes",
+          )
+        }
+        pedidosAjuda={
+          pedidosAjuda
         }
       />
 
       <ModalPerfil
         aberto={perfilAberto}
         onClose={() =>
-          setPerfilAberto(false)
+          setPerfilAberto(
+            false,
+          )
         }
         onNavigate={navegar}
         onLogout={sair}
