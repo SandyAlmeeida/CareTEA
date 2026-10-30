@@ -164,7 +164,16 @@ function App() {
 
         <Route
           path="/cadastro"
-          element={<Cadastro onSubmit={handleCadastro} />}
+          element={
+            <Cadastro
+              onSubmit={async (dados) => {
+                await handleCadastro(dados);
+                navigate("/login", {
+                  state: { cadastroSucesso: true },
+                });
+              }}
+            />
+          }
         />
 
         <Route

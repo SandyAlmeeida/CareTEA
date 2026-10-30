@@ -828,7 +828,7 @@ function FormCompromisso({ evento, aoFechar, aoSalvar }) {
   return (
     <div className="ag-overlay" role="dialog" aria-modal="true" onClick={aoFechar}>
       <div
-        className={`ag-modal modal-${t.cor}`}
+        className={`ag-modal ag-form-modal modal-${t.cor}`}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="modal-head">
@@ -851,7 +851,7 @@ function FormCompromisso({ evento, aoFechar, aoSalvar }) {
 
         <form className="ag-form" onSubmit={enviar}>
           <div className="ag-form-grid">
-            <label className="ag-field">
+            <label className="ag-field ag-field-half">
               <span>Tipo *</span>
               <select name="tipo" value={form.tipo} onChange={atualizarCampo}>
                 {Object.entries(TIPOS).map(([chave, tipo]) => (
@@ -862,7 +862,7 @@ function FormCompromisso({ evento, aoFechar, aoSalvar }) {
               </select>
             </label>
 
-            <label className="ag-field">
+            <label className="ag-field ag-field-half">
               <span>Especialidade</span>
               <input
                 name="especialidade"
@@ -883,7 +883,7 @@ function FormCompromisso({ evento, aoFechar, aoSalvar }) {
               />
             </label>
 
-            <label className="ag-field">
+            <label className="ag-field ag-field-date-time">
               <span>Data *</span>
               <input
                 type="date"
@@ -893,7 +893,7 @@ function FormCompromisso({ evento, aoFechar, aoSalvar }) {
               />
             </label>
 
-            <label className="ag-field">
+            <label className="ag-field ag-field-date-time">
               <span>Início *</span>
               <input
                 type="time"
@@ -903,7 +903,7 @@ function FormCompromisso({ evento, aoFechar, aoSalvar }) {
               />
             </label>
 
-            <label className="ag-field">
+            <label className="ag-field ag-field-date-time">
               <span>Fim</span>
               <input
                 type="time"

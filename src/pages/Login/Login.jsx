@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 
 import logoCaretea from "../../assets/logo-caretea.png";
@@ -17,6 +17,7 @@ function Login({
   onForgotPassword,
   onRegister,
 }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const passwordInputRef = useRef(null);
 
@@ -30,8 +31,10 @@ function Login({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [message, setMessage] = useState({
-    text: "",
-    type: "",
+    text: location.state?.cadastroSucesso
+      ? "Cadastro realizado com sucesso! Faça login para continuar."
+      : "",
+    type: location.state?.cadastroSucesso ? "success" : "",
   });
 
   function updateField(event) {
