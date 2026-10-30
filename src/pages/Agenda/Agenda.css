@@ -716,6 +716,7 @@ select {
   display: grid;
   place-items: center;
   padding: 20px;
+  overflow-y: auto;
   background: rgba(17, 25, 54, 0.42);
   backdrop-filter: blur(2px);
   z-index: 50;
@@ -729,12 +730,23 @@ select {
   overflow: hidden;
   animation: ag-pop 0.16s ease;
 }
+.ag-form-modal {
+  display: flex;
+  width: min(680px, 100%);
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+  flex-direction: column;
+  overflow-y: auto;
+}
 .modal-head {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 20px 20px 16px;
   border-bottom: 1px solid var(--ag-border);
+}
+.ag-form-modal .modal-head {
+  flex-shrink: 0;
 }
 .modal-icon {
   display: grid;
@@ -894,18 +906,28 @@ select {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 20px;
 }
 
 .ag-form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 14px;
 }
 
 .ag-field {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 6px;
+}
+
+.ag-field-half {
+  grid-column: span 3;
+}
+
+.ag-field-date-time {
+  grid-column: span 2;
 }
 
 .ag-field-full {
@@ -922,6 +944,7 @@ select {
 .ag-field select,
 .ag-field textarea {
   width: 100%;
+  min-width: 0;
   padding: 10px 12px;
   border: 1px solid var(--ag-border);
   border-radius: 10px;
@@ -960,8 +983,17 @@ select {
   font-size: 13px;
 }
 
-@media (max-width: 860px) {
+.ag-form .modal-actions {
+  padding: 0;
+}
+
+@media (max-width: 700px) {
   .ag-form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ag-field-half,
+  .ag-field-date-time {
+    grid-column: 1 / -1;
   }
 }

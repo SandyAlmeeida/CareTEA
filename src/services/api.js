@@ -1,3 +1,5 @@
+import { getCareteaSession } from "../utils/careteaSession.js";
+
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -11,9 +13,16 @@ async function extrairErro(resposta) {
 }
 
 export async function apiRequest(caminho, opcoes = {}) {
+  const session = getCareteaSession();
   const resposta = await fetch(`${API_URL}${caminho}`, {
-    headers: { "Content-Type": "application/json" },
     ...opcoes,
+    headers: {
+      "Content-Type": "application/json",
+      ...opcoes.headers,
+      ...(session?.token
+        ? { Authorization: `Bearer ${session.token}` }
+        : {}),
+    },
   });
 
   if (!resposta.ok) {
