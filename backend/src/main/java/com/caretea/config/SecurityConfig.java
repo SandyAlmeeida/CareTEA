@@ -45,6 +45,16 @@ public class SecurityConfig {
                         auth -> auth
 
                                 /*
+                                 * Documentação OpenAPI.
+                                 */
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/v3/api-docs/**"
+                                )
+                                .permitAll()
+
+                                /*
                                  * Libera requisições OPTIONS
                                  * usadas pelo navegador no CORS.
                                  */
